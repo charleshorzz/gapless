@@ -26,7 +26,7 @@ contract VerifyAll is Script {
     function run() external {
         string memory root = vm.projectRoot();
         string memory path =
-            string.concat(root, "/broadcast/Deploy.s.sol/", vm.toString(block.chainid), "/run-latest.json");
+            string.concat(root, "/broadcast/DeployPostContract.sol/", vm.toString(block.chainid), "/run-latest.json");
         string memory content = vm.readFile(path);
 
         while (this.nextTransaction(content)) {
@@ -48,7 +48,7 @@ contract VerifyAll is Script {
             abi.decode(vm.parseJson(content, searchStr(currTransactionIdx, "contractName")), (string));
         address contractAddr =
             abi.decode(vm.parseJson(content, searchStr(currTransactionIdx, "contractAddress")), (address));
-        bytes memory deployedBytecode =
+    bytes memory deployedBytecode =
             abi.decode(vm.parseJson(content, searchStr(currTransactionIdx, "transaction.input")), (bytes));
         bytes memory compiledBytecode =
             abi.decode(vm.parseJson(_getCompiledBytecode(contractName), ".bytecode.object"), (bytes));
