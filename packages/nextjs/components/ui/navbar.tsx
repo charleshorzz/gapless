@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState } from "react";
 import Link, { LinkProps } from "next/link";
+import { usePathname } from "next/navigation";
 import { cn } from "../../utils/scaffold-eth/utils";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -141,20 +142,23 @@ export const MobileSidebar = ({ className, children, ...props }: React.Component
 
 export const SidebarLink = ({ link, className, ...props }: { link: Links; className?: string; props?: LinkProps }) => {
   const { open, animate } = useSidebar();
+  const currentPath = usePathname();
   return (
     <Link
       href={link.href}
       className={cn("flex items-center justify-start gap-2  group/sidebar py-2", className)}
       {...props}
     >
-      {link.icon}
+      {/* Style the currentPath text */}
+      <i className={link.href === currentPath ? "text-neutral-800" : ""}>{link.icon}</i>
 
       <motion.span
         animate={{
           display: animate ? (open ? "inline-block" : "none") : "inline-block",
           opacity: animate ? (open ? 1 : 0) : 1,
         }}
-        className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+        className={`text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0 
+          ${link.href === currentPath ? "font-extrabold text-neutral-800" : ""}`}
       >
         {link.label}
       </motion.span>
