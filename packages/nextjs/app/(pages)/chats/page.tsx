@@ -4,6 +4,7 @@ import { WrongNetworkDropdown } from "../../../components/scaffold-eth/RainbowKi
 import AuthBackground from "../_components/AuthBackground";
 import ChatLists from "./ChatLists";
 import ChatWindow from "./ChatWindow";
+import PaymentEHT from "./PaymentEHT";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { AnimatePresence } from "framer-motion";
 import { useNetworkColor } from "~~/hooks/scaffold-eth";
@@ -14,8 +15,11 @@ const ChatsPage = () => {
   const networkColor = useNetworkColor();
   const { targetNetwork } = useTargetNetwork();
 
-  //  Nedd to modify here later
+  //  Nedd to modify here later (for mobile)
   const openChat = false;
+
+  // ETH Pay logic start here
+  const paymentETH = true;
   return (
     <ConnectButton.Custom>
       {({ account, chain, openConnectModal, mounted }) => {
@@ -51,9 +55,8 @@ const ChatsPage = () => {
                   )}
 
                   {/* ChatWindow: Hidden below lg, takes 3/5 columns on lg+ */}
-                  <div className="hidden lg:block lg:col-span-4">
-                    <ChatWindow />
-                  </div>
+                  <div className="hidden lg:block lg:col-span-4">{paymentETH ? <PaymentEHT /> : <ChatWindow />}</div>
+
                   {openChat && (
                     <div className="col-span-6">
                       <AnimatePresence>

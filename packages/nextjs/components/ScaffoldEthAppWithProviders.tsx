@@ -24,7 +24,7 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
       <div>
         {/* <Header /> */}
         <main>{children}</main>
-        {/* <Footer /> */}
+        <Footer />
       </div>
       <Toaster />
     </>
