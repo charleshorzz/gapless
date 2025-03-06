@@ -17,7 +17,7 @@ const nextConfig = {
 
   // for image domain
   images: {
-    domains: ["assets.aceternity.com"],
+    domains: ["assets.aceternity.com", "encrypted-tbn0.gstatic.com"],
   },
 };
 
