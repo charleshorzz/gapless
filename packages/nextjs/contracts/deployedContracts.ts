@@ -134,7 +134,7 @@ const deployedContracts = {
   },
   534351: {
     PostContract: {
-      address: "0xccc220056a8391c6727ef51ea86956a28c1f68b6",
+      address: "0x3b0cae5712fdcbc3b4e61e90470633190d298700",
       abi: [
         {
           type: "constructor",
@@ -204,9 +204,21 @@ const deployedContracts = {
           name: "createPost",
           inputs: [
             {
-              name: "_ipfsHash",
-              type: "string",
-              internalType: "string",
+              name: "postData",
+              type: "tuple",
+              internalType: "struct PostContract.PostInput",
+              components: [
+                {
+                  name: "owner",
+                  type: "address",
+                  internalType: "address",
+                },
+                {
+                  name: "postData",
+                  type: "string",
+                  internalType: "string",
+                },
+              ],
             },
           ],
           outputs: [],
@@ -296,7 +308,7 @@ const deployedContracts = {
               internalType: "address",
             },
             {
-              name: "ipfsHash",
+              name: "postData",
               type: "string",
               internalType: "string",
             },
@@ -506,7 +518,7 @@ const deployedContracts = {
           name: "PostCreated",
           inputs: [
             {
-              name: "postId",
+              name: "id",
               type: "uint256",
               indexed: false,
               internalType: "uint256",
@@ -518,10 +530,22 @@ const deployedContracts = {
               internalType: "address",
             },
             {
-              name: "ipfsHash",
+              name: "postData",
               type: "string",
               indexed: false,
               internalType: "string",
+            },
+            {
+              name: "author",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "timestamp",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
             },
           ],
           anonymous: false,
@@ -575,7 +599,7 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deploymentFile: "run-1741163890.json",
+      deploymentFile: "run-1741255259.json",
       deploymentScript: "DeployPostContract.sol",
     },
   },
