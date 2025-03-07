@@ -37,7 +37,6 @@ query getChatHistorys($walletAddress: Bytes!, $first: Int, $skip: Int) {
     where: { or: [{ sender: $walletAddress }, { receiver: $walletAddress }] }
   ) {
     id
-    postId
     sender
     receiver
     ipfsHash

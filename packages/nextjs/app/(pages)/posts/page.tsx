@@ -113,6 +113,9 @@ const PostsPage = () => {
         //Send in WEI
         const chatPrice = data?.chatPrice ? parseEther(data.chatPrice.toString()) : BigInt(0);
 
+        // Prepare postComment (to be modified)
+        const postComment = "awdawadaw";
+
         // Convert postData to a JSON string
         const postData = JSON.stringify(rawpostData);
 
@@ -120,7 +123,7 @@ const PostsPage = () => {
         if (!userAddress) throw new Error("Please connect your wallet to create a post");
         await writePostContractAsync({
           functionName: "createPost",
-          args: [{ owner: userAddress, postData, chatPrice }, chatPrice], //  Send JSON directly
+          args: [postData, chatPrice, postComment], //  Send JSON directly
         });
 
         toast.success("Post created successfully!");

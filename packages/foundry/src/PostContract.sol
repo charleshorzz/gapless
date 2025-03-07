@@ -57,7 +57,6 @@ contract PostContract is Ownable {
 
     function requestChat(uint256 _postId) external {
         Post storage post = posts[_postId];
-        require(post.active, "Post not active");
         require(post.owner != msg.sender, "Cannot request chat with yourself");
         require(!chatSessions[post.owner][msg.sender].paid, "Already paid");
 

@@ -23,7 +23,7 @@ const ChatsPage = () => {
   const paymentETH = false;
 
   //Function
-  const postId = "0xa076ee052ed47040b1010736558a1d26d9d6f8c7eef65824706308f162d4b8a403000000";
+  const postId = "0x6387f472ee0db893d8912c3c0701499261da6ae352c522e38047e6400f35487500000000";
   const postOwnerAddress = "0xb785058f9807b0cb7a67f7bb58d6a5234b7d6656";
   const chatPrice = 10000000000000;
   const userWalletAddress = "0xb785058f9807b0cb7a67f7bb58d6a5234b7d6656";
@@ -94,7 +94,7 @@ const ChatsPage = () => {
                   {/* ChatWindow: Hidden below lg, takes 3/5 columns on lg+ */}
                   <div className="hidden lg:block lg:col-span-4">
                     {chatHistory ? (
-                      <PaymentEHT postId={postId} chatPrice={chatPrice} postOwnerAddress={postOwnerAddress} />
+                      <PaymentEHT postId={BigInt(postId)} chatPrice={chatPrice} postOwnerAddress={postOwnerAddress} />
                     ) : (
                       <ChatWindow />
                     )}

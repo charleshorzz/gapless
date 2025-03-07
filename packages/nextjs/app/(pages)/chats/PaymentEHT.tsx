@@ -1,5 +1,5 @@
 import React from "react";
-import { formatEther, parseEther } from "viem";
+import { formatEther, keccak256, parseEther, toHex } from "viem";
 import { erc20Abi } from "viem";
 import { useContractWrite } from "wagmi";
 import CustomCard from "~~/app/CustomCard";
@@ -25,12 +25,13 @@ const PaymentEHT = ({
   const handleSubmit = async () => {
     // Call Smart Contract
     console.log("Sample Smart Contract Call");
+    console.log("postId:", postId, "Type:", typeof postId);
+    const hashedPostId = BigInt(keccak256(toHex(postId.toString())));
 
     try {
       await writePostContractAsync({
         functionName: "requestChat",
-        args: [postId],
-        value: parseEther(newChatPrice.toString()),
+        args: [hashedPostId],
       });
     } catch (e) {
       console.error(e);

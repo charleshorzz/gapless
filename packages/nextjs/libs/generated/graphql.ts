@@ -43,7 +43,6 @@ export type ChatHistoryStored = {
   blockTimestamp: Scalars['BigInt']['output'];
   id: Scalars['Bytes']['output'];
   ipfsHash: Scalars['String']['output'];
-  postId: Scalars['BigInt']['output'];
   receiver: Scalars['Bytes']['output'];
   sender: Scalars['Bytes']['output'];
   transactionHash: Scalars['Bytes']['output'];
@@ -100,14 +99,6 @@ export type ChatHistoryStored_Filter = {
   ipfsHash_starts_with?: InputMaybe<Scalars['String']['input']>;
   ipfsHash_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   or?: InputMaybe<Array<InputMaybe<ChatHistoryStored_Filter>>>;
-  postId?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  postId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_not?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   receiver?: InputMaybe<Scalars['Bytes']['input']>;
   receiver_contains?: InputMaybe<Scalars['Bytes']['input']>;
   receiver_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -145,7 +136,6 @@ export enum ChatHistoryStored_OrderBy {
   BlockTimestamp = 'blockTimestamp',
   Id = 'id',
   IpfsHash = 'ipfsHash',
-  PostId = 'postId',
   Receiver = 'receiver',
   Sender = 'sender',
   TransactionHash = 'transactionHash'
@@ -158,6 +148,7 @@ export type ChatRequested = {
   blockTimestamp: Scalars['BigInt']['output'];
   id: Scalars['Bytes']['output'];
   postId: Scalars['BigInt']['output'];
+  receiver: Scalars['Bytes']['output'];
   requester: Scalars['Bytes']['output'];
   transactionHash: Scalars['Bytes']['output'];
 };
@@ -209,6 +200,16 @@ export type ChatRequested_Filter = {
   postId_lte?: InputMaybe<Scalars['BigInt']['input']>;
   postId_not?: InputMaybe<Scalars['BigInt']['input']>;
   postId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  receiver?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  receiver_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_not?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   requester?: InputMaybe<Scalars['Bytes']['input']>;
   requester_contains?: InputMaybe<Scalars['Bytes']['input']>;
   requester_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -237,6 +238,7 @@ export enum ChatRequested_OrderBy {
   BlockTimestamp = 'blockTimestamp',
   Id = 'id',
   PostId = 'postId',
+  Receiver = 'receiver',
   Requester = 'requester',
   TransactionHash = 'transactionHash'
 }
@@ -338,6 +340,7 @@ export type PostCreated = {
   id: Scalars['Bytes']['output'];
   internal_id: Scalars['BigInt']['output'];
   owner: Scalars['Bytes']['output'];
+  postComment: Scalars['String']['output'];
   postData: Scalars['String']['output'];
   timestamp: Scalars['BigInt']['output'];
   transactionHash: Scalars['Bytes']['output'];
@@ -410,6 +413,26 @@ export type PostCreated_Filter = {
   owner_not?: InputMaybe<Scalars['Bytes']['input']>;
   owner_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
   owner_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  postComment?: InputMaybe<Scalars['String']['input']>;
+  postComment_contains?: InputMaybe<Scalars['String']['input']>;
+  postComment_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  postComment_ends_with?: InputMaybe<Scalars['String']['input']>;
+  postComment_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  postComment_gt?: InputMaybe<Scalars['String']['input']>;
+  postComment_gte?: InputMaybe<Scalars['String']['input']>;
+  postComment_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  postComment_lt?: InputMaybe<Scalars['String']['input']>;
+  postComment_lte?: InputMaybe<Scalars['String']['input']>;
+  postComment_not?: InputMaybe<Scalars['String']['input']>;
+  postComment_not_contains?: InputMaybe<Scalars['String']['input']>;
+  postComment_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  postComment_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  postComment_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  postComment_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  postComment_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  postComment_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  postComment_starts_with?: InputMaybe<Scalars['String']['input']>;
+  postComment_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   postData?: InputMaybe<Scalars['String']['input']>;
   postData_contains?: InputMaybe<Scalars['String']['input']>;
   postData_contains_nocase?: InputMaybe<Scalars['String']['input']>;
@@ -458,6 +481,7 @@ export enum PostCreated_OrderBy {
   Id = 'id',
   InternalId = 'internal_id',
   Owner = 'owner',
+  PostComment = 'postComment',
   PostData = 'postData',
   Timestamp = 'timestamp',
   TransactionHash = 'transactionHash'
@@ -712,7 +736,7 @@ export type GetChatHistorysQueryVariables = Exact<{
 }>;
 
 
-export type GetChatHistorysQuery = { __typename?: 'Query', chatHistoryStoreds: Array<{ __typename?: 'ChatHistoryStored', id: any, postId: any, sender: any, receiver: any, ipfsHash: string, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
+export type GetChatHistorysQuery = { __typename?: 'Query', chatHistoryStoreds: Array<{ __typename?: 'ChatHistoryStored', id: any, sender: any, receiver: any, ipfsHash: string, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
 
 
 export const PostCreatedsDocument = gql`
@@ -859,7 +883,6 @@ export const GetChatHistorysDocument = gql`
     where: {or: [{sender: $walletAddress}, {receiver: $walletAddress}]}
   ) {
     id
-    postId
     sender
     receiver
     ipfsHash

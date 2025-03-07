@@ -384,7 +384,7 @@ const deployedContracts = {
   },
   534351: {
     PostContract: {
-      address: "0x88753832c624afb641611d8d5ff007d3fe262b06",
+      address: "0x8706fe250108b5338d09beb5c0a18d6783a21364",
       abi: [
         {
           type: "constructor",
@@ -755,7 +755,7 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deploymentFile: "run-1741361121.json",
+      deploymentFile: "run-1741362489.json",
       deploymentScript: "DeployPostContract.sol",
     },
   },
