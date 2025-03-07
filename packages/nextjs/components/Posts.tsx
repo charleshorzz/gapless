@@ -1,7 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { usePostCreatedsQuery } from "~~/libs/generated/graphql";
 import { splitTextIntoChunks } from "~~/utils/scaffold-eth/textSplitter";
@@ -19,6 +21,7 @@ interface JobListProps {
 const JobCard = ({ post }: { post: Post }) => {
   const router = useRouter();
   const parsedData = post.postData ? JSON.parse(post.postData) : {};
+  console.log(parsedData);
   const storyChunks = splitTextIntoChunks(parsedData.story || "");
   const firstChunk = storyChunks[0] || "";
 
@@ -60,17 +63,65 @@ const JobCard = ({ post }: { post: Post }) => {
 };
 
 const JobList: React.FC<JobListProps> = ({ searchTerm }) => {
-  const { data, loading, error } = usePostCreatedsQuery({
-    variables: { first: 10 },
+  const [page, setPage] = useState(1);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [hasMore, setHasMore] = useState(true);
+  const { ref, inView } = useInView();
+
+  // const usePosts = (query: Post) => useInfiniteQuery<Post[]>({
+  //   querykey: ['posts', query],
+  //   queryFn: ()
+  // })
+
+  const { data, loading, error, fetchMore } = usePostCreatedsQuery({
+    variables: {
+      orderBy: "blockTimestamp",
+    },
     fetchPolicy: "network-only",
   });
 
-  if (loading) return <div className="text-center p-4">Loading...</div>;
+  // Initial load
+  useEffect(() => {
+    if (data?.postCreateds) {
+      setPosts(data.postCreateds);
+      setHasMore(data.postCreateds.length >= 6);
+    }
+  }, [data]);
+
+  // Load more when scrolled to bottom
+  useEffect(() => {
+    if (inView && hasMore && !loading) {
+      const nextPage = page + 1;
+      fetchMore({
+        variables: {
+          page: nextPage,
+          perPage: 6,
+          search: searchTerm,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult?.postCreateds.length) {
+            setHasMore(false);
+            return prev;
+          }
+
+          setPage(nextPage);
+          setPosts(prevPosts => [...prevPosts, ...fetchMoreResult.postCreateds]);
+          setHasMore(fetchMoreResult.postCreateds.length >= 6);
+
+          return {
+            postCreateds: [...prev.postCreateds, ...fetchMoreResult.postCreateds],
+          };
+        },
+      });
+    }
+  }, [inView, loading, hasMore, page, fetchMore, searchTerm]);
+
+  if (loading && posts.length === 0) return <div className="text-center p-4">Loading initial posts...</div>;
   if (error) return <div className="text-red-500 p-4">Error: {error.message}</div>;
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-3 gap-10 px-20">
-      {data?.postCreateds?.map(post => (
+      {posts.map(post => (
         <JobCard
           key={post.id}
           post={{
@@ -80,6 +131,12 @@ const JobList: React.FC<JobListProps> = ({ searchTerm }) => {
           }}
         />
       ))}
+
+      {/* Loading trigger */}
+      <div ref={ref} className="col-span-full text-center py-4">
+        {loading && <span>Loading more jobs...</span>}
+        {!hasMore && posts.length > 0 && <span>All jobs loaded</span>}
+      </div>
     </div>
   );
 };
