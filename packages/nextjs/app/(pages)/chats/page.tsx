@@ -1,15 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { WrongNetworkDropdown } from "../../../components/scaffold-eth/RainbowKitCustomConnectButton/WrongNetworkDropdown";
 import AuthBackground from "../_components/AuthBackground";
 import ChatLists from "./ChatLists";
 import ChatWindow from "./ChatWindow";
 import PaymentEHT from "./PaymentEHT";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { set } from "react-hook-form";
-import { useNetworkColor, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { useOpenStore } from "~~/app/store";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { useNetworkColor } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { useChatHistoryStoredsQuery, useGetChatHistorysQuery } from "~~/libs/generated/graphql";
 import { getBlockExplorerAddressLink } from "~~/utils/scaffold-eth";
@@ -19,9 +21,24 @@ const ChatsPage = () => {
   const { targetNetwork } = useTargetNetwork();
   const [isChatFound, setChatFound] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
+  const { openChat } = useOpenStore();
 
-  //  Nedd to modify here later (for mobile)
-  const openChat = false;
+  // State to track screen size
+  const [desktopScreen, setDesktopScreen] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setDesktopScreen(window.matchMedia("(min-width: 64rem)").matches);
+    };
+
+    checkScreenSize(); // Initial check
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
+  // Mobile chat logic: true if `openChat` is true and `desktopScreen` is false
+  const mobileChatLogic = openChat && !desktopScreen;
 
   // ETH Pay logic start here
   const paymentETH = false;
@@ -117,12 +134,48 @@ const ChatsPage = () => {
                       />
                     )}
                   </div>
+                  {!mobileChatLogic && (
+                    <div className="col-span-6 lg:col-span-2 overflow-y-scroll">
+                      <ChatLists />
+                    </div>
+                  )}
 
-                  {openChat && (
-                    <div className="col-span-6">
-                      <AnimatePresence>
+                  {/* ChatWindow: Hidden below lg, takes 3/5 columns on lg+ */}
+                  <div className="hidden lg:block lg:col-span-4">
+                    {paymentETH ? (
+                      <PaymentEHT
+                        postId={BigInt(postId)}
+                        chatPrice={chatPrice}
+                        postOwnerAddress={postOwnerAddress}
+                        setChatFound={setChatFound}
+                      />
+                    ) : (
+                      <div className="h-fit min-h-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-3 shadow-sm flex flex-col">
+                        {" "}
+                        <ChatWindow />{" "}
+                      </div>
+                    )}
+                  </div>
+
+                  {mobileChatLogic && (
+                    <div className="block lg:hidden col-span-6">
+                      {/* Come animate effect error here */}
+                      {/* <AnimatePresence>
+                          <motion.div
+                            initial={{ x: "20%", opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: "-100%", opacity: 0 }}
+                            transition={{
+                              duration: 0.3,
+                              ease: "easeInOut",
+                            }} className="h-fit min-h-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-3 shadow-sm flex flex-col"
+                            >
+                              <ChatWindow />
+                          </motion.div>
+                        </AnimatePresence> */}
+                      <div className="h-fit min-h-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-3 shadow-sm flex flex-col">
                         <ChatWindow />
-                      </AnimatePresence>
+                      </div>
                     </div>
                   )}
                 </div>

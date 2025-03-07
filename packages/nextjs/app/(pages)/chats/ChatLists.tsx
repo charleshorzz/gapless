@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import CustomCard from "~~/app/CustomCard";
+import { useOpenStore } from "~~/app/store";
 
 type Message = {
   id: number;
@@ -123,7 +124,8 @@ const DUMMY_USERS: Record<number, User> = {
 
 const ChatLists = () => {
   const [query, setQuery] = useState("");
-
+  const { toggleOpen } = useOpenStore();
+  
   const getLatestMessages = (messages: Message[]): Message[] => {
     const latestMessagesMap = new Map<number, Message>();
 
@@ -154,7 +156,7 @@ const ChatLists = () => {
 
   return (
     <CustomCard>
-      <div className="flex flex-col gap-3 overflow-y-scroll">
+      <div className="flex flex-col gap-3 ">
         <label className="flex items-center gap-2 bg-white dark:bg-neutral-800 h-9 rounded-lg border border-neutral-200 dark:border-neutral-700 px-3">
           <svg
             className="h-4 w-4 text-neutral-500 dark:text-neutral-400"
@@ -175,7 +177,7 @@ const ChatLists = () => {
           />
         </label>
 
-        <div className="overflow-scroll">
+        <div className="max-h-[50vh] lg:max-h-none ">
           <div>
             {filteredItems.map(list => {
               const otherUser = list.fromUser === 5 ? list.toUser : list.fromUser;
@@ -183,8 +185,9 @@ const ChatLists = () => {
 
               return (
                 <div
-                  className="rounded-lg dark:border-neutral-700 bg-white dark:bg-neutral-800 mb-1 hover:bg-gray-100 dark:hover:bg-neutral-700"
+                  className="rounded-lg dark:border-neutral-700 bg-white dark:bg-neutral-800 mb-1 hover:bg-gray-100 dark:hover:bg-neutral-700 cursor-pointer"
                   key={list.id}
+                  onClick={toggleOpen}
                 >
                   <div className="card card-sm">
                     <div className="card-body flex flex-row p-3">

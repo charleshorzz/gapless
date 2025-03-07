@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/navbar";
 import { cn } from "../utils/scaffold-eth/utils";
@@ -12,6 +11,8 @@ import {
   IconSquareRoundedPlus,
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
+import { SwitchTheme } from "~~/components/SwitchTheme";
+import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 
 export function SideBar({ children }: { children: React.ReactNode }) {
   const links = [
@@ -40,15 +41,19 @@ export function SideBar({ children }: { children: React.ReactNode }) {
       )}
     >
       <Sidebar open={open} setOpen={setOpen} animate={false}>
-        <SidebarBody className="justify-between gap-10">
+        <SidebarBody className="justify-between gap-1">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-            {open ? <Logo /> : <LogoIcon />}
+            <>
+              <Logo />
+            </>
             <div className="mt-8 flex flex-col justify-center gap-8">
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
               ))}
+              <SwitchTheme />
             </div>
           </div>
+          <RainbowKitCustomConnectButton />
         </SidebarBody>
       </Sidebar>
       {children}
@@ -57,12 +62,12 @@ export function SideBar({ children }: { children: React.ReactNode }) {
 }
 export const Logo = () => {
   return (
-    <Link href="#" className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
-      <IconCurrencyEthereum className="text-neutral-700 dark:text-neutral-200 h-6 w-6 flex-shrink-0" />
+    <Link href="/" className="font-normal flex space-x-2 items-center text-xl text-black py-1 relative z-20">
+      <IconCurrencyEthereum className="text-neutral-700 dark:text-[#607ae3] h-6 w-6 flex-shrink-0" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="font-medium text-black dark:text-white whitespace-pre"
+        className=" text-black dark:text-[#607ae3] font-extrabold whitespace-pre"
       >
         Gapless
       </motion.span>
@@ -71,8 +76,8 @@ export const Logo = () => {
 };
 export const LogoIcon = () => {
   return (
-    <Link href="#" className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
-      <IconCurrencyEthereum className="text-neutral-700 dark:text-neutral-200 h-6 w-6 flex-shrink-0" />
+    <Link href="/" className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
+      <IconCurrencyEthereum className="text-neutral-700 dark:text-[#607ae3] h-6 w-6 flex-shrink-0" />
     </Link>
   );
 };

@@ -1,6 +1,6 @@
 # Query
-query postCreateds($first: Int, $skip: Int) {
-  postCreateds(first: $first, skip: $skip) {
+query postCreateds($first: Int, $skip: Int, $orderBy: Int) {
+  postCreateds(first: $first, skip: $skip, orderBy: $orderBy) {
     id
     author
     postData
