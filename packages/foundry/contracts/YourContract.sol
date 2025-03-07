@@ -42,35 +42,35 @@ contract YourContract {
      *
      * @param _newGreeting (string memory) - new greeting to save on the contract
      */
-    function setGreeting(string memory _newGreeting) public payable {
-        // Print data to the anvil chain console. Remove when deploying to a live network.
+    // function setGreeting(string memory _newGreeting) public payable {
+    //     // Print data to the anvil chain console. Remove when deploying to a live network.
 
-        console.logString("Setting new greeting");
-        console.logString(_newGreeting);
+    //     console.logString("Setting new greeting");
+    //     console.logString(_newGreeting);
 
-        greeting = _newGreeting;
-        totalCounter += 1;
-        userGreetingCounter[msg.sender] += 1;
+    //     greeting = _newGreeting;
+    //     totalCounter += 1;
+    //     userGreetingCounter[msg.sender] += 1;
 
-        // msg.value: built-in global variable that represents the amount of ether sent with the transaction
-        if (msg.value > 0) {
-            premium = true;
-        } else {
-            premium = false;
-        }
+    //     // msg.value: built-in global variable that represents the amount of ether sent with the transaction
+    //     if (msg.value > 0) {
+    //         premium = true;
+    //     } else {
+    //         premium = false;
+    //     }
 
-        // emit: keyword used to trigger an event
-        emit GreetingChange(msg.sender, _newGreeting, msg.value > 0, msg.value);
-    }
+    //     // emit: keyword used to trigger an event
+    //     emit GreetingChange(msg.sender, _newGreeting, msg.value > 0, msg.value);
+    // }
 
     /**
      * Function that allows the owner to withdraw all the Ether in the contract
      * The function can only be called by the owner of the contract as defined by the isOwner modifier
      */
-    function withdraw() public isOwner {
-        (bool success,) = owner.call{ value: address(this).balance }("");
-        require(success, "Failed to send Ether");
-    }
+    // function withdraw() public isOwner {
+    //     (bool success,) = owner.call{ value: address(this).balance }("");
+    //     require(success, "Failed to send Ether");
+    // }
 
     /**
      * Function that allows the contract to receive ETH

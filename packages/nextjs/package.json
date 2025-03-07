@@ -11,11 +11,13 @@
     "lint": "next lint",
     "serve": "next start",
     "start": "next dev",
+    "generate:graphql": "graphql-codegen --config codegen.yml",
     "vercel": "vercel --build-env YARN_ENABLE_IMMUTABLE_INSTALLS=false --build-env ENABLE_EXPERIMENTAL_COREPACK=1 --build-env VERCEL_TELEMETRY_DISABLED=1",
     "vercel:login": "vercel login",
     "vercel:yolo": "vercel --build-env YARN_ENABLE_IMMUTABLE_INSTALLS=false --build-env ENABLE_EXPERIMENTAL_COREPACK=1 --build-env NEXT_PUBLIC_IGNORE_BUILD_ERROR=true --build-env VERCEL_TELEMETRY_DISABLED=1"
   },
   "dependencies": {
+    "@apollo/client": "^3.13.1",
     "@heroicons/react": "~2.1.5",
     "@rainbow-me/rainbowkit": "2.2.3",
     "@tanstack/react-query": "~5.59.15",
@@ -24,6 +26,7 @@
     "blo": "~1.2.0",
     "burner-connector": "0.0.9",
     "daisyui": "4.12.10",
+    "graphql": "^16.10.0",
     "kubo-rpc-client": "~5.0.2",
     "next": "~14.2.11",
     "next-nprogress-bar": "~2.3.13",
@@ -39,9 +42,15 @@
     "zustand": "~5.0.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.5",
+    "@graphql-codegen/introspection": "^4.0.3",
+    "@graphql-codegen/typescript": "^4.1.5",
+    "@graphql-codegen/typescript-operations": "^4.5.1",
+    "@graphql-codegen/typescript-react-apollo": "^4.3.2",
     "@trivago/prettier-plugin-sort-imports": "~4.3.0",
     "@types/node": "~18.19.50",
     "@types/react": "~18.3.5",
+    "@types/web-push": "^3.6.4",
     "@typescript-eslint/eslint-plugin": "~5.40.0",
     "abitype": "1.0.6",
     "autoprefixer": "~10.4.20",
