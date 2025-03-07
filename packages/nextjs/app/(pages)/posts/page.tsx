@@ -1,9 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
+import { parseEther } from "viem";
 import { useAccount } from "wagmi";
 import CustomSeparaor from "~~/app/CustomSeparaor";
 import { Breadcumb } from "~~/components/ui/breadcumb";
@@ -22,22 +23,21 @@ import {
 } from "~~/utils/inputEnums";
 import { fetchDataFromIPFS, uploadFileToIPFS } from "~~/utils/pinata";
 
-
 type FormData = {
   name: string;
   age: number;
-  gender: typeof GENDER_OPTIONS[number];
-  ethnicity: typeof ETHNICITY_OPTIONS[number];
-  education: typeof EDUCATION_OPTIONS[number];
+  gender: (typeof GENDER_OPTIONS)[number];
+  ethnicity: (typeof ETHNICITY_OPTIONS)[number];
+  education: (typeof EDUCATION_OPTIONS)[number];
   jobTitle: string;
-  seniority: typeof SENIORITY_OPTIONS[number];
-  experience: typeof EXPERIENCE_OPTIONS[number];
+  seniority: (typeof SENIORITY_OPTIONS)[number];
+  experience: (typeof EXPERIENCE_OPTIONS)[number];
   exactExperience: number;
   companyName: string;
-  companyType: typeof COMPANY_TYPE[number];
-  industry: typeof INDUSTRY_OPTIONS[number];
-  employmentType: typeof EMPLOYMENT_TYPE[number];
-  location: typeof LOCATION_OPTIONS[number];
+  companyType: (typeof COMPANY_TYPE)[number];
+  industry: (typeof INDUSTRY_OPTIONS)[number];
+  employmentType: (typeof EMPLOYMENT_TYPE)[number];
+  location: (typeof LOCATION_OPTIONS)[number];
   baseSalary: number;
   otherCompensation: boolean;
   allowance: number;
@@ -45,6 +45,7 @@ type FormData = {
   commission: number;
   stock: number;
   payslip: File;
+  chatPrice: number;
   story: string;
 };
 
@@ -65,8 +66,7 @@ const PostsPage = () => {
   const [selectedExperience, setSelectedExperience] = useState<string>("");
   const [hasOtherCompensation, setHasOtherCompensation] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const router = useRouter()
- 
+  const router = useRouter();
 
   //API
   // const {
@@ -116,8 +116,8 @@ const PostsPage = () => {
       stock: 0,
       payslip: null as unknown as File,
       story: "",
+      chatPrice: 0,
     };
-    
 
     // Code here start for VALIDATION
     const requiredFields: (keyof FormData)[] = [
@@ -140,18 +140,18 @@ const PostsPage = () => {
       // "commission",
       // "stock",
       "story",
-      "payslip"
+      "payslip",
     ];
 
     // Conditionally add financial fields if `hasOtherCompensation` and `selectedExperience` is true
     if (hasOtherCompensation) {
       requiredFields.push("allowance", "bonus", "commission", "stock");
     }
-    if(selectedExperience) {
+    if (selectedExperience) {
       requiredFields.push("exactExperience");
     }
 
-    const missingFields = requiredFields.filter((field) => {
+    const missingFields = requiredFields.filter(field => {
       const value = data[field];
 
       if (typeof value === "string") return value.trim() === "";
@@ -164,16 +164,11 @@ const PostsPage = () => {
     if (!data.story && nextIndex < tabOrder.length) {
       // Move to the next tab if 'story' is empty
       setActiveSection(tabOrder[nextIndex] as "personalDetails" | "jobDetails" | "salaryInfo" | "story");
-    } else if (missingFields.length > 0) { 
+    } else if (missingFields.length > 0) {
       toast.error(`Please complete all the fields before submitting: ${missingFields.join(", ")}`);
     } else {
       try {
         setLoading(true);
-        //Upload payslip to IPFS
-        if (data.payslip) {
-          const payslipData = await uploadFileToIPFS(data.payslip);
-        }
-
         let payslipHash = null;
 
         // Upload payslip to IPFS if provided
@@ -187,6 +182,12 @@ const PostsPage = () => {
           payslip: payslipHash,
         };
 
+        //Send in WEI
+        const chatPrice = data?.chatPrice ? parseEther(data.chatPrice.toString()) : BigInt(0);
+
+        // Prepare postComment (to be modified)
+        const postComment = "awdawadaw";
+
         // Convert postData to a JSON string
         const postData = JSON.stringify(rawpostData);
 
@@ -194,11 +195,11 @@ const PostsPage = () => {
         if (!userAddress) throw new Error("Please connect your wallet to create a post");
         await writePostContractAsync({
           functionName: "createPost",
-          args: [{ owner: userAddress, postData }], //  Send JSON directly
+          args: [postData, chatPrice, postComment], //  Send JSON directly
         });
 
         toast.success("Post created successfully!");
-        setActiveSection('personalDetails')
+        setActiveSection("personalDetails");
         reset(initialData);
       } catch (error) {
         console.error("Error submitting form:", error);
@@ -226,7 +227,7 @@ const PostsPage = () => {
   return (
     <div className=" w-full">
       <Breadcumb setActiveSection={setActiveSection} />
-      <CustomSeparaor/>
+      <CustomSeparaor />
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full max-w-xl mx-auto mt-4">
         {activeSection === "personalDetails" && (
           <>
@@ -338,25 +339,25 @@ const PostsPage = () => {
                 ))}
               </select>
 
-            <div>
-              {/* Show additional input if "More than 10 years" is selected */}
-              {selectedExperience === "More than 10 years" && (
-                <div className="mt-3">
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Enter your years of experience
-                  </label>
-                  <input
-                    type="number"
-                    {...register("exactExperience")}
-                    id="exactExperience"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Enter number of years"
-                    min="11"
-                    required
-                  />
-                </div>
-              )}
-            </div>
+              <div>
+                {/* Show additional input if "More than 10 years" is selected */}
+                {selectedExperience === "More than 10 years" && (
+                  <div className="mt-3">
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Enter your years of experience
+                    </label>
+                    <input
+                      type="number"
+                      {...register("exactExperience")}
+                      id="exactExperience"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Enter number of years"
+                      min="11"
+                      required
+                    />
+                  </div>
+                )}
+              </div>
             </div>
 
             <div>
@@ -567,8 +568,18 @@ const PostsPage = () => {
         )}
 
         {/* Submit Button */}
-        <button type="submit" className="btn rounded-lg w-full btn-primary dark:bg-[#385183] dark:hover:bg-[#2b3e65] " disabled={loading}>
-          {activeSection !== "story" ? "Next" : loading ? <span className="loading loading-dots loading-xs text-neutral-700 dark:text-white"></span> : "Create Post"}
+        <button
+          type="submit"
+          className="btn rounded-lg w-full btn-primary dark:bg-[#385183] dark:hover:bg-[#2b3e65] "
+          disabled={loading}
+        >
+          {activeSection !== "story" ? (
+            "Next"
+          ) : loading ? (
+            <span className="loading loading-dots loading-xs text-neutral-700 dark:text-white"></span>
+          ) : (
+            "Create Post"
+          )}
         </button>
       </form>
     </div>
