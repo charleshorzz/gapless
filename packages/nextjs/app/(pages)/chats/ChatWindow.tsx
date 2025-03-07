@@ -1,14 +1,16 @@
 import Image from "next/image";
+import CustomSeparaor from "~~/app/CustomSeparaor";
+import BackButton from "./BackButton";
 import ChatBubble from "./ChatBubble";
 import ChatInput from "./ChatInput";
-import CustomCard from "~~/app/CustomCard";
-import CustomSeparaor from "~~/app/CustomSeparaor";
 
 const ChatWindow = () => {
   return (
-    <div className="h-fit min-h-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-3 shadow-sm flex flex-col">
+    // <div className="h-fit min-h-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-3 shadow-sm flex flex-col">
+    <>
       {/* Avatar at the top */}
-      <div className="flex gap-x-2">
+      <div className="flex gap-x-2 items-center">
+        <BackButton/>
         <div className="avatar">
           <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full">
             <Image
@@ -34,7 +36,7 @@ const ChatWindow = () => {
 
       {/* ChatInput at the bottom */}
       <ChatInput />
-    </div>
+      </>
   );
 };
 
