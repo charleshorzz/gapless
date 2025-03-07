@@ -567,7 +567,7 @@ const PostsPage = () => {
         )}
 
         {/* Submit Button */}
-        <button type="submit" className="btn rounded-lg w-full btn-primary dark:bg-[#374151] " disabled={loading}>
+        <button type="submit" className="btn rounded-lg w-full btn-primary dark:bg-[#385183] dark:hover:bg-[#2b3e65] " disabled={loading}>
           {activeSection !== "story" ? "Next" : loading ? <span className="loading loading-dots loading-xs text-neutral-700 dark:text-white"></span> : "Create Post"}
         </button>
       </form>

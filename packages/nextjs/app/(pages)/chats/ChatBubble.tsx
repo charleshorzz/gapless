@@ -63,7 +63,7 @@ const ChatBubble = () => {
             </div>
 
             {/* Main Message */}
-            <div className="chat-bubble">
+            <div className="chat-bubble bg-blue-500 dark:bg-gray-700 bg:text-neutral-300">
               {chat.message}
             </div>
           </div>
@@ -82,7 +82,7 @@ const ChatBubble = () => {
         />
         <button 
           onClick={handleSend}
-          className="px-4 py-2 bg-blue-500 dark:bg-[#385183] text-white rounded-xl hover:bg-blue-600 dark:hover:bg-[#4363a2]"
+          className="px-4 py-2 bg-blue-500 dark:bg-[#385183] text-white rounded-xl hover:bg-blue-600 dark:hover:bg-[#2b3e65]"
         >
           Send
         </button>
