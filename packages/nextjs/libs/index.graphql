@@ -1,11 +1,12 @@
 # Query
-query postCreateds($first: Int, $skip: Int, $orderBy: Int) {
-  postCreateds(first: $first, skip: $skip, orderBy: $orderBy) {
+query postCreateds($first: Int, $skip: Int) {
+  postCreateds(first: $first, skip: $skip) {
     id
     author
     postData
     owner
     blockNumber
     blockTimestamp
+    internal_id
   }
 }

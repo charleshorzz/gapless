@@ -893,7 +893,7 @@ export type PostCreatedsQueryVariables = Exact<{
 }>;
 
 
-export type PostCreatedsQuery = { __typename?: 'Query', postCreateds: Array<{ __typename?: 'PostCreated', id: any, author: any, postData: string, owner: any, blockNumber: any, blockTimestamp: any }> };
+export type PostCreatedsQuery = { __typename?: 'Query', postCreateds: Array<{ __typename?: 'PostCreated', id: any, author: any, postData: string, owner: any, blockNumber: any, blockTimestamp: any, internal_id: any }> };
 
 
 export const PostCreatedsDocument = gql`
@@ -905,6 +905,7 @@ export const PostCreatedsDocument = gql`
     owner
     blockNumber
     blockTimestamp
+    internal_id
   }
 }
     `;
