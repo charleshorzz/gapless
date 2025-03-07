@@ -15,7 +15,11 @@ import { useOpenStore } from "~~/app/store";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useNetworkColor } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
-import { useChatHistoryStoredsQuery, useGetChatHistorysQuery } from "~~/libs/generated/graphql";
+import {
+  useChatHistoryStoredsLazyQuery,
+  useChatHistoryStoredsQuery,
+  useGetChatHistorysQuery,
+} from "~~/libs/generated/graphql";
 import { getBlockExplorerAddressLink } from "~~/utils/scaffold-eth";
 
 const ChatsPage = () => {
@@ -46,14 +50,32 @@ const ChatsPage = () => {
 
   // ETH Pay logic start here
   const paymentETH = false;
-
-  //query from router params, check getchatRequests, pass in owner address and user address, if found, setchatfound to true
-  // setchatfound to true, show paymentETH component
-
   //Function
   const postId = searchParams.get("postId");
   const postOwnerAddress = searchParams.get("postOwnerAddress");
   const chatPrice = searchParams.get("chatPrice");
+
+  const [chatHistoryStoreds, { loading }] = useChatHistoryStoredsLazyQuery({
+    variables: {
+      where: {
+        receiver: postOwnerAddress,
+        sender: userWalletAddress,
+      },
+    },
+    onCompleted: data => {
+      if (data.chatHistoryStoreds.length > 0) {
+        setChatFound(true);
+      }
+    },
+  });
+
+  //query from router params, check getchatRequests, pass in owner address and user address, if found, setchatfound to true
+  // setchatfound to true, show paymentETH component
+  useEffect(() => {
+    if (postOwnerAddress && userWalletAddress) {
+      chatHistoryStoreds();
+    }
+  }, [postOwnerAddress, userWalletAddress]);
 
   //Fetch chat history of user
   const { data } = useGetChatHistorysQuery({
