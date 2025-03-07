@@ -60,6 +60,7 @@
     "@tabler/icons-react": "^3.31.0",
     "axios": "^1.8.1",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
     "motion": "^12.4.10",
     "next-pwa": "^5.6.0",
     "openai": "^4.86.2",

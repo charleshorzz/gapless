@@ -8,34 +8,28 @@ dataSources:
     name: PostContract
     network: scroll-sepolia
     source:
-      address: "0x3b0caE5712FdCBC3B4E61E90470633190d298700"
+      address: "0x91F85824E727d7561eac0DC31DBdDCd22c392098"
       abi: PostContract
-      startBlock: 8411111
+      startBlock: 8426061
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
       language: wasm/assemblyscript
       entities:
-        - ChatAccepted
-        - ChatRejected
+        - ChatHistoryStored
         - ChatRequested
         - OwnershipTransferred
         - PostCreated
-        - Tipped
       abis:
         - name: PostContract
           file: ./abis/PostContract.json
       eventHandlers:
-        - event: ChatAccepted(uint256,address)
-          handler: handleChatAccepted
-        - event: ChatRejected(uint256,address)
-          handler: handleChatRejected
-        - event: ChatRequested(uint256,address,uint256)
+        - event: ChatHistoryStored(address,address,string)
+          handler: handleChatHistoryStored
+        - event: ChatRequested(uint256,address,address,uint256)
           handler: handleChatRequested
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-        - event: PostCreated(uint256,address,string,indexed address,uint256)
+        - event: PostCreated(uint256,address,string,uint256,string,indexed address,uint256)
           handler: handlePostCreated
-        - event: Tipped(uint256,address,uint256)
-          handler: handleTipped
       file: ./src/post-contract.ts
