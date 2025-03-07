@@ -6,7 +6,6 @@ import ChatInput from "./ChatInput";
 
 const ChatWindow = () => {
   return (
-    // <div className="h-fit min-h-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-3 shadow-sm flex flex-col">
     <>
       {/* Avatar at the top */}
       <div className="flex gap-x-2 items-center">
@@ -29,13 +28,10 @@ const ChatWindow = () => {
       <CustomSeparaor />
 
       {/* Middle content that takes up remaining space */}
-      {/* Pending to solve: overflow-y-scroll */}
-      <div className=" flex-grow">
         <ChatBubble />
-      </div>
 
       {/* ChatInput at the bottom */}
-      <ChatInput />
+      {/* <ChatInput /> */}
       </>
   );
 };
