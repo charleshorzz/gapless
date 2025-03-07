@@ -21,7 +21,7 @@ export async function uploadFileToIPFS(file: File): Promise<string | null> {
   }
 }
 
-async function uploadChatHistoryToIPFS(chatHistory: object[]): Promise<string | null> {
+export async function uploadChatHistoryToIPFS(chatHistory: object[]): Promise<string | null> {
   try {
     const jsonBlob = new Blob([JSON.stringify(chatHistory)], { type: "application/json" });
     const file = new File([jsonBlob], "chatHistory.json");
@@ -46,7 +46,7 @@ export async function fetchDataFromIPFS(cid: string): Promise<any> {
     if (!response.ok) {
       throw new Error(`Failed to fetch: ${response.statusText}`);
     }
-    const data = await response.text(); // Use `.json()` if storing JSON data
+    const data = await response.json(); // Use `.json()` if storing JSON data
     console.log("Fetched from IPFS:", data);
     return data;
   } catch (error) {

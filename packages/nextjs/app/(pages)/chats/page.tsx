@@ -25,6 +25,7 @@ const ChatsPage = () => {
   const networkColor = useNetworkColor();
   const { targetNetwork } = useTargetNetwork();
   const [isChatFound, setChatFound] = useState(false);
+  const [foundChatMessage, setFoundChatMessage] = useState();
   const [chatHistory, setChatHistory] = useState([]);
   const { openChat } = useOpenStore();
   const searchParams = useSearchParams();
@@ -64,6 +65,7 @@ const ChatsPage = () => {
     onCompleted: data => {
       if (data.chatHistoryStoreds.length > 0) {
         setChatFound(true);
+        setFoundChatMessage(data.chatHistoryStoreds[0]);
       }
     },
   });
@@ -149,7 +151,7 @@ const ChatsPage = () => {
                   <div className="hidden lg:block lg:col-span-4">
                     {isChatFound ? (
                       <div className="h-fit min-h-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-3 shadow-sm flex flex-col">
-                        <ChatWindow />
+                        <ChatWindow chatMessage={foundChatMessage} />
                       </div>
                     ) : (
                       <PaymentEHT

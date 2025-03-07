@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useOpenStore } from "~~/app/store";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { fetchDataFromIPFS } from "~~/utils/pinata";
@@ -23,6 +23,7 @@ type ChatListsProps = {
 const ChatLists = ({ chatHistory }: ChatListsProps) => {
   const [query, setQuery] = useState("");
   const { toggleOpen } = useOpenStore();
+  const [messages, setMessages] = useState<Record<string, string>>({});
 
   //  Sort the Message by latest
   const getLatestMessages = (messages: ChatHistory[]): ChatHistory[] => {
@@ -46,6 +47,33 @@ const ChatLists = ({ chatHistory }: ChatListsProps) => {
   };
 
   const latestMessages = getLatestMessages(chatHistory);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const newMessages: Record<string, string> = {};
+
+      for (const message of latestMessages) {
+        if (!messages[message.ipfsHash]) {
+          try {
+            const fetchedMessage = await fetchDataFromIPFS(message.ipfsHash);
+            const extractedMessage =
+              typeof fetchedMessage === "object" && fetchedMessage !== null
+                ? (fetchedMessage.text ?? "No message yet")
+                : "Invalid data";
+
+            newMessages[message.ipfsHash] = extractedMessage;
+          } catch (error) {
+            console.error("Error fetching IPFS data:", error);
+            newMessages[message.ipfsHash] = "Error loading message";
+          }
+        }
+      }
+
+      setMessages(prev => ({ ...prev, ...newMessages }));
+    };
+
+    fetchMessages();
+  }, []);
 
   const filteredItems = useMemo(() => {
     return latestMessages.filter(latestMessage => {
@@ -86,8 +114,8 @@ const ChatLists = ({ chatHistory }: ChatListsProps) => {
             {filteredItems.map(list => {
               const otherUser =
                 list.receiver === "0x16bbc84ffacf9b172febf2d5b4e32e56a2c48b4ee578df53ad1a58bc1f02718d"
-                  ? list.receiver
-                  : list.sender;
+                  ? list.sender
+                  : list.receiver;
               return (
                 <div
                   className="rounded-lg dark:border-neutral-700 bg-white dark:bg-neutral-800 mb-1 hover:bg-gray-100 dark:hover:bg-neutral-700 cursor-pointer"
@@ -104,7 +132,7 @@ const ChatLists = ({ chatHistory }: ChatListsProps) => {
                       <div className="flex flex-col gap-y-0 w-full">
                         <div className="flex flex-row items-center justify-between m-0">
                           <p className="text-base lg:text-xl font-bold m-0">
-                            {otherUser.slice(0, 6) + "..." + otherUser.slice(-4)}
+                            {otherUser.slice(0, 3) + "..." + otherUser.slice(-4)}
                           </p>
                           <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400 m-0 text-right">
                             {!isNaN(Number(list.blockTimestamp)) &&
@@ -116,9 +144,7 @@ const ChatLists = ({ chatHistory }: ChatListsProps) => {
                           </p>
                         </div>
                         <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 m-0">
-                          {/* Problem Here */}
-                          {/* {fetchDataFromIPFS(list.ipfsHash)} */}
-                          hi
+                          {messages[list.ipfsHash] || "Hi"}
                         </p>
                       </div>
                     </div>
