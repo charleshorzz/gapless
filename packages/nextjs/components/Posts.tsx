@@ -2,186 +2,83 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-
-// const jobData: Job[] = [
-//   {
-//     role: "Senior QA Engineer",
-//     industry: "Fintech",
-//     location: "Kuala Lumpur",
-//     profile: "Male, Malay, 30",
-//     qualification: "Bachelor's degree",
-//     salary: "USD 115,000",
-//     address: "0xw...490",
-//   },
-//   {
-//     role: "Senior QA Engineer",
-//     industry: "Fintech",
-//     location: "Kuala Lumpur",
-//     profile: "Male, Malay, 30",
-//     qualification: "Bachelor's degree",
-//     salary: "USD 115,000",
-//     address: "0xw...490",
-//   },
-//   {
-//     role: "Senior QA Engineer",
-//     industry: "Fintech",
-//     location: "Kuala Lumpur",
-//     profile: "Male, Malay, 30",
-//     qualification: "Bachelor's degree",
-//     salary: "USD 115,000",
-//     address: "0xw...490",
-//   },
-//   {
-//     role: "Senior QA Engineer",
-//     industry: "Fintech",
-//     location: "Kuala Lumpur",
-//     profile: "Male, Malay, 30",
-//     qualification: "Bachelor's degree",
-//     salary: "USD 115,000",
-//     address: "0xw...490",
-//   },
-//   {
-//     role: "Senior QA Engineer",
-//     industry: "Fintech",
-//     location: "Kuala Lumpur",
-//     profile: "Male, Malay, 30",
-//     qualification: "Bachelor's degree",
-//     salary: "USD 115,000",
-//     address: "0xw...490",
-//   },
-//   {
-//     role: "Senior QA Engineer",
-//     industry: "Fintech",
-//     location: "Kuala Lumpur",
-//     profile: "Male, Malay, 30",
-//     qualification: "Bachelor's degree",
-//     salary: "USD 115,000",
-//     address: "0xw...490",
-//   },
-//   {
-//     role: "Senior QA Engineer",
-//     industry: "Fintech",
-//     location: "Kuala Lumpur",
-//     profile: "Male, Malay, 30",
-//     qualification: "Bachelor's degree",
-//     salary: "USD 115,000",
-//     address: "0xw...490",
-//   },
-//   {
-//     role: "Senior QA Engineer",
-//     industry: "Fintech",
-//     location: "Kuala Lumpur",
-//     profile: "Male, Malay, 30",
-//     qualification: "Bachelor's degree",
-//     salary: "USD 115,000",
-//     address: "0xw...490",
-//   },
-//   {
-//     role: "Senior QA Engineer",
-//     industry: "Fintech",
-//     location: "Kuala Lumpur",
-//     profile: "Male, Malay, 30",
-//     qualification: "Bachelor's degree",
-//     salary: "USD 115,000",
-//     address: "0xw...490",
-//   },
-// ];
-
-const postData: Post[] = [
-  {
-    address: "0xw...490",
-    content: "123",
-    images: [],
-  },
-  {
-    address: "0xw...491",
-    content: "123",
-    images: [],
-  },
-  {
-    address: "0xw...492",
-    content: "123",
-    images: [],
-  },
-  {
-    address: "0xw...493",
-    content: "123",
-    images: [],
-  },
-  {
-    address: "0xw...494",
-    content: "123",
-    images: [],
-  },
-  {
-    address: "0xw...495",
-    content: "123",
-    images: [],
-  },
-  {
-    address: "0xw...496",
-    content: "123",
-    images: [],
-  },
-  {
-    address: "0xw...497",
-    content: "123",
-    images: [],
-  },
-];
-
-interface Job {
-  images: string[];
-}
+import { BlockieAvatar } from "~~/components/scaffold-eth";
+import { usePostCreatedsQuery } from "~~/libs/generated/graphql";
+import { splitTextIntoChunks } from "~~/utils/scaffold-eth/textSplitter";
 
 interface Post {
-  address: string;
-  content: string;
-  images: string[];
+  id: string;
+  author: string;
+  postData: string;
 }
 
 interface JobListProps {
   searchTerm: string;
 }
 
-const JobCard = ({ post, postId }: { post: Post; postId: number }) => {
+const JobCard = ({ post }: { post: Post }) => {
   const router = useRouter();
-
-  const handleClick = () => {
-    router.push(`/posts/${postId}`);
-  };
+  const parsedData = post.postData ? JSON.parse(post.postData) : {};
+  const storyChunks = splitTextIntoChunks(parsedData.story || "");
+  const firstChunk = storyChunks[0] || "";
 
   return (
     <div
-      className="relative w-80 h-80 border rounded-lg shadow-lg p-4 flex flex-col items-center"
-      onClick={handleClick}
+      className="relative w-80 max-h-[310px] border rounded-lg shadow-lg p-4 flex flex-col cursor-pointer hover:shadow-xl transition-shadow"
+      onClick={() => router.push(`/posts/${post.id}`)}
     >
-      {/* <div className="absolute left-[-25px] top-1/2 -translate-y-1/2 rotate-[-90deg] text-sm font-bold">
-        QA Engineer
+      {/* Main Content */}
+      <div className="flex-1 overflow-hidden">
+        {Object.entries(parsedData).map(([key, value]) => {
+          if (key === "story") return null;
+
+          return (
+            <div key={key} className="mb-2">
+              <span className="font-semibold">{key}:</span>{" "}
+              <span className="whitespace-pre-wrap">{value as string}</span>
+            </div>
+          );
+        })}
+
+        {/* Story Preview */}
+        <div className="mb-2">
+          <span className="font-semibold">story:</span>{" "}
+          <div className="whitespace-pre-wrap line-clamp-4">
+            {firstChunk}
+            {storyChunks.length > 1 && <span className="text-blue-500 ml-2">[...]</span>}
+          </div>
+        </div>
       </div>
-      <div className="w-56 h-60 border p-2 text-sm">
-        <p>Role: {job.role}</p>
-        <p>Industry: {job.industry}</p>
-        <p>Location: {job.location}</p>
-        <p>Profile: {job.profile}</p>
-        <p>Qualification: {job.qualification}</p>
-        <p className="mt-2 font-semibold">{job.salary}</p>
-      </div>
-      <div className="flex-grow"></div>
+
+      {/* Author Footer */}
       <div className="w-full flex justify-between items-center mt-4 border-t pt-2">
-        <span className="text-lg">⬤</span>
-        <span className="text-sm font-mono">{job.address}</span>
-      </div> */}
-      <div>{post.images}</div>
+        <BlockieAvatar address={post.author} size={24} />
+        <span className="text-sm font-mono">{post.author.slice(0, 6) + "..." + post.author.slice(-4)}</span>
+      </div>
     </div>
   );
 };
 
 const JobList: React.FC<JobListProps> = ({ searchTerm }) => {
+  const { data, loading, error } = usePostCreatedsQuery({
+    variables: { first: 10 },
+    fetchPolicy: "network-only",
+  });
+
+  if (loading) return <div className="text-center p-4">Loading...</div>;
+  if (error) return <div className="text-red-500 p-4">Error: {error.message}</div>;
+
   return (
     <div className="grid grid-cols-2 lg:grid-cols-3 gap-10 px-20">
-      {postData.map((post, index) => (
-        <JobCard key={index} post={post} postId={index} />
+      {data?.postCreateds?.map(post => (
+        <JobCard
+          key={post.id}
+          post={{
+            ...post,
+            postData: post.postData || "{}",
+            id: post.id || "",
+          }}
+        />
       ))}
     </div>
   );
