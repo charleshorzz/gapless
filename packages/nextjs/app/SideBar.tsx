@@ -42,7 +42,9 @@ export function SideBar({ children }: { children: React.ReactNode }) {
       <Sidebar open={open} setOpen={setOpen} animate={false}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-            {open ? <Logo /> : <LogoIcon />}
+            <>
+              <Logo/>
+            </>
             <div className="mt-8 flex flex-col justify-center gap-8">
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
