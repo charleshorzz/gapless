@@ -25,7 +25,7 @@ const ChatsPage = () => {
   //Function
   const postId = "2";
   const postOwnerAddress = "0xb785058f9807b0cb7a67f7bb58d6a5234b7d6656";
-  const chatPrice = 10000000000000;
+  const chatPrice = 1000000000000;
   const userWalletAddress = "0xb785058f9807b0cb7a67f7bb58d6a5234b7d6656";
 
   //Fetch chat history of user

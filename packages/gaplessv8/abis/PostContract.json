@@ -197,6 +197,7 @@
     "outputs": [
       { "internalType": "uint256", "name": "id", "type": "uint256" },
       { "internalType": "address", "name": "owner", "type": "address" },
+      { "internalType": "address", "name": "author", "type": "address" },
       { "internalType": "string", "name": "postData", "type": "string" },
       { "internalType": "uint256", "name": "tipsReceived", "type": "uint256" },
       { "internalType": "uint256", "name": "chatPrice", "type": "uint256" },
@@ -219,7 +220,7 @@
     ],
     "name": "requestChat",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

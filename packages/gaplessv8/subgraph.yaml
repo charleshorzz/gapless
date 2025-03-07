@@ -8,9 +8,9 @@ dataSources:
     name: PostContract
     network: scroll-sepolia
     source:
-      address: "0x2AB57862646984c577aa8C89b3572b7A3aCfBC7a"
+      address: "0x6bDAE92bd7D525f37b054E9bAca94dc98d5C9D27"
       abi: PostContract
-      startBlock: 8425547
+      startBlock: 8425865
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9

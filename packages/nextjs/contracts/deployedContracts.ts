@@ -139,6 +139,11 @@ const deployedContracts = {
               internalType: "address",
             },
             {
+              name: "author",
+              type: "address",
+              internalType: "address",
+            },
+            {
               name: "postData",
               type: "string",
               internalType: "string",
@@ -184,7 +189,7 @@ const deployedContracts = {
             },
           ],
           outputs: [],
-          stateMutability: "payable",
+          stateMutability: "nonpayable",
         },
         {
           type: "function",
@@ -384,7 +389,7 @@ const deployedContracts = {
   },
   534351: {
     PostContract: {
-      address: "0x2ab57862646984c577aa8c89b3572b7a3acfbc7a",
+      address: "0x6bdae92bd7d525f37b054e9baca94dc98d5c9d27",
       abi: [
         {
           type: "constructor",
@@ -516,6 +521,11 @@ const deployedContracts = {
               internalType: "address",
             },
             {
+              name: "author",
+              type: "address",
+              internalType: "address",
+            },
+            {
               name: "postData",
               type: "string",
               internalType: "string",
@@ -561,7 +571,7 @@ const deployedContracts = {
             },
           ],
           outputs: [],
-          stateMutability: "payable",
+          stateMutability: "nonpayable",
         },
         {
           type: "function",
@@ -755,7 +765,7 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deploymentFile: "run-1741365580.json",
+      deploymentFile: "run-1741368215.json",
       deploymentScript: "DeployPostContract.sol",
     },
   },

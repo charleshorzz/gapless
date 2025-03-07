@@ -8,6 +8,7 @@ contract PostContract is Ownable {
     struct Post {
         uint256 id;
         address owner;
+        address author;
         string postData;
         uint256 tipsReceived;
         uint256 chatPrice;
@@ -41,33 +42,33 @@ contract PostContract is Ownable {
         token = IERC20(_token);
     }
 
-    function createPost(string memory _postData, uint256 _chatPrice, string memory _postComment) public {
-        postCount++;
-        posts[postCount] = Post(
-            postCount,
-            msg.sender,
-            _postData,
-            0,
-            _chatPrice,
-            _postComment, // Store initial comment IPFS hash
-            true
-        );
-        emit PostCreated(postCount, msg.sender, _postData, _chatPrice, _postComment, msg.sender, block.timestamp);
+   function createPost(string memory _postData, uint256 _chatPrice, string memory _postComment) public {
+    postCount++;
+    posts[postCount] = Post(
+        postCount,
+        msg.sender,
+        msg.sender, // Assign author here
+        _postData,
+        0,
+        _chatPrice,
+        _postComment,
+        true
+    );
+    emit PostCreated(postCount, msg.sender, _postData, _chatPrice, _postComment, msg.sender, block.timestamp);
     }
 
-    function requestChat(uint256 _postId) external payable {
-        Post storage post = posts[_postId];
-        require(msg.value >= post.chatPrice, "Insufficient ETH sent");
-        require(post.owner != msg.sender, "Cannot request chat with yourself");
-        require(!chatSessions[post.owner][msg.sender].paid, "Already paid");
+   function requestChat(uint256 _postId) external {
+    Post storage post = posts[_postId];
+    require(post.author != msg.sender, "Cannot request chat with yourself");
+    require(!chatSessions[post.author][msg.sender].paid, "Already paid");
 
-        token.transferFrom(msg.sender, post.owner, post.chatPrice);
+    // Transfer ERC-20 tokens instead of ETH
+    require(token.transferFrom(msg.sender, post.author, post.chatPrice), "Token transfer failed");
 
-        // Store chat sessions between only the post owner and the requester
-        chatSessions[post.owner][msg.sender].paid = true;
-        chatSessions[msg.sender][post.owner].paid = true;
+    chatSessions[post.author][msg.sender].paid = true;
+    chatSessions[msg.sender][post.author].paid = true;
 
-        emit ChatRequested(_postId, msg.sender, post.owner, post.chatPrice);
+    emit ChatRequested(_postId, msg.sender, post.author, post.chatPrice);
     }
 
     function storeChatHistory(address _receiver, string memory _ipfsHash) external {
