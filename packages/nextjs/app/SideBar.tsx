@@ -62,12 +62,12 @@ export function SideBar({ children }: { children: React.ReactNode }) {
 }
 export const Logo = () => {
   return (
-    <Link href="/" className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
-      <IconCurrencyEthereum className="text-neutral-700 dark:text-neutral-200 h-6 w-6 flex-shrink-0" />
+    <Link href="/" className="font-normal flex space-x-2 items-center text-xl text-black py-1 relative z-20">
+      <IconCurrencyEthereum className="text-neutral-700 dark:text-[#607ae3] h-6 w-6 flex-shrink-0" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="font-medium text-black dark:text-white whitespace-pre"
+        className=" text-black dark:text-[#607ae3] font-extrabold whitespace-pre"
       >
         Gapless
       </motion.span>
@@ -77,7 +77,7 @@ export const Logo = () => {
 export const LogoIcon = () => {
   return (
     <Link href="/" className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
-      <IconCurrencyEthereum className="text-neutral-700 dark:text-neutral-200 h-6 w-6 flex-shrink-0" />
+      <IconCurrencyEthereum className="text-neutral-700 dark:text-[#607ae3] h-6 w-6 flex-shrink-0" />
     </Link>
   );
 };

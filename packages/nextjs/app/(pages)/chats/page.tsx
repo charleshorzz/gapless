@@ -98,9 +98,10 @@ const ChatsPage = () => {
 
                     {mobileChatLogic &&
                       <div className="block lg:hidden col-span-6">
-                        <AnimatePresence>
+                        {/* Come animate effect error here */}
+                        {/* <AnimatePresence>
                           <motion.div
-                            initial={{ x: "60%", opacity: 0 }}
+                            initial={{ x: "20%", opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             exit={{ x: "-100%", opacity: 0 }}
                             transition={{
@@ -110,7 +111,10 @@ const ChatsPage = () => {
                             >
                               <ChatWindow />
                           </motion.div>
-                        </AnimatePresence>
+                        </AnimatePresence> */}
+                          <div className="h-fit min-h-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-3 shadow-sm flex flex-col">
+                            <ChatWindow/>
+                          </div>
                       </div>
                     }
                 </div>
