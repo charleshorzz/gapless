@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useAccount } from "wagmi";
+import CustomSeparaor from "~~/app/CustomSeparaor";
 import { Breadcumb } from "~~/components/ui/breadcumb";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { usePostCreatedsQuery } from "~~/libs/generated/graphql";
@@ -148,9 +149,10 @@ const PostsPage = () => {
   }, [watch]);
 
   return (
-    <div className=" mt-8  w-full">
+    <div className=" w-full">
       <Breadcumb setActiveSection={setActiveSection} />
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full max-w-md mx-auto mt-8">
+      <CustomSeparaor/>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full max-w-xl mx-auto mt-4">
         {activeSection === "personalDetails" && (
           <>
             <div className="mb-5">
@@ -210,7 +212,7 @@ const PostsPage = () => {
         )}
 
         {activeSection === "jobDetails" && (
-          <>
+          <div className="grid grid-flow-rows grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="mb-5">
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Job Title</label>
               <input
@@ -223,125 +225,141 @@ const PostsPage = () => {
               />
             </div>
 
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seniority</label>
-            <select
-              id="seniority"
-              {...register("seniority")}
-              defaultValue={"Seniority"}
-              className="bg-gray-50 border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              {SENIORITY_OPTIONS.map(seniority => (
-                <option key={seniority} value={seniority}>
-                  {seniority}
-                </option>
-              ))}
-            </select>
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seniority</label>
+              <select
+                id="seniority"
+                {...register("seniority")}
+                defaultValue={"Seniority"}
+                className="bg-gray-50 border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                {SENIORITY_OPTIONS.map(seniority => (
+                  <option key={seniority} value={seniority}>
+                    {seniority}
+                  </option>
+                ))}
+              </select>
+            </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white">Years of Experience</label>
-              <label className="block mb-2 text-xs font-medium text-gray-400 dark:text-white">
-                Relavant years of experience in your current field
-              </label>
-            </div>
-            <select
-              id="experience"
-              {...register("experience")}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              value={selectedExperience}
-              onChange={e => setSelectedExperience(e.target.value)}
-              required
-            >
-              {EXPERIENCE_OPTIONS.map(experience => (
-                <option key={experience} value={experience}>
-                  {experience}
-                </option>
-              ))}
-            </select>
-
-            {/* Show additional input if "More than 10 years" is selected */}
-            {selectedExperience === "More than 10 years" && (
-              <div className="mt-3">
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Enter your years of experience
+              <div>
+                <label className="block text-sm font-medium text-gray-900 dark:text-white">Years of Experience</label>
+                <label className="block mb-2 text-[11px] font-medium text-gray-400 dark:text-white">
+                  Relavant years of experience in your current field
                 </label>
-                <input
-                  type="number"
-                  {...register("exactExperience")}
-                  id="exactExperience"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Enter number of years"
-                  min="11"
-                  required
-                />
               </div>
-            )}
+              <select
+                id="experience"
+                {...register("experience")}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                value={selectedExperience}
+                onChange={e => setSelectedExperience(e.target.value)}
+                required
+              >
+                {EXPERIENCE_OPTIONS.map(experience => (
+                  <option key={experience} value={experience}>
+                    {experience}
+                  </option>
+                ))}
+              </select>
 
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Name</label>
-            <input
-              type="text"
-              id="companyName"
-              {...register("companyName")}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Eg. Asia Pacific University"
-              required
-            />
+            <div>
+              {/* Show additional input if "More than 10 years" is selected */}
+              {selectedExperience === "More than 10 years" && (
+                <div className="mt-3">
+                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Enter your years of experience
+                  </label>
+                  <input
+                    type="number"
+                    {...register("exactExperience")}
+                    id="exactExperience"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Enter number of years"
+                    min="11"
+                    required
+                  />
+                </div>
+              )}
+            </div>
+            </div>
 
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Type</label>
-            <select
-              id="companyType"
-              {...register("companyType")}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              required
-            >
-              {COMPANY_TYPE.map(x => (
-                <option key={x} value={x}>
-                  {x}
-                </option>
-              ))}
-            </select>
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Name</label>
+              <input
+                type="text"
+                id="companyName"
+                {...register("companyName")}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Eg. Asia Pacific University"
+                required
+              />
+            </div>
 
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Industry</label>
-            <select
-              id="industry"
-              {...register("industry")}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              required
-            >
-              {INDUSTRY_OPTIONS.map(x => (
-                <option key={x} value={x}>
-                  {x}
-                </option>
-              ))}
-            </select>
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Type</label>
+              <select
+                id="companyType"
+                {...register("companyType")}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required
+              >
+                {COMPANY_TYPE.map(x => (
+                  <option key={x} value={x}>
+                    {x}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employment Type</label>
-            <select
-              id="employmentType"
-              {...register("employmentType")}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              required
-            >
-              {EMPLOYMENT_TYPE.map(x => (
-                <option key={x} value={x}>
-                  {x}
-                </option>
-              ))}
-            </select>
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Industry</label>
+              <select
+                id="industry"
+                {...register("industry")}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required
+              >
+                {INDUSTRY_OPTIONS.map(x => (
+                  <option key={x} value={x}>
+                    {x}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Where do you stay?</label>
-            <select
-              id="location"
-              {...register("location")}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              required
-            >
-              {LOCATION_OPTIONS.map(x => (
-                <option key={x} value={x}>
-                  {x}
-                </option>
-              ))}
-            </select>
-          </>
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employment Type</label>
+              <select
+                id="employmentType"
+                {...register("employmentType")}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required
+              >
+                {EMPLOYMENT_TYPE.map(x => (
+                  <option key={x} value={x}>
+                    {x}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Where do you stay?</label>
+              <select
+                id="location"
+                {...register("location")}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required
+              >
+                {LOCATION_OPTIONS.map(x => (
+                  <option key={x} value={x}>
+                    {x}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         )}
 
         {activeSection === "salaryInfo" && (
