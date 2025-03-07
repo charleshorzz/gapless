@@ -9,7 +9,8 @@ import {
 
 export function createChatHistoryStoredEvent(
   postId: BigInt,
-  requester: Address,
+  sender: Address,
+  receiver: Address,
   ipfsHash: string
 ): ChatHistoryStored {
   let chatHistoryStoredEvent = changetype<ChatHistoryStored>(newMockEvent())
@@ -20,7 +21,10 @@ export function createChatHistoryStoredEvent(
     new ethereum.EventParam("postId", ethereum.Value.fromUnsignedBigInt(postId))
   )
   chatHistoryStoredEvent.parameters.push(
-    new ethereum.EventParam("requester", ethereum.Value.fromAddress(requester))
+    new ethereum.EventParam("sender", ethereum.Value.fromAddress(sender))
+  )
+  chatHistoryStoredEvent.parameters.push(
+    new ethereum.EventParam("receiver", ethereum.Value.fromAddress(receiver))
   )
   chatHistoryStoredEvent.parameters.push(
     new ethereum.EventParam("ipfsHash", ethereum.Value.fromString(ipfsHash))

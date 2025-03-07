@@ -8,9 +8,9 @@ dataSources:
     name: PostContract
     network: scroll-sepolia
     source:
-      address: "0x1302884cDAe98aF00aBc5c18684BE76f5d18E2a9"
+      address: "0x84515086dAa4D8cd317AA5AF4394846615b3CA63"
       abi: PostContract
-      startBlock: 8423261
+      startBlock: 8423770
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -24,7 +24,7 @@ dataSources:
         - name: PostContract
           file: ./abis/PostContract.json
       eventHandlers:
-        - event: ChatHistoryStored(uint256,address,string)
+        - event: ChatHistoryStored(uint256,address,address,string)
           handler: handleChatHistoryStored
         - event: ChatRequested(uint256,address,uint256)
           handler: handleChatRequested

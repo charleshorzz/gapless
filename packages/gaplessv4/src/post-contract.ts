@@ -16,7 +16,8 @@ export function handleChatHistoryStored(event: ChatHistoryStoredEvent): void {
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
   entity.postId = event.params.postId
-  entity.requester = event.params.requester
+  entity.sender = event.params.sender
+  entity.receiver = event.params.receiver
   entity.ipfsHash = event.params.ipfsHash
 
   entity.blockNumber = event.block.number

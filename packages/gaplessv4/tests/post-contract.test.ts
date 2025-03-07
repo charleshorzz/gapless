@@ -18,13 +18,17 @@ import { createChatHistoryStoredEvent } from "./post-contract-utils"
 describe("Describe entity assertions", () => {
   beforeAll(() => {
     let postId = BigInt.fromI32(234)
-    let requester = Address.fromString(
+    let sender = Address.fromString(
+      "0x0000000000000000000000000000000000000001"
+    )
+    let receiver = Address.fromString(
       "0x0000000000000000000000000000000000000001"
     )
     let ipfsHash = "Example string value"
     let newChatHistoryStoredEvent = createChatHistoryStoredEvent(
       postId,
-      requester,
+      sender,
+      receiver,
       ipfsHash
     )
     handleChatHistoryStored(newChatHistoryStoredEvent)
@@ -50,7 +54,13 @@ describe("Describe entity assertions", () => {
     assert.fieldEquals(
       "ChatHistoryStored",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "requester",
+      "sender",
+      "0x0000000000000000000000000000000000000001"
+    )
+    assert.fieldEquals(
+      "ChatHistoryStored",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "receiver",
       "0x0000000000000000000000000000000000000001"
     )
     assert.fieldEquals(

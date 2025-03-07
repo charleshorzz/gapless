@@ -22,46 +22,17 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "chatRequests",
-          inputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [
-            {
-              name: "requester",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "amount",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "accepted",
-              type: "bool",
-              internalType: "bool",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
           name: "chatSessions",
           inputs: [
             {
               name: "",
               type: "uint256",
               internalType: "uint256",
+            },
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
             },
             {
               name: "",
@@ -128,7 +99,7 @@ const deployedContracts = {
               internalType: "uint256",
             },
             {
-              name: "_user",
+              name: "_participant",
               type: "address",
               internalType: "address",
             },
@@ -221,25 +192,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "reputation",
-          inputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
           name: "requestChat",
           inputs: [
             {
@@ -259,6 +211,11 @@ const deployedContracts = {
               name: "_postId",
               type: "uint256",
               internalType: "uint256",
+            },
+            {
+              name: "_receiver",
+              type: "address",
+              internalType: "address",
             },
             {
               name: "_ipfsHash",
@@ -306,7 +263,13 @@ const deployedContracts = {
               internalType: "uint256",
             },
             {
-              name: "requester",
+              name: "sender",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+            {
+              name: "receiver",
               type: "address",
               indexed: false,
               internalType: "address",
@@ -437,7 +400,7 @@ const deployedContracts = {
   },
   534351: {
     PostContract: {
-      address: "0x1302884cdae98af00abc5c18684be76f5d18e2a9",
+      address: "0x84515086daa4d8cd317aa5af4394846615b3ca63",
       abi: [
         {
           type: "constructor",
@@ -452,46 +415,17 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "chatRequests",
-          inputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [
-            {
-              name: "requester",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "amount",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "accepted",
-              type: "bool",
-              internalType: "bool",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
           name: "chatSessions",
           inputs: [
             {
               name: "",
               type: "uint256",
               internalType: "uint256",
+            },
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
             },
             {
               name: "",
@@ -558,7 +492,7 @@ const deployedContracts = {
               internalType: "uint256",
             },
             {
-              name: "_user",
+              name: "_participant",
               type: "address",
               internalType: "address",
             },
@@ -651,25 +585,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "reputation",
-          inputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
           name: "requestChat",
           inputs: [
             {
@@ -689,6 +604,11 @@ const deployedContracts = {
               name: "_postId",
               type: "uint256",
               internalType: "uint256",
+            },
+            {
+              name: "_receiver",
+              type: "address",
+              internalType: "address",
             },
             {
               name: "_ipfsHash",
@@ -736,7 +656,13 @@ const deployedContracts = {
               internalType: "uint256",
             },
             {
-              name: "requester",
+              name: "sender",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+            {
+              name: "receiver",
               type: "address",
               indexed: false,
               internalType: "address",
@@ -861,7 +787,7 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deploymentFile: "run-1741350710.json",
+      deploymentFile: "run-1741354347.json",
       deploymentScript: "DeployPostContract.sol",
     },
   },

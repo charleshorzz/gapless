@@ -1,7 +1,8 @@
 type ChatHistoryStored @entity(immutable: true) {
   id: Bytes!
   postId: BigInt! # uint256
-  requester: Bytes! # address
+  sender: Bytes! # address
+  receiver: Bytes! # address
   ipfsHash: String! # string
   blockNumber: BigInt!
   blockTimestamp: BigInt!
