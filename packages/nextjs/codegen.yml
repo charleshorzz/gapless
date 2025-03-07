@@ -1,0 +1,13 @@
+overwrite: true
+schema: "https://api.studio.thegraph.com/query/105777/gapless/version/latest"
+documents: "libs/**/*.graphql"
+generates:
+  libs/generated/graphql.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      withHooks: true
+      withComponent: false
+      withHOC: false

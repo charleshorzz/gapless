@@ -11,6 +11,7 @@ const selectedContractStorageKey = "scaffoldEth2.selectedContract";
 
 export function DebugContracts() {
   const contractsData = useAllContracts();
+
   const contractNames = useMemo(
     () =>
       Object.keys(contractsData).sort((a, b) => {
