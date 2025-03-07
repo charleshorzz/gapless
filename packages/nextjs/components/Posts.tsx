@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useInView } from "react-intersection-observer";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { usePostCreatedsQuery } from "~~/libs/generated/graphql";
 import { splitTextIntoChunks } from "~~/utils/scaffold-eth/textSplitter";
@@ -21,63 +20,6 @@ interface JobListProps {
 const JobCard = ({ post }: { post: Post }) => {
   const router = useRouter();
   const parsedData = post.postData ? JSON.parse(post.postData) : {};
-<<<<<<< HEAD
-
-  // Only show these fields
-  const visibleFields = {
-    jobTitle: parsedData.jobTitle || "Untitled Position",
-    experience: parsedData.experience,
-    education: parsedData.education,
-    seniority: parsedData.seniority,
-    salary: parsedData.baseSalary ? `RM ${parsedData.baseSalary}` : "Not disclosed",
-    industry: parsedData.industry,
-    companyType: parsedData.companyType,
-  };
-
-  return (
-    <div
-      className="relative w-80 h-96 border border-gray-200 rounded-xl bg-white p-6 flex flex-col cursor-pointer hover:shadow-lg transition-all"
-      onClick={() => router.push(`/posts/${post.id}`)}
-    >
-      {/* Job Title */}
-      <h3 className="text-xl font-bold text-gray-900 mb-4 line-clamp-2">{visibleFields.jobTitle}</h3>
-
-      {/* Key Details Grid */}
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="space-y-1">
-          <DetailItem label="Experience" value={visibleFields.experience} />
-          <DetailItem label="Education" value={visibleFields.education} />
-          <DetailItem label="Seniority" value={visibleFields.seniority} />
-        </div>
-        <div className="space-y-1">
-          <div className="bg-blue-50 p-3 rounded-lg">
-            <span className="text-sm font-semibold text-blue-700 block">Monthly Salary</span>
-            <span className="text-lg font-bold text-blue-900">{visibleFields.salary}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Industry & Company Type */}
-      <div className="mt-auto space-y-3">
-        <div className="flex flex-wrap gap-2">
-          {visibleFields.industry && (
-            <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">{visibleFields.industry}</span>
-          )}
-          {visibleFields.companyType && (
-            <span className="px-3 py-1 bg-purple-100 text-purple-800 text-sm rounded-full">
-              {visibleFields.companyType}
-            </span>
-          )}
-        </div>
-
-        {/* Author Footer */}
-        <div className="w-full flex items-center gap-2 pt-4 border-t border-gray-100">
-          <BlockieAvatar address={post.author} size={24} />
-          <span className="text-sm text-gray-600 font-medium">
-            {post.author.slice(0, 6)}...{post.author.slice(-4)}
-          </span>
-        </div>
-=======
   const storyChunks = splitTextIntoChunks(parsedData.story || "");
   const firstChunk = storyChunks[0] || "";
 
@@ -107,7 +49,6 @@ const JobCard = ({ post }: { post: Post }) => {
       <div className="w-full flex justify-between items-center mt-4 border-t pt-2">
         <BlockieAvatar address={post.author} size={24} />
         <span className="text-sm font-mono">{post.author.slice(0, 6) + "..." + post.author.slice(-4)}</span>
->>>>>>> 80de8e14e6020f74557fbb5d2b027c788dc580bb
       </div>
     </div>
   );
@@ -123,16 +64,7 @@ const DetailItem = ({ label, value }: { label: string; value?: string }) => (
 
 const JobList: React.FC<JobListProps> = ({ searchTerm }) => {
   const { data, loading, error, fetchMore } = usePostCreatedsQuery({
-<<<<<<< HEAD
     variables: {},
-=======
-    variables: {
-      orderBy: "blockTimestamp",
-      page: 1,
-      perPage: 6,
-      search: searchTerm,
-    },
->>>>>>> 80de8e14e6020f74557fbb5d2b027c788dc580bb
     fetchPolicy: "network-only",
   });
 
