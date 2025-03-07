@@ -15,7 +15,6 @@ export function handleChatHistoryStored(event: ChatHistoryStoredEvent): void {
   let entity = new ChatHistoryStored(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
-  entity.postId = event.params.postId
   entity.sender = event.params.sender
   entity.receiver = event.params.receiver
   entity.ipfsHash = event.params.ipfsHash
@@ -33,6 +32,7 @@ export function handleChatRequested(event: ChatRequestedEvent): void {
   )
   entity.postId = event.params.postId
   entity.requester = event.params.requester
+  entity.receiver = event.params.receiver
   entity.amount = event.params.amount
 
   entity.blockNumber = event.block.number
@@ -66,6 +66,7 @@ export function handlePostCreated(event: PostCreatedEvent): void {
   entity.owner = event.params.owner
   entity.postData = event.params.postData
   entity.chatPrice = event.params.chatPrice
+  entity.postComment = event.params.postComment
   entity.author = event.params.author
   entity.timestamp = event.params.timestamp
 

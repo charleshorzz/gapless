@@ -37,20 +37,22 @@ export type Block_Height = {
   number_gte?: InputMaybe<Scalars['Int']['input']>;
 };
 
-export type ChatAccepted = {
-  __typename?: 'ChatAccepted';
+export type ChatHistoryStored = {
+  __typename?: 'ChatHistoryStored';
   blockNumber: Scalars['BigInt']['output'];
   blockTimestamp: Scalars['BigInt']['output'];
   id: Scalars['Bytes']['output'];
+  ipfsHash: Scalars['String']['output'];
   postId: Scalars['BigInt']['output'];
-  requester: Scalars['Bytes']['output'];
+  receiver: Scalars['Bytes']['output'];
+  sender: Scalars['Bytes']['output'];
   transactionHash: Scalars['Bytes']['output'];
 };
 
-export type ChatAccepted_Filter = {
+export type ChatHistoryStored_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<ChatAccepted_Filter>>>;
+  and?: InputMaybe<Array<InputMaybe<ChatHistoryStored_Filter>>>;
   blockNumber?: InputMaybe<Scalars['BigInt']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['BigInt']['input']>;
   blockNumber_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -77,7 +79,27 @@ export type ChatAccepted_Filter = {
   id_not?: InputMaybe<Scalars['Bytes']['input']>;
   id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
   id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  or?: InputMaybe<Array<InputMaybe<ChatAccepted_Filter>>>;
+  ipfsHash?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_contains?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_gt?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_gte?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ipfsHash_lt?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_lte?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_not?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ipfsHash_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsHash_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  or?: InputMaybe<Array<InputMaybe<ChatHistoryStored_Filter>>>;
   postId?: InputMaybe<Scalars['BigInt']['input']>;
   postId_gt?: InputMaybe<Scalars['BigInt']['input']>;
   postId_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -86,16 +108,26 @@ export type ChatAccepted_Filter = {
   postId_lte?: InputMaybe<Scalars['BigInt']['input']>;
   postId_not?: InputMaybe<Scalars['BigInt']['input']>;
   postId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  requester?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  requester_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_not?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  receiver?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  receiver_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_not?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  receiver_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  sender?: InputMaybe<Scalars['Bytes']['input']>;
+  sender_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  sender_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  sender_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  sender_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  sender_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  sender_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  sender_not?: InputMaybe<Scalars['Bytes']['input']>;
+  sender_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  sender_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
   transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
   transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -108,92 +140,14 @@ export type ChatAccepted_Filter = {
   transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
 };
 
-export enum ChatAccepted_OrderBy {
+export enum ChatHistoryStored_OrderBy {
   BlockNumber = 'blockNumber',
   BlockTimestamp = 'blockTimestamp',
   Id = 'id',
+  IpfsHash = 'ipfsHash',
   PostId = 'postId',
-  Requester = 'requester',
-  TransactionHash = 'transactionHash'
-}
-
-export type ChatRejected = {
-  __typename?: 'ChatRejected';
-  blockNumber: Scalars['BigInt']['output'];
-  blockTimestamp: Scalars['BigInt']['output'];
-  id: Scalars['Bytes']['output'];
-  postId: Scalars['BigInt']['output'];
-  requester: Scalars['Bytes']['output'];
-  transactionHash: Scalars['Bytes']['output'];
-};
-
-export type ChatRejected_Filter = {
-  /** Filter for the block changed event. */
-  _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<ChatRejected_Filter>>>;
-  blockNumber?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockNumber_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_not?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id?: InputMaybe<Scalars['Bytes']['input']>;
-  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  or?: InputMaybe<Array<InputMaybe<ChatRejected_Filter>>>;
-  postId?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  postId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_not?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  requester?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  requester_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_not?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  requester_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-};
-
-export enum ChatRejected_OrderBy {
-  BlockNumber = 'blockNumber',
-  BlockTimestamp = 'blockTimestamp',
-  Id = 'id',
-  PostId = 'postId',
-  Requester = 'requester',
+  Receiver = 'receiver',
+  Sender = 'sender',
   TransactionHash = 'transactionHash'
 }
 
@@ -380,6 +334,7 @@ export type PostCreated = {
   author: Scalars['Bytes']['output'];
   blockNumber: Scalars['BigInt']['output'];
   blockTimestamp: Scalars['BigInt']['output'];
+  chatPrice: Scalars['BigInt']['output'];
   id: Scalars['Bytes']['output'];
   internal_id: Scalars['BigInt']['output'];
   owner: Scalars['Bytes']['output'];
@@ -418,6 +373,14 @@ export type PostCreated_Filter = {
   blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
   blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  chatPrice?: InputMaybe<Scalars['BigInt']['input']>;
+  chatPrice_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  chatPrice_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  chatPrice_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  chatPrice_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  chatPrice_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  chatPrice_not?: InputMaybe<Scalars['BigInt']['input']>;
+  chatPrice_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   id?: InputMaybe<Scalars['Bytes']['input']>;
   id_contains?: InputMaybe<Scalars['Bytes']['input']>;
   id_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -491,6 +454,7 @@ export enum PostCreated_OrderBy {
   Author = 'author',
   BlockNumber = 'blockNumber',
   BlockTimestamp = 'blockTimestamp',
+  ChatPrice = 'chatPrice',
   Id = 'id',
   InternalId = 'internal_id',
   Owner = 'owner',
@@ -503,18 +467,14 @@ export type Query = {
   __typename?: 'Query';
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
-  chatAccepted?: Maybe<ChatAccepted>;
-  chatAccepteds: Array<ChatAccepted>;
-  chatRejected?: Maybe<ChatRejected>;
-  chatRejecteds: Array<ChatRejected>;
+  chatHistoryStored?: Maybe<ChatHistoryStored>;
+  chatHistoryStoreds: Array<ChatHistoryStored>;
   chatRequested?: Maybe<ChatRequested>;
   chatRequesteds: Array<ChatRequested>;
   ownershipTransferred?: Maybe<OwnershipTransferred>;
   ownershipTransferreds: Array<OwnershipTransferred>;
   postCreated?: Maybe<PostCreated>;
   postCreateds: Array<PostCreated>;
-  tipped?: Maybe<Tipped>;
-  tippeds: Array<Tipped>;
 };
 
 
@@ -523,39 +483,21 @@ export type Query_MetaArgs = {
 };
 
 
-export type QueryChatAcceptedArgs = {
+export type QueryChatHistoryStoredArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type QueryChatAcceptedsArgs = {
+export type QueryChatHistoryStoredsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<ChatAccepted_OrderBy>;
+  orderBy?: InputMaybe<ChatHistoryStored_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<ChatAccepted_Filter>;
-};
-
-
-export type QueryChatRejectedArgs = {
-  block?: InputMaybe<Block_Height>;
-  id: Scalars['ID']['input'];
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryChatRejectedsArgs = {
-  block?: InputMaybe<Block_Height>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<ChatRejected_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<ChatRejected_Filter>;
+  where?: InputMaybe<ChatHistoryStored_Filter>;
 };
 
 
@@ -612,40 +554,18 @@ export type QueryPostCreatedsArgs = {
   where?: InputMaybe<PostCreated_Filter>;
 };
 
-
-export type QueryTippedArgs = {
-  block?: InputMaybe<Block_Height>;
-  id: Scalars['ID']['input'];
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryTippedsArgs = {
-  block?: InputMaybe<Block_Height>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Tipped_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<Tipped_Filter>;
-};
-
 export type Subscription = {
   __typename?: 'Subscription';
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
-  chatAccepted?: Maybe<ChatAccepted>;
-  chatAccepteds: Array<ChatAccepted>;
-  chatRejected?: Maybe<ChatRejected>;
-  chatRejecteds: Array<ChatRejected>;
+  chatHistoryStored?: Maybe<ChatHistoryStored>;
+  chatHistoryStoreds: Array<ChatHistoryStored>;
   chatRequested?: Maybe<ChatRequested>;
   chatRequesteds: Array<ChatRequested>;
   ownershipTransferred?: Maybe<OwnershipTransferred>;
   ownershipTransferreds: Array<OwnershipTransferred>;
   postCreated?: Maybe<PostCreated>;
   postCreateds: Array<PostCreated>;
-  tipped?: Maybe<Tipped>;
-  tippeds: Array<Tipped>;
 };
 
 
@@ -654,39 +574,21 @@ export type Subscription_MetaArgs = {
 };
 
 
-export type SubscriptionChatAcceptedArgs = {
+export type SubscriptionChatHistoryStoredArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionChatAcceptedsArgs = {
+export type SubscriptionChatHistoryStoredsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<ChatAccepted_OrderBy>;
+  orderBy?: InputMaybe<ChatHistoryStored_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<ChatAccepted_Filter>;
-};
-
-
-export type SubscriptionChatRejectedArgs = {
-  block?: InputMaybe<Block_Height>;
-  id: Scalars['ID']['input'];
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionChatRejectedsArgs = {
-  block?: InputMaybe<Block_Height>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<ChatRejected_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<ChatRejected_Filter>;
+  where?: InputMaybe<ChatHistoryStored_Filter>;
 };
 
 
@@ -743,114 +645,6 @@ export type SubscriptionPostCreatedsArgs = {
   where?: InputMaybe<PostCreated_Filter>;
 };
 
-
-export type SubscriptionTippedArgs = {
-  block?: InputMaybe<Block_Height>;
-  id: Scalars['ID']['input'];
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionTippedsArgs = {
-  block?: InputMaybe<Block_Height>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Tipped_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<Tipped_Filter>;
-};
-
-export type Tipped = {
-  __typename?: 'Tipped';
-  amount: Scalars['BigInt']['output'];
-  blockNumber: Scalars['BigInt']['output'];
-  blockTimestamp: Scalars['BigInt']['output'];
-  id: Scalars['Bytes']['output'];
-  postId: Scalars['BigInt']['output'];
-  sender: Scalars['Bytes']['output'];
-  transactionHash: Scalars['Bytes']['output'];
-};
-
-export type Tipped_Filter = {
-  /** Filter for the block changed event. */
-  _change_block?: InputMaybe<BlockChangedFilter>;
-  amount?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  and?: InputMaybe<Array<InputMaybe<Tipped_Filter>>>;
-  blockNumber?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockNumber_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_not?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id?: InputMaybe<Scalars['Bytes']['input']>;
-  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  or?: InputMaybe<Array<InputMaybe<Tipped_Filter>>>;
-  postId?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  postId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_not?: InputMaybe<Scalars['BigInt']['input']>;
-  postId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  sender?: InputMaybe<Scalars['Bytes']['input']>;
-  sender_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  sender_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  sender_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  sender_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  sender_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  sender_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  sender_not?: InputMaybe<Scalars['Bytes']['input']>;
-  sender_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  sender_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-};
-
-export enum Tipped_OrderBy {
-  Amount = 'amount',
-  BlockNumber = 'blockNumber',
-  BlockTimestamp = 'blockTimestamp',
-  Id = 'id',
-  PostId = 'postId',
-  Sender = 'sender',
-  TransactionHash = 'transactionHash'
-}
-
 export type _Block_ = {
   __typename?: '_Block_';
   /** The hash of the block */
@@ -894,6 +688,31 @@ export type PostCreatedsQueryVariables = Exact<{
 
 
 export type PostCreatedsQuery = { __typename?: 'Query', postCreateds: Array<{ __typename?: 'PostCreated', id: any, author: any, postData: string, owner: any, blockNumber: any, blockTimestamp: any }> };
+
+export type ChatRequestedsQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type ChatRequestedsQuery = { __typename?: 'Query', chatRequesteds: Array<{ __typename?: 'ChatRequested', id: any, amount: any, postId: any, requester: any }> };
+
+export type ChatHistoryStoredsQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type ChatHistoryStoredsQuery = { __typename?: 'Query', chatHistoryStoreds: Array<{ __typename?: 'ChatHistoryStored', id: any, blockNumber: any, blockTimestamp: any, ipfsHash: string, receiver: any, sender: any }> };
+
+export type GetChatHistorysQueryVariables = Exact<{
+  walletAddress: Scalars['Bytes']['input'];
+  first?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetChatHistorysQuery = { __typename?: 'Query', chatHistoryStoreds: Array<{ __typename?: 'ChatHistoryStored', id: any, postId: any, sender: any, receiver: any, ipfsHash: string, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
 
 
 export const PostCreatedsDocument = gql`
@@ -942,3 +761,146 @@ export type PostCreatedsQueryHookResult = ReturnType<typeof usePostCreatedsQuery
 export type PostCreatedsLazyQueryHookResult = ReturnType<typeof usePostCreatedsLazyQuery>;
 export type PostCreatedsSuspenseQueryHookResult = ReturnType<typeof usePostCreatedsSuspenseQuery>;
 export type PostCreatedsQueryResult = Apollo.QueryResult<PostCreatedsQuery, PostCreatedsQueryVariables>;
+export const ChatRequestedsDocument = gql`
+    query chatRequesteds($first: Int, $skip: Int) {
+  chatRequesteds(first: $first, skip: $skip) {
+    id
+    amount
+    postId
+    requester
+  }
+}
+    `;
+
+/**
+ * __useChatRequestedsQuery__
+ *
+ * To run a query within a React component, call `useChatRequestedsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChatRequestedsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChatRequestedsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
+ *   },
+ * });
+ */
+export function useChatRequestedsQuery(baseOptions?: Apollo.QueryHookOptions<ChatRequestedsQuery, ChatRequestedsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ChatRequestedsQuery, ChatRequestedsQueryVariables>(ChatRequestedsDocument, options);
+      }
+export function useChatRequestedsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ChatRequestedsQuery, ChatRequestedsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ChatRequestedsQuery, ChatRequestedsQueryVariables>(ChatRequestedsDocument, options);
+        }
+export function useChatRequestedsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ChatRequestedsQuery, ChatRequestedsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ChatRequestedsQuery, ChatRequestedsQueryVariables>(ChatRequestedsDocument, options);
+        }
+export type ChatRequestedsQueryHookResult = ReturnType<typeof useChatRequestedsQuery>;
+export type ChatRequestedsLazyQueryHookResult = ReturnType<typeof useChatRequestedsLazyQuery>;
+export type ChatRequestedsSuspenseQueryHookResult = ReturnType<typeof useChatRequestedsSuspenseQuery>;
+export type ChatRequestedsQueryResult = Apollo.QueryResult<ChatRequestedsQuery, ChatRequestedsQueryVariables>;
+export const ChatHistoryStoredsDocument = gql`
+    query chatHistoryStoreds($first: Int, $skip: Int) {
+  chatHistoryStoreds(first: $first, skip: $skip) {
+    id
+    blockNumber
+    blockTimestamp
+    ipfsHash
+    receiver
+    sender
+  }
+}
+    `;
+
+/**
+ * __useChatHistoryStoredsQuery__
+ *
+ * To run a query within a React component, call `useChatHistoryStoredsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChatHistoryStoredsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChatHistoryStoredsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
+ *   },
+ * });
+ */
+export function useChatHistoryStoredsQuery(baseOptions?: Apollo.QueryHookOptions<ChatHistoryStoredsQuery, ChatHistoryStoredsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ChatHistoryStoredsQuery, ChatHistoryStoredsQueryVariables>(ChatHistoryStoredsDocument, options);
+      }
+export function useChatHistoryStoredsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ChatHistoryStoredsQuery, ChatHistoryStoredsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ChatHistoryStoredsQuery, ChatHistoryStoredsQueryVariables>(ChatHistoryStoredsDocument, options);
+        }
+export function useChatHistoryStoredsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ChatHistoryStoredsQuery, ChatHistoryStoredsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ChatHistoryStoredsQuery, ChatHistoryStoredsQueryVariables>(ChatHistoryStoredsDocument, options);
+        }
+export type ChatHistoryStoredsQueryHookResult = ReturnType<typeof useChatHistoryStoredsQuery>;
+export type ChatHistoryStoredsLazyQueryHookResult = ReturnType<typeof useChatHistoryStoredsLazyQuery>;
+export type ChatHistoryStoredsSuspenseQueryHookResult = ReturnType<typeof useChatHistoryStoredsSuspenseQuery>;
+export type ChatHistoryStoredsQueryResult = Apollo.QueryResult<ChatHistoryStoredsQuery, ChatHistoryStoredsQueryVariables>;
+export const GetChatHistorysDocument = gql`
+    query getChatHistorys($walletAddress: Bytes!, $first: Int, $skip: Int) {
+  chatHistoryStoreds(
+    first: $first
+    skip: $skip
+    where: {or: [{sender: $walletAddress}, {receiver: $walletAddress}]}
+  ) {
+    id
+    postId
+    sender
+    receiver
+    ipfsHash
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}
+    `;
+
+/**
+ * __useGetChatHistorysQuery__
+ *
+ * To run a query within a React component, call `useGetChatHistorysQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetChatHistorysQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetChatHistorysQuery({
+ *   variables: {
+ *      walletAddress: // value for 'walletAddress'
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
+ *   },
+ * });
+ */
+export function useGetChatHistorysQuery(baseOptions: Apollo.QueryHookOptions<GetChatHistorysQuery, GetChatHistorysQueryVariables> & ({ variables: GetChatHistorysQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetChatHistorysQuery, GetChatHistorysQueryVariables>(GetChatHistorysDocument, options);
+      }
+export function useGetChatHistorysLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetChatHistorysQuery, GetChatHistorysQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetChatHistorysQuery, GetChatHistorysQueryVariables>(GetChatHistorysDocument, options);
+        }
+export function useGetChatHistorysSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetChatHistorysQuery, GetChatHistorysQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetChatHistorysQuery, GetChatHistorysQueryVariables>(GetChatHistorysDocument, options);
+        }
+export type GetChatHistorysQueryHookResult = ReturnType<typeof useGetChatHistorysQuery>;
+export type GetChatHistorysLazyQueryHookResult = ReturnType<typeof useGetChatHistorysLazyQuery>;
+export type GetChatHistorysSuspenseQueryHookResult = ReturnType<typeof useGetChatHistorysSuspenseQuery>;
+export type GetChatHistorysQueryResult = Apollo.QueryResult<GetChatHistorysQuery, GetChatHistorysQueryVariables>;

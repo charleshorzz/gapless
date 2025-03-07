@@ -1,14 +1,48 @@
 import React from "react";
+import { formatEther, parseEther } from "viem";
+import { erc20Abi } from "viem";
+import { useContractWrite } from "wagmi";
 import CustomCard from "~~/app/CustomCard";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
-const PaymentEHT = () => {
+const PaymentEHT = ({
+  postId,
+  chatPrice,
+  postOwnerAddress,
+}: {
+  postId: bigint;
+  chatPrice: bigint;
+  postOwnerAddress: string;
+}) => {
   // Receive of Pay
   const pay = true;
+  const newChatPrice = formatEther(chatPrice);
+  const { writeContractAsync: writePostContractAsync } = useScaffoldWriteContract({
+    contractName: "PostContract",
+  });
+
+  //Call Smart Contract
+  const handleSubmit = async () => {
+    // Call Smart Contract
+    console.log("Sample Smart Contract Call");
+
+    try {
+      await writePostContractAsync({
+        functionName: "requestChat",
+        args: [postId],
+        value: parseEther(newChatPrice.toString()),
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   if (pay)
     return (
       <div className="h-fit min-h-full rounded-lg border border-neutral-200 dark:border-neutral-700 p-3 shadow-sm flex flex-col items-center justify-center bg-gradient-to-r from-blue-50 to-purple-50 dark:from-neutral-700 dark:to-neutral-800">
-        <button className="btn btn-outline btn-warning rounded-md w-[100px] mb-3">0.001</button>
+        <button onClick={handleSubmit} className="btn btn-outline btn-warning rounded-md w-fit mb-3">
+          Pay {newChatPrice} ETH
+        </button>
         <h1 className="text-sm text-neutral-600 dark:text-neutral-400">to start the conversation</h1>
       </div>
     );

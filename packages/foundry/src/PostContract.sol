@@ -8,16 +8,11 @@ contract PostContract is Ownable {
     struct Post {
         uint256 id;
         address owner;
-        string postData; // Store all data in JSON format
+        string postData;
         uint256 tipsReceived;
         uint256 chatPrice;
+        string postComment; // IPFS hash for comments
         bool active;
-    }
-
-    struct PostInput {
-        address owner;
-        string postData; // JSON string containing all post details
-        uint256 chatPrice;
     }
 
     struct ChatSession {
@@ -25,66 +20,73 @@ contract PostContract is Ownable {
         string ipfsHash;
     }
 
-    IERC20 public token; // ERC20 token for tipping (optional)
+    IERC20 public token;
     uint256 public postCount;
-    
     mapping(uint256 => Post) public posts;
-    mapping(uint256 => mapping(address => mapping(address => ChatSession))) public chatSessions; // PostID -> Sender -> Receiver -> ChatSession
+    mapping(address => mapping(address => ChatSession)) public chatSessions; // chatOwner -> chatReceiver -> ChatSession
 
-    event PostCreated(uint256 id, address owner, string postData, uint256 chatPrice, address indexed author, uint256 timestamp);
-    event ChatRequested(uint256 postId, address requester, uint256 amount);
-    event ChatHistoryStored(uint256 postId, address sender, address receiver, string ipfsHash);
+    event PostCreated(
+        uint256 id, 
+        address owner, 
+        string postData, 
+        uint256 chatPrice, 
+        string postComment, 
+        address indexed author, 
+        uint256 timestamp
+    );
+    event ChatRequested(uint256 postId, address requester, address receiver, uint256 amount);
+    event ChatHistoryStored(address sender, address receiver, string ipfsHash);
 
     constructor(address _token) Ownable(msg.sender) {
-        token = IERC20(_token); // Set ERC20 token for tipping (set `address(0)` for native ETH)
+        token = IERC20(_token);
     }
 
-    function createPost(PostInput memory postData, uint256 _chatPrice) public {
+    function createPost(string memory _postData, uint256 _chatPrice, string memory _postComment) public {
         postCount++;
         posts[postCount] = Post(
             postCount,
-            postData.owner,
-            postData.postData,
-            0,  // tipsReceived starts at 0
+            msg.sender,
+            _postData,
+            0,
             _chatPrice,
-            true // active post
+            _postComment, // Store initial comment IPFS hash
+            true
         );
-
-        emit PostCreated(postCount, postData.owner, postData.postData, _chatPrice, msg.sender, block.timestamp);
+        emit PostCreated(postCount, msg.sender, _postData, _chatPrice, _postComment, msg.sender, block.timestamp);
     }
 
     function requestChat(uint256 _postId) external {
         Post storage post = posts[_postId];
         require(post.active, "Post not active");
         require(post.owner != msg.sender, "Cannot request chat with yourself");
-        require(!chatSessions[_postId][msg.sender][post.owner].paid, "Already paid");
+        require(!chatSessions[post.owner][msg.sender].paid, "Already paid");
 
         token.transferFrom(msg.sender, post.owner, post.chatPrice);
-        chatSessions[_postId][msg.sender][post.owner].paid = true;
-        chatSessions[_postId][post.owner][msg.sender].paid = true; // Mark chat as paid for both
 
-        emit ChatRequested(_postId, msg.sender, post.chatPrice);
+        // Store chat sessions between only the post owner and the requester
+        chatSessions[post.owner][msg.sender].paid = true;
+        chatSessions[msg.sender][post.owner].paid = true;
+
+        emit ChatRequested(_postId, msg.sender, post.owner, post.chatPrice);
     }
 
-    function storeChatHistory(uint256 _postId, address _receiver, string memory _ipfsHash) external {
-        require(chatSessions[_postId][msg.sender][_receiver].paid, "Chat not paid for");
-        chatSessions[_postId][msg.sender][_receiver].ipfsHash = _ipfsHash;
-        chatSessions[_postId][_receiver][msg.sender].ipfsHash = _ipfsHash; // Store for both participants
+    function storeChatHistory(address _receiver, string memory _ipfsHash) external {
+        require(chatSessions[msg.sender][_receiver].paid, "Chat not paid for");
 
-        emit ChatHistoryStored(_postId, msg.sender, _receiver, _ipfsHash);
+        chatSessions[msg.sender][_receiver].ipfsHash = _ipfsHash;
+        chatSessions[_receiver][msg.sender].ipfsHash = _ipfsHash;
+
+        emit ChatHistoryStored(msg.sender, _receiver, _ipfsHash);
     }
 
-   function getChatHistory(uint256 _postId, address _participant) external view returns (string memory) {
+    function getChatHistory(address _participant) external view returns (string memory) {
         require(
-            chatSessions[_postId][msg.sender][_participant].paid || chatSessions[_postId][_participant][msg.sender].paid,
+            chatSessions[msg.sender][_participant].paid || chatSessions[_participant][msg.sender].paid,
             "No chat history found"
         );
-
-        // Ensure the function returns the correct chat history, regardless of who calls it
-        if (bytes(chatSessions[_postId][msg.sender][_participant].ipfsHash).length > 0) {
-            return chatSessions[_postId][msg.sender][_participant].ipfsHash;
-        } else {
-            return chatSessions[_postId][_participant][msg.sender].ipfsHash;
-        }
+        
+        return bytes(chatSessions[msg.sender][_participant].ipfsHash).length > 0 
+            ? chatSessions[msg.sender][_participant].ipfsHash 
+            : chatSessions[_participant][msg.sender].ipfsHash;
     }
 }

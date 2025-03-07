@@ -6,7 +6,7 @@ import {
   beforeAll,
   afterAll
 } from "matchstick-as/assembly/index"
-import { BigInt, Address } from "@graphprotocol/graph-ts"
+import { Address, BigInt } from "@graphprotocol/graph-ts"
 import { ChatHistoryStored } from "../generated/schema"
 import { ChatHistoryStored as ChatHistoryStoredEvent } from "../generated/PostContract/PostContract"
 import { handleChatHistoryStored } from "../src/post-contract"
@@ -17,7 +17,6 @@ import { createChatHistoryStoredEvent } from "./post-contract-utils"
 
 describe("Describe entity assertions", () => {
   beforeAll(() => {
-    let postId = BigInt.fromI32(234)
     let sender = Address.fromString(
       "0x0000000000000000000000000000000000000001"
     )
@@ -26,7 +25,6 @@ describe("Describe entity assertions", () => {
     )
     let ipfsHash = "Example string value"
     let newChatHistoryStoredEvent = createChatHistoryStoredEvent(
-      postId,
       sender,
       receiver,
       ipfsHash
@@ -45,12 +43,6 @@ describe("Describe entity assertions", () => {
     assert.entityCount("ChatHistoryStored", 1)
 
     // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
-    assert.fieldEquals(
-      "ChatHistoryStored",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "postId",
-      "234"
-    )
     assert.fieldEquals(
       "ChatHistoryStored",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",

@@ -26,11 +26,6 @@ const deployedContracts = {
           inputs: [
             {
               name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "",
               type: "address",
               internalType: "address",
             },
@@ -59,31 +54,19 @@ const deployedContracts = {
           name: "createPost",
           inputs: [
             {
-              name: "postData",
-              type: "tuple",
-              internalType: "struct PostContract.PostInput",
-              components: [
-                {
-                  name: "owner",
-                  type: "address",
-                  internalType: "address",
-                },
-                {
-                  name: "postData",
-                  type: "string",
-                  internalType: "string",
-                },
-                {
-                  name: "chatPrice",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-              ],
+              name: "_postData",
+              type: "string",
+              internalType: "string",
             },
             {
               name: "_chatPrice",
               type: "uint256",
               internalType: "uint256",
+            },
+            {
+              name: "_postComment",
+              type: "string",
+              internalType: "string",
             },
           ],
           outputs: [],
@@ -93,11 +76,6 @@ const deployedContracts = {
           type: "function",
           name: "getChatHistory",
           inputs: [
-            {
-              name: "_postId",
-              type: "uint256",
-              internalType: "uint256",
-            },
             {
               name: "_participant",
               type: "address",
@@ -176,6 +154,11 @@ const deployedContracts = {
               internalType: "uint256",
             },
             {
+              name: "postComment",
+              type: "string",
+              internalType: "string",
+            },
+            {
               name: "active",
               type: "bool",
               internalType: "bool",
@@ -207,11 +190,6 @@ const deployedContracts = {
           type: "function",
           name: "storeChatHistory",
           inputs: [
-            {
-              name: "_postId",
-              type: "uint256",
-              internalType: "uint256",
-            },
             {
               name: "_receiver",
               type: "address",
@@ -257,12 +235,6 @@ const deployedContracts = {
           name: "ChatHistoryStored",
           inputs: [
             {
-              name: "postId",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-            {
               name: "sender",
               type: "address",
               indexed: false,
@@ -295,6 +267,12 @@ const deployedContracts = {
             },
             {
               name: "requester",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+            {
+              name: "receiver",
               type: "address",
               indexed: false,
               internalType: "address",
@@ -354,6 +332,12 @@ const deployedContracts = {
               type: "uint256",
               indexed: false,
               internalType: "uint256",
+            },
+            {
+              name: "postComment",
+              type: "string",
+              indexed: false,
+              internalType: "string",
             },
             {
               name: "author",
@@ -400,7 +384,7 @@ const deployedContracts = {
   },
   534351: {
     PostContract: {
-      address: "0x84515086daa4d8cd317aa5af4394846615b3ca63",
+      address: "0x88753832c624afb641611d8d5ff007d3fe262b06",
       abi: [
         {
           type: "constructor",
@@ -417,11 +401,6 @@ const deployedContracts = {
           type: "function",
           name: "chatSessions",
           inputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
             {
               name: "",
               type: "address",
@@ -452,31 +431,19 @@ const deployedContracts = {
           name: "createPost",
           inputs: [
             {
-              name: "postData",
-              type: "tuple",
-              internalType: "struct PostContract.PostInput",
-              components: [
-                {
-                  name: "owner",
-                  type: "address",
-                  internalType: "address",
-                },
-                {
-                  name: "postData",
-                  type: "string",
-                  internalType: "string",
-                },
-                {
-                  name: "chatPrice",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-              ],
+              name: "_postData",
+              type: "string",
+              internalType: "string",
             },
             {
               name: "_chatPrice",
               type: "uint256",
               internalType: "uint256",
+            },
+            {
+              name: "_postComment",
+              type: "string",
+              internalType: "string",
             },
           ],
           outputs: [],
@@ -486,11 +453,6 @@ const deployedContracts = {
           type: "function",
           name: "getChatHistory",
           inputs: [
-            {
-              name: "_postId",
-              type: "uint256",
-              internalType: "uint256",
-            },
             {
               name: "_participant",
               type: "address",
@@ -569,6 +531,11 @@ const deployedContracts = {
               internalType: "uint256",
             },
             {
+              name: "postComment",
+              type: "string",
+              internalType: "string",
+            },
+            {
               name: "active",
               type: "bool",
               internalType: "bool",
@@ -600,11 +567,6 @@ const deployedContracts = {
           type: "function",
           name: "storeChatHistory",
           inputs: [
-            {
-              name: "_postId",
-              type: "uint256",
-              internalType: "uint256",
-            },
             {
               name: "_receiver",
               type: "address",
@@ -650,12 +612,6 @@ const deployedContracts = {
           name: "ChatHistoryStored",
           inputs: [
             {
-              name: "postId",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-            {
               name: "sender",
               type: "address",
               indexed: false,
@@ -688,6 +644,12 @@ const deployedContracts = {
             },
             {
               name: "requester",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+            {
+              name: "receiver",
               type: "address",
               indexed: false,
               internalType: "address",
@@ -749,6 +711,12 @@ const deployedContracts = {
               internalType: "uint256",
             },
             {
+              name: "postComment",
+              type: "string",
+              indexed: false,
+              internalType: "string",
+            },
+            {
               name: "author",
               type: "address",
               indexed: true,
@@ -787,7 +755,7 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deploymentFile: "run-1741354347.json",
+      deploymentFile: "run-1741361121.json",
       deploymentScript: "DeployPostContract.sol",
     },
   },

@@ -1,5 +1,5 @@
 import { newMockEvent } from "matchstick-as"
-import { ethereum, BigInt, Address } from "@graphprotocol/graph-ts"
+import { ethereum, Address, BigInt } from "@graphprotocol/graph-ts"
 import {
   ChatHistoryStored,
   ChatRequested,
@@ -8,7 +8,6 @@ import {
 } from "../generated/PostContract/PostContract"
 
 export function createChatHistoryStoredEvent(
-  postId: BigInt,
   sender: Address,
   receiver: Address,
   ipfsHash: string
@@ -17,9 +16,6 @@ export function createChatHistoryStoredEvent(
 
   chatHistoryStoredEvent.parameters = new Array()
 
-  chatHistoryStoredEvent.parameters.push(
-    new ethereum.EventParam("postId", ethereum.Value.fromUnsignedBigInt(postId))
-  )
   chatHistoryStoredEvent.parameters.push(
     new ethereum.EventParam("sender", ethereum.Value.fromAddress(sender))
   )
@@ -36,6 +32,7 @@ export function createChatHistoryStoredEvent(
 export function createChatRequestedEvent(
   postId: BigInt,
   requester: Address,
+  receiver: Address,
   amount: BigInt
 ): ChatRequested {
   let chatRequestedEvent = changetype<ChatRequested>(newMockEvent())
@@ -47,6 +44,9 @@ export function createChatRequestedEvent(
   )
   chatRequestedEvent.parameters.push(
     new ethereum.EventParam("requester", ethereum.Value.fromAddress(requester))
+  )
+  chatRequestedEvent.parameters.push(
+    new ethereum.EventParam("receiver", ethereum.Value.fromAddress(receiver))
   )
   chatRequestedEvent.parameters.push(
     new ethereum.EventParam("amount", ethereum.Value.fromUnsignedBigInt(amount))
@@ -82,6 +82,7 @@ export function createPostCreatedEvent(
   owner: Address,
   postData: string,
   chatPrice: BigInt,
+  postComment: string,
   author: Address,
   timestamp: BigInt
 ): PostCreated {
@@ -102,6 +103,12 @@ export function createPostCreatedEvent(
     new ethereum.EventParam(
       "chatPrice",
       ethereum.Value.fromUnsignedBigInt(chatPrice)
+    )
+  )
+  postCreatedEvent.parameters.push(
+    new ethereum.EventParam(
+      "postComment",
+      ethereum.Value.fromString(postComment)
     )
   )
   postCreatedEvent.parameters.push(

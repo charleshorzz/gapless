@@ -1,5 +1,5 @@
 overwrite: true
-schema: "https://api.studio.thegraph.com/query/105777/gaplessv2/v0.0.1"
+schema: "https://api.studio.thegraph.com/query/105777/gaplessv4/version/latest"
 documents: "libs/**/*.graphql"
 generates:
   libs/generated/graphql.ts:
