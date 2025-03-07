@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { IconShare3 } from "@tabler/icons-react";
-import { Slide } from "react-slideshow-image";
-import "react-slideshow-image/dist/styles.css";
+// import { Slide } from "react-slideshow-image";
+// import "react-slideshow-image/dist/styles.css";
 
 interface Props {
   params: { id: string };
@@ -105,7 +105,7 @@ const JobDetail = ({ params }: Props) => {
       </div>
 
       {/* Image Slider */}
-      {post.images.length > 0 && (
+      {/* {post.images.length > 0 && (
         <div className="mt-4">
           <Slide autoplay={true} duration={3000} transitionDuration={500}>
             {post.images.map((image, index) => (
@@ -114,8 +114,8 @@ const JobDetail = ({ params }: Props) => {
               </div>
             ))}
           </Slide>
-        </div>
-      )}
+        </div> */}
+      {/* )} */}
 
       {/* Right Side - Title, Comments */}
       <div className="p-6 rounded-lg shadow-md">

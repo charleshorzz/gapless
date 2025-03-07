@@ -20,6 +20,7 @@ export const RainbowKitCustomConnectButton = () => {
 
   return (
     <ConnectButton.Custom>
+      
       {({ account, chain, openConnectModal, mounted }) => {
         const connected = mounted && account && chain;
         const blockExplorerAddressLink = account
@@ -44,10 +45,13 @@ export const RainbowKitCustomConnectButton = () => {
               return (
                 <>
                   <div className="flex flex-col items-center mr-1">
+
+                    <div className="flex justify-center items-center mx-0 my-1">
                     <Balance address={account.address as Address} className="min-h-0 h-auto" />
                     <span className="text-xs" style={{ color: networkColor }}>
                       {chain.name}
                     </span>
+                    </div>
                   </div>
                   <AddressInfoDropdown
                     address={account.address as Address}
