@@ -1,0 +1,6 @@
+type ExampleEntity @entity {
+  id: Bytes!
+  count: BigInt!
+  postId: BigInt! # uint256
+  requester: Bytes! # address
+}

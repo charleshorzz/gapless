@@ -1,48 +1,32 @@
 import { newMockEvent } from "matchstick-as"
 import { ethereum, BigInt, Address } from "@graphprotocol/graph-ts"
 import {
-  ChatAccepted,
-  ChatRejected,
+  ChatHistoryStored,
   ChatRequested,
   OwnershipTransferred,
-  PostCreated,
-  Tipped
+  PostCreated
 } from "../generated/PostContract/PostContract"
 
-export function createChatAcceptedEvent(
+export function createChatHistoryStoredEvent(
   postId: BigInt,
-  requester: Address
-): ChatAccepted {
-  let chatAcceptedEvent = changetype<ChatAccepted>(newMockEvent())
+  requester: Address,
+  ipfsHash: string
+): ChatHistoryStored {
+  let chatHistoryStoredEvent = changetype<ChatHistoryStored>(newMockEvent())
 
-  chatAcceptedEvent.parameters = new Array()
+  chatHistoryStoredEvent.parameters = new Array()
 
-  chatAcceptedEvent.parameters.push(
+  chatHistoryStoredEvent.parameters.push(
     new ethereum.EventParam("postId", ethereum.Value.fromUnsignedBigInt(postId))
   )
-  chatAcceptedEvent.parameters.push(
+  chatHistoryStoredEvent.parameters.push(
     new ethereum.EventParam("requester", ethereum.Value.fromAddress(requester))
   )
-
-  return chatAcceptedEvent
-}
-
-export function createChatRejectedEvent(
-  postId: BigInt,
-  requester: Address
-): ChatRejected {
-  let chatRejectedEvent = changetype<ChatRejected>(newMockEvent())
-
-  chatRejectedEvent.parameters = new Array()
-
-  chatRejectedEvent.parameters.push(
-    new ethereum.EventParam("postId", ethereum.Value.fromUnsignedBigInt(postId))
-  )
-  chatRejectedEvent.parameters.push(
-    new ethereum.EventParam("requester", ethereum.Value.fromAddress(requester))
+  chatHistoryStoredEvent.parameters.push(
+    new ethereum.EventParam("ipfsHash", ethereum.Value.fromString(ipfsHash))
   )
 
-  return chatRejectedEvent
+  return chatHistoryStoredEvent
 }
 
 export function createChatRequestedEvent(
@@ -93,6 +77,7 @@ export function createPostCreatedEvent(
   id: BigInt,
   owner: Address,
   postData: string,
+  chatPrice: BigInt,
   author: Address,
   timestamp: BigInt
 ): PostCreated {
@@ -110,6 +95,12 @@ export function createPostCreatedEvent(
     new ethereum.EventParam("postData", ethereum.Value.fromString(postData))
   )
   postCreatedEvent.parameters.push(
+    new ethereum.EventParam(
+      "chatPrice",
+      ethereum.Value.fromUnsignedBigInt(chatPrice)
+    )
+  )
+  postCreatedEvent.parameters.push(
     new ethereum.EventParam("author", ethereum.Value.fromAddress(author))
   )
   postCreatedEvent.parameters.push(
@@ -120,26 +111,4 @@ export function createPostCreatedEvent(
   )
 
   return postCreatedEvent
-}
-
-export function createTippedEvent(
-  postId: BigInt,
-  sender: Address,
-  amount: BigInt
-): Tipped {
-  let tippedEvent = changetype<Tipped>(newMockEvent())
-
-  tippedEvent.parameters = new Array()
-
-  tippedEvent.parameters.push(
-    new ethereum.EventParam("postId", ethereum.Value.fromUnsignedBigInt(postId))
-  )
-  tippedEvent.parameters.push(
-    new ethereum.EventParam("sender", ethereum.Value.fromAddress(sender))
-  )
-  tippedEvent.parameters.push(
-    new ethereum.EventParam("amount", ethereum.Value.fromUnsignedBigInt(amount))
-  )
-
-  return tippedEvent
 }
