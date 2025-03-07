@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { WrongNetworkDropdown } from "../../../components/scaffold-eth/RainbowKitCustomConnectButton/WrongNetworkDropdown";
 import AuthBackground from "../_components/AuthBackground";
 import ChatLists from "./ChatLists";
@@ -9,11 +10,15 @@ import PaymentEHT from "./PaymentEHT";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { AnimatePresence, motion } from "framer-motion";
 import { set } from "react-hook-form";
+import { useAccount } from "wagmi";
 import { useOpenStore } from "~~/app/store";
-import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useNetworkColor } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
-import { useChatHistoryStoredsQuery, useGetChatHistorysQuery } from "~~/libs/generated/graphql";
+import {
+  useChatHistoryStoredsLazyQuery,
+  useChatHistoryStoredsQuery,
+  useGetChatHistorysQuery,
+} from "~~/libs/generated/graphql";
 import { getBlockExplorerAddressLink } from "~~/utils/scaffold-eth";
 
 const ChatsPage = () => {
@@ -22,6 +27,8 @@ const ChatsPage = () => {
   const [isChatFound, setChatFound] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
   const { openChat } = useOpenStore();
+  const searchParams = useSearchParams();
+  const { address: userWalletAddress } = useAccount();
 
   // State to track screen size
   const [desktopScreen, setDesktopScreen] = useState(false);
@@ -42,15 +49,31 @@ const ChatsPage = () => {
 
   // ETH Pay logic start here
   const paymentETH = false;
+  //Function
+  const postId = searchParams.get("postId");
+  const postOwnerAddress = searchParams.get("postOwnerAddress");
+  const chatPrice = searchParams.get("chatPrice");
 
+  const [chatHistoryStoreds, { loading }] = useChatHistoryStoredsLazyQuery({
+    variables: {
+      where: {
+        receiver: postOwnerAddress,
+        sender: userWalletAddress,
+      },
+    },
+    onCompleted: data => {
+      if (data.chatHistoryStoreds.length > 0) {
+        setChatFound(true);
+      }
+    },
+  });
   //query from router params, check getchatRequests, pass in owner address and user address, if found, setchatfound to true
   // setchatfound to true, show paymentETH component
-
-  //Function
-  const postId = "6";
-  const postOwnerAddress = "0x6b7090Baf7674bd83C8b89629FdDB7fF3523Ad09";
-  const chatPrice = 10000000000000;
-  const userWalletAddress = "0xb785058f9807b0cb7a67f7bb58d6a5234b7d6656";
+  useEffect(() => {
+    if (postOwnerAddress && userWalletAddress) {
+      chatHistoryStoreds();
+    }
+  }, [postOwnerAddress, userWalletAddress]);
 
   //Fetch chat history of user
   const { data } = useGetChatHistorysQuery({
@@ -113,69 +136,46 @@ const ChatsPage = () => {
               return (
                 <div className="grid grid-cols-6 gap-5 h-full">
                   {/* ChatLists: Always visible, takes 2/5 columns on lg+ */}
-                  {chatHistory.length > 0 ? (
-                    <div className="col-span-6 lg:col-span-2 overflow-y-scroll">
-                      <ChatLists />
-                    </div>
-                  ) : (
-                    <div className="col-span-6 lg:col-span-2 overflow-y-scroll">No Chat History Found</div>
-                  )}
+                  {!mobileChatLogic &&
+                    (chatHistory.length > 0 ? (
+                      <div className="col-span-6 lg:col-span-2 overflow-y-scroll">
+                        <ChatLists chatHistory={chatHistory} />
+                      </div>
+                    ) : (
+                      <div className="col-span-6 lg:col-span-2 overflow-y-scroll">No Chat History Found</div>
+                    ))}
 
                   {/* ChatWindow: Hidden below lg, takes 3/5 columns on lg+ */}
                   <div className="hidden lg:block lg:col-span-4">
                     {isChatFound ? (
-                      <ChatWindow />
-                    ) : (
-                      <PaymentEHT
-                        postId={BigInt(postId)}
-                        chatPrice={chatPrice}
-                        postOwnerAddress={postOwnerAddress}
-                        setChatFound={setChatFound}
-                      />
-                    )}
-                  </div>
-                  {!mobileChatLogic && (
-                    <div className="col-span-6 lg:col-span-2 overflow-y-scroll">
-                      <ChatLists />
-                    </div>
-                  )}
-
-                  {/* ChatWindow: Hidden below lg, takes 3/5 columns on lg+ */}
-                  <div className="hidden lg:block lg:col-span-4">
-                    {paymentETH ? (
-                      <PaymentEHT
-                        postId={BigInt(postId)}
-                        chatPrice={chatPrice}
-                        postOwnerAddress={postOwnerAddress}
-                        setChatFound={setChatFound}
-                      />
-                    ) : (
-                      <div className="h-fit min-h-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-3 shadow-sm flex flex-col">
-                        {" "}
-                        <ChatWindow />{" "}
-                      </div>
-                    )}
-                  </div>
-
-                  {mobileChatLogic && (
-                    <div className="block lg:hidden col-span-6">
-                      {/* Come animate effect error here */}
-                      {/* <AnimatePresence>
-                          <motion.div
-                            initial={{ x: "20%", opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            exit={{ x: "-100%", opacity: 0 }}
-                            transition={{
-                              duration: 0.3,
-                              ease: "easeInOut",
-                            }} className="h-fit min-h-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-3 shadow-sm flex flex-col"
-                            >
-                              <ChatWindow />
-                          </motion.div>
-                        </AnimatePresence> */}
                       <div className="h-fit min-h-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-3 shadow-sm flex flex-col">
                         <ChatWindow />
                       </div>
+                    ) : (
+                      <PaymentEHT
+                        postId={BigInt(postId ?? "0")}
+                        chatPrice={chatPrice ?? 0}
+                        postOwnerAddress={postOwnerAddress ?? ""}
+                        setChatFound={setChatFound}
+                      />
+                    )}
+                  </div>
+
+                  {/* ChatWindow: Hidden below lg, takes 3/5 columns on lg+ */}
+                  {mobileChatLogic && (
+                    <div className="block lg:hidden col-span-6">
+                      {isChatFound ? (
+                        <div className="h-fit min-h-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-3 shadow-sm flex flex-col">
+                          <ChatWindow />
+                        </div>
+                      ) : (
+                        <PaymentEHT
+                          postId={BigInt(postId ?? "0")}
+                          chatPrice={chatPrice ?? 0}
+                          postOwnerAddress={postOwnerAddress ?? ""}
+                          setChatFound={setChatFound}
+                        />
+                      )}
                     </div>
                   )}
                 </div>

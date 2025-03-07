@@ -711,7 +711,7 @@ export type PostCreatedsQueryVariables = Exact<{
 }>;
 
 
-export type PostCreatedsQuery = { __typename?: 'Query', postCreateds: Array<{ __typename?: 'PostCreated', id: any, author: any, postData: string, owner: any, blockNumber: any, blockTimestamp: any, internal_id: any }> };
+export type PostCreatedsQuery = { __typename?: 'Query', postCreateds: Array<{ __typename?: 'PostCreated', id: any, author: any, postData: string, owner: any, blockNumber: any, chatPrice: any, blockTimestamp: any, internal_id: any }> };
 
 export type ChatRequestedsQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -724,6 +724,7 @@ export type ChatRequestedsQuery = { __typename?: 'Query', chatRequesteds: Array<
 export type ChatHistoryStoredsQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ChatHistoryStored_Filter>;
 }>;
 
 
@@ -747,6 +748,7 @@ export const PostCreatedsDocument = gql`
     postData
     owner
     blockNumber
+    chatPrice
     blockTimestamp
     internal_id
   }
@@ -831,8 +833,8 @@ export type ChatRequestedsLazyQueryHookResult = ReturnType<typeof useChatRequest
 export type ChatRequestedsSuspenseQueryHookResult = ReturnType<typeof useChatRequestedsSuspenseQuery>;
 export type ChatRequestedsQueryResult = Apollo.QueryResult<ChatRequestedsQuery, ChatRequestedsQueryVariables>;
 export const ChatHistoryStoredsDocument = gql`
-    query chatHistoryStoreds($first: Int, $skip: Int) {
-  chatHistoryStoreds(first: $first, skip: $skip) {
+    query chatHistoryStoreds($first: Int, $skip: Int, $where: ChatHistoryStored_filter) {
+  chatHistoryStoreds(first: $first, skip: $skip, where: $where) {
     id
     blockNumber
     blockTimestamp
@@ -857,6 +859,7 @@ export const ChatHistoryStoredsDocument = gql`
  *   variables: {
  *      first: // value for 'first'
  *      skip: // value for 'skip'
+ *      where: // value for 'where'
  *   },
  * });
  */

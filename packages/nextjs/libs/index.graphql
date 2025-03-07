@@ -6,6 +6,7 @@ query postCreateds($first: Int, $skip: Int) {
     postData
     owner
     blockNumber
+    chatPrice
     blockTimestamp
     internal_id
   }
@@ -20,8 +21,8 @@ query chatRequesteds($first: Int, $skip: Int) {
   }
 }
 
-query chatHistoryStoreds($first: Int, $skip: Int) {
-  chatHistoryStoreds(first: $first, skip: $skip) {
+query chatHistoryStoreds($first: Int, $skip: Int, $where: ChatHistoryStored_filter) {
+  chatHistoryStoreds(first: $first, skip: $skip, where: $where) {
     id
     blockNumber
     blockTimestamp

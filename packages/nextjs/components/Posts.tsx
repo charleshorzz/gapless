@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useInView } from "react-intersection-observer";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { usePostCreatedsQuery } from "~~/libs/generated/graphql";
 import { splitTextIntoChunks } from "~~/utils/scaffold-eth/textSplitter";
@@ -93,7 +92,8 @@ const DetailItem = ({ label, value }: { label: string; value?: string }) => (
 
 // In JobList component
 const JobList: React.FC<JobListProps> = ({ searchTerm }) => {
-  const { data, loading, error } = usePostCreatedsQuery({
+  const { data, loading, error, fetchMore } = usePostCreatedsQuery({
+    variables: {},
     fetchPolicy: "network-only",
   });
 
