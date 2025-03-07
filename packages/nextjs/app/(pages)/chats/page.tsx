@@ -14,7 +14,6 @@ import { useAccount } from "wagmi";
 import { useOpenStore } from "~~/app/store";
 import { useNetworkColor } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
-import { useGetChatHistorysQuery } from "~~/libs/generated/graphql";
 import {
   useChatHistoryStoredsLazyQuery,
   useChatHistoryStoredsQuery,
@@ -135,7 +134,7 @@ const ChatsPage = () => {
               }
 
               return (
-               <div className="grid grid-cols-6 gap-5 h-full">
+                <div className="grid grid-cols-6 gap-5 h-full">
                   {/* ChatLists: Always visible, takes 2/5 columns on lg+ */}
                   {!mobileChatLogic &&
                     (chatHistory.length > 0 ? (
@@ -154,9 +153,9 @@ const ChatsPage = () => {
                       </div>
                     ) : (
                       <PaymentEHT
-                        postId={BigInt(postId)}
-                        chatPrice={chatPrice}
-                        postOwnerAddress={postOwnerAddress}
+                        postId={BigInt(postId ?? "0")}
+                        chatPrice={chatPrice ?? 0}
+                        postOwnerAddress={postOwnerAddress ?? ""}
                         setChatFound={setChatFound}
                       />
                     )}
@@ -171,9 +170,9 @@ const ChatsPage = () => {
                         </div>
                       ) : (
                         <PaymentEHT
-                          postId={BigInt(postId)}
-                          chatPrice={chatPrice}
-                          postOwnerAddress={postOwnerAddress}
+                          postId={BigInt(postId ?? "0")}
+                          chatPrice={chatPrice ?? 0}
+                          postOwnerAddress={postOwnerAddress ?? ""}
                           setChatFound={setChatFound}
                         />
                       )}
