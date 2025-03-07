@@ -1,8 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useAccount } from "wagmi";
 import CustomSeparaor from "~~/app/CustomSeparaor";
 import { Breadcumb } from "~~/components/ui/breadcumb";
@@ -21,21 +22,22 @@ import {
 } from "~~/utils/inputEnums";
 import { fetchDataFromIPFS, uploadFileToIPFS } from "~~/utils/pinata";
 
+
 type FormData = {
   name: string;
   age: number;
-  gender: typeof GENDER_OPTIONS;
-  ethnicity: typeof ETHNICITY_OPTIONS;
-  education: typeof EDUCATION_OPTIONS;
+  gender: typeof GENDER_OPTIONS[number];
+  ethnicity: typeof ETHNICITY_OPTIONS[number];
+  education: typeof EDUCATION_OPTIONS[number];
   jobTitle: string;
-  seniority: typeof SENIORITY_OPTIONS;
-  experience: typeof EXPERIENCE_OPTIONS;
+  seniority: typeof SENIORITY_OPTIONS[number];
+  experience: typeof EXPERIENCE_OPTIONS[number];
   exactExperience: number;
   companyName: string;
-  companyType: typeof COMPANY_TYPE;
-  industry: typeof INDUSTRY_OPTIONS;
-  employmentType: typeof EMPLOYMENT_TYPE;
-  location: typeof LOCATION_OPTIONS;
+  companyType: typeof COMPANY_TYPE[number];
+  industry: typeof INDUSTRY_OPTIONS[number];
+  employmentType: typeof EMPLOYMENT_TYPE[number];
+  location: typeof LOCATION_OPTIONS[number];
   baseSalary: number;
   otherCompensation: boolean;
   allowance: number;
@@ -53,7 +55,7 @@ const PostsPage = () => {
     "personalDetails",
   );
   const [formData, setFormData] = useState<FormData>();
-  const { handleSubmit, control, register, watch, setValue } = useForm<FormData>({
+  const { handleSubmit, control, register, watch, setValue, reset } = useForm<FormData>({
     defaultValues: formData, // Set default values from state
   });
   const { writeContractAsync: writePostContractAsync } = useScaffoldWriteContract({ contractName: "PostContract" });
@@ -63,6 +65,8 @@ const PostsPage = () => {
   const [selectedExperience, setSelectedExperience] = useState<string>("");
   const [hasOtherCompensation, setHasOtherCompensation] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const router = useRouter()
+ 
 
   //API
   // const {
@@ -89,10 +93,79 @@ const PostsPage = () => {
 
     const currentIndex = tabOrder.indexOf(activeSection);
     const nextIndex = currentIndex + 1;
+    const initialData: FormData = {
+      name: "",
+      age: 0,
+      gender: "Male",
+      ethnicity: ETHNICITY_OPTIONS[0],
+      education: EDUCATION_OPTIONS[0],
+      jobTitle: "",
+      seniority: SENIORITY_OPTIONS[0],
+      experience: EXPERIENCE_OPTIONS[0],
+      exactExperience: 0,
+      companyName: "",
+      companyType: COMPANY_TYPE[0],
+      industry: INDUSTRY_OPTIONS[0],
+      employmentType: EMPLOYMENT_TYPE[0],
+      location: LOCATION_OPTIONS[0],
+      baseSalary: 0,
+      otherCompensation: false,
+      allowance: 0,
+      bonus: 0,
+      commission: 0,
+      stock: 0,
+      payslip: null as unknown as File,
+      story: "",
+    };
+    
+
+    // Code here start for VALIDATION
+    const requiredFields: (keyof FormData)[] = [
+      "age",
+      "gender",
+      "ethnicity",
+      "education",
+      "jobTitle",
+      "seniority",
+      "experience",
+      // "exactExperience"
+      "companyName",
+      "companyType",
+      "industry",
+      "employmentType",
+      "location",
+      "baseSalary",
+      // "allowance",
+      // "bonus",
+      // "commission",
+      // "stock",
+      "story",
+      "payslip"
+    ];
+
+    // Conditionally add financial fields if `hasOtherCompensation` and `selectedExperience` is true
+    if (hasOtherCompensation) {
+      requiredFields.push("allowance", "bonus", "commission", "stock");
+    }
+    if(selectedExperience) {
+      requiredFields.push("exactExperience");
+    }
+
+    const missingFields = requiredFields.filter((field) => {
+      const value = data[field];
+
+      if (typeof value === "string") return value.trim() === "";
+      if (typeof value === "number") return isNaN(value) || value === 0;
+      if (value instanceof File) return !value;
+      return value === null || value === undefined;
+    });
+    // End for VALIDATION
 
     if (!data.story && nextIndex < tabOrder.length) {
       // Move to the next tab if 'story' is empty
       setActiveSection(tabOrder[nextIndex] as "personalDetails" | "jobDetails" | "salaryInfo" | "story");
+    } else if (missingFields.length > 0) { 
+      toast.error(`Please complete all the fields before submitting: ${missingFields.join(", ")}`);
     } else {
       try {
         setLoading(true);
@@ -125,6 +198,8 @@ const PostsPage = () => {
         });
 
         toast.success("Post created successfully!");
+        setActiveSection('personalDetails')
+        reset(initialData);
       } catch (error) {
         console.error("Error submitting form:", error);
       } finally {
@@ -473,7 +548,7 @@ const PostsPage = () => {
 
         {activeSection === "story" && (
           <>
-            <div className="mb-5">
+            <div className="mb-10">
               <div>
                 <label className="block  text-sm font-medium text-gray-900 dark:text-white">Tell us about you</label>
                 <label className="block mb-2 text-xs font-medium text-gray-400 dark:text-white">
@@ -492,8 +567,8 @@ const PostsPage = () => {
         )}
 
         {/* Submit Button */}
-        <button type="submit" className="btn w-full btn-primary mt-4" disabled={loading}>
-          {activeSection !== "story" ? "Next" : loading ? "Creating" : "Create Post"}
+        <button type="submit" className="btn rounded-lg w-full btn-primary dark:bg-[#374151] " disabled={loading}>
+          {activeSection !== "story" ? "Next" : loading ? <span className="loading loading-dots loading-xs text-neutral-700 dark:text-white"></span> : "Create Post"}
         </button>
       </form>
     </div>
