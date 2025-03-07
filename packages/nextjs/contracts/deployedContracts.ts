@@ -6,135 +6,8 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   31337: {
-    YourContract: {
-      address: "0x39e94957a8c6557bfcb105c5769b855d3346cc60",
-      abi: [
-        {
-          type: "constructor",
-          inputs: [
-            {
-              name: "_owner",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "receive",
-          stateMutability: "payable",
-        },
-        {
-          type: "function",
-          name: "greeting",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "string",
-              internalType: "string",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "owner",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "premium",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "bool",
-              internalType: "bool",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "totalCounter",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "userGreetingCounter",
-          inputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "event",
-          name: "GreetingChange",
-          inputs: [
-            {
-              name: "greetingSetter",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-            {
-              name: "newGreeting",
-              type: "string",
-              indexed: false,
-              internalType: "string",
-            },
-            {
-              name: "premium",
-              type: "bool",
-              indexed: false,
-              internalType: "bool",
-            },
-            {
-              name: "value",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-          ],
-          anonymous: false,
-        },
-      ],
-      inheritedFunctions: {},
-      deploymentFile: "run-1741165926.json",
-      deploymentScript: "Deploy.s.sol",
-    },
-  },
-  534351: {
     PostContract: {
-      address: "0x3b0cae5712fdcbc3b4e61e90470633190d298700",
+      address: "0x620329b732e3c1543b2ac6368cca305c74395a66",
       abi: [
         {
           type: "constructor",
@@ -145,24 +18,6 @@ const deployedContracts = {
               internalType: "address",
             },
           ],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "acceptChat",
-          inputs: [
-            {
-              name: "_postId",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "_requester",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [],
           stateMutability: "nonpayable",
         },
         {
@@ -201,6 +56,35 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "chatSessions",
+          inputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "paid",
+              type: "bool",
+              internalType: "bool",
+            },
+            {
+              name: "ipfsHash",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "createPost",
           inputs: [
             {
@@ -218,7 +102,17 @@ const deployedContracts = {
                   type: "string",
                   internalType: "string",
                 },
+                {
+                  name: "chatPrice",
+                  type: "uint256",
+                  internalType: "uint256",
+                },
               ],
+            },
+            {
+              name: "_chatPrice",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           outputs: [],
@@ -226,36 +120,24 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "getChatRequests",
+          name: "getChatHistory",
           inputs: [
             {
               name: "_postId",
               type: "uint256",
               internalType: "uint256",
             },
+            {
+              name: "_user",
+              type: "address",
+              internalType: "address",
+            },
           ],
           outputs: [
             {
               name: "",
-              type: "tuple[]",
-              internalType: "struct PostContract.ChatRequest[]",
-              components: [
-                {
-                  name: "requester",
-                  type: "address",
-                  internalType: "address",
-                },
-                {
-                  name: "amount",
-                  type: "uint256",
-                  internalType: "uint256",
-                },
-                {
-                  name: "accepted",
-                  type: "bool",
-                  internalType: "bool",
-                },
-              ],
+              type: "string",
+              internalType: "string",
             },
           ],
           stateMutability: "view",
@@ -318,30 +200,17 @@ const deployedContracts = {
               internalType: "uint256",
             },
             {
+              name: "chatPrice",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
               name: "active",
               type: "bool",
               internalType: "bool",
             },
           ],
           stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "rejectChat",
-          inputs: [
-            {
-              name: "_postId",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "_requester",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
         },
         {
           type: "function",
@@ -378,18 +247,13 @@ const deployedContracts = {
               type: "uint256",
               internalType: "uint256",
             },
-            {
-              name: "_amount",
-              type: "uint256",
-              internalType: "uint256",
-            },
           ],
           outputs: [],
           stateMutability: "nonpayable",
         },
         {
           type: "function",
-          name: "tipPost",
+          name: "storeChatHistory",
           inputs: [
             {
               name: "_postId",
@@ -397,9 +261,9 @@ const deployedContracts = {
               internalType: "uint256",
             },
             {
-              name: "_amount",
-              type: "uint256",
-              internalType: "uint256",
+              name: "_ipfsHash",
+              type: "string",
+              internalType: "string",
             },
           ],
           outputs: [],
@@ -433,7 +297,7 @@ const deployedContracts = {
         },
         {
           type: "event",
-          name: "ChatAccepted",
+          name: "ChatHistoryStored",
           inputs: [
             {
               name: "postId",
@@ -447,24 +311,11 @@ const deployedContracts = {
               indexed: false,
               internalType: "address",
             },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "ChatRejected",
-          inputs: [
             {
-              name: "postId",
-              type: "uint256",
+              name: "ipfsHash",
+              type: "string",
               indexed: false,
-              internalType: "uint256",
-            },
-            {
-              name: "requester",
-              type: "address",
-              indexed: false,
-              internalType: "address",
+              internalType: "string",
             },
           ],
           anonymous: false,
@@ -536,6 +387,12 @@ const deployedContracts = {
               internalType: "string",
             },
             {
+              name: "chatPrice",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
               name: "author",
               type: "address",
               indexed: true,
@@ -543,31 +400,6 @@ const deployedContracts = {
             },
             {
               name: "timestamp",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "Tipped",
-          inputs: [
-            {
-              name: "postId",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-            {
-              name: "sender",
-              type: "address",
-              indexed: false,
-              internalType: "address",
-            },
-            {
-              name: "amount",
               type: "uint256",
               indexed: false,
               internalType: "uint256",
@@ -599,7 +431,437 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deploymentFile: "run-1741255259.json",
+      deploymentFile: "run-1741350624.json",
+      deploymentScript: "DeployPostContract.sol",
+    },
+  },
+  534351: {
+    PostContract: {
+      address: "0x1302884cdae98af00abc5c18684be76f5d18e2a9",
+      abi: [
+        {
+          type: "constructor",
+          inputs: [
+            {
+              name: "_token",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "chatRequests",
+          inputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "requester",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "amount",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "accepted",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "chatSessions",
+          inputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "paid",
+              type: "bool",
+              internalType: "bool",
+            },
+            {
+              name: "ipfsHash",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "createPost",
+          inputs: [
+            {
+              name: "postData",
+              type: "tuple",
+              internalType: "struct PostContract.PostInput",
+              components: [
+                {
+                  name: "owner",
+                  type: "address",
+                  internalType: "address",
+                },
+                {
+                  name: "postData",
+                  type: "string",
+                  internalType: "string",
+                },
+                {
+                  name: "chatPrice",
+                  type: "uint256",
+                  internalType: "uint256",
+                },
+              ],
+            },
+            {
+              name: "_chatPrice",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "getChatHistory",
+          inputs: [
+            {
+              name: "_postId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "_user",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "owner",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "postCount",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "posts",
+          inputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "id",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "owner",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "postData",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "tipsReceived",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "chatPrice",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "active",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "renounceOwnership",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "reputation",
+          inputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "requestChat",
+          inputs: [
+            {
+              name: "_postId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "storeChatHistory",
+          inputs: [
+            {
+              name: "_postId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "_ipfsHash",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "token",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "contract IERC20",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "transferOwnership",
+          inputs: [
+            {
+              name: "newOwner",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "event",
+          name: "ChatHistoryStored",
+          inputs: [
+            {
+              name: "postId",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "requester",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+            {
+              name: "ipfsHash",
+              type: "string",
+              indexed: false,
+              internalType: "string",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "ChatRequested",
+          inputs: [
+            {
+              name: "postId",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "requester",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+            {
+              name: "amount",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "OwnershipTransferred",
+          inputs: [
+            {
+              name: "previousOwner",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "newOwner",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "PostCreated",
+          inputs: [
+            {
+              name: "id",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "owner",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+            {
+              name: "postData",
+              type: "string",
+              indexed: false,
+              internalType: "string",
+            },
+            {
+              name: "chatPrice",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "author",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "timestamp",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "error",
+          name: "OwnableInvalidOwner",
+          inputs: [
+            {
+              name: "owner",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+        },
+        {
+          type: "error",
+          name: "OwnableUnauthorizedAccount",
+          inputs: [
+            {
+              name: "account",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+        },
+      ],
+      inheritedFunctions: {},
+      deploymentFile: "run-1741350710.json",
       deploymentScript: "DeployPostContract.sol",
     },
   },
