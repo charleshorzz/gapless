@@ -57,13 +57,14 @@ contract PostContract is Ownable {
     emit PostCreated(postCount, msg.sender, _postData, _chatPrice, _postComment, msg.sender, block.timestamp);
     }
 
-   function requestChat(uint256 _postId) external {
+  function requestChat(uint256 _postId) external payable {
     Post storage post = posts[_postId];
     require(post.author != msg.sender, "Cannot request chat with yourself");
     require(!chatSessions[post.author][msg.sender].paid, "Already paid");
+    require(msg.value >= post.chatPrice, "Incorrect ETH sent");
 
-    // Transfer ERC-20 tokens instead of ETH
-    require(token.transferFrom(msg.sender, post.author, post.chatPrice), "Token transfer failed");
+    // Transfer Ether
+    payable(post.author).transfer(msg.value);
 
     chatSessions[post.author][msg.sender].paid = true;
     chatSessions[msg.sender][post.author].paid = true;

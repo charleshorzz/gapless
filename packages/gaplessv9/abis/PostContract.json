@@ -220,7 +220,7 @@
     ],
     "name": "requestChat",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {

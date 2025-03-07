@@ -9,7 +9,7 @@ import { ThemeProvider } from "~~/components/ThemeProvider";
 import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import "~~/styles/globals.css";
 
-const graphqlEndpoint = "https://api.studio.thegraph.com/query/105777/gaplessv7/v0.0.1";
+const graphqlEndpoint = "https://api.studio.thegraph.com/query/105777/gaplessv8/v0.0.1";
 
 const client = new ApolloClient({
   uri: graphqlEndpoint,
