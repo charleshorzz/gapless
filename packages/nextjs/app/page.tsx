@@ -10,7 +10,7 @@ const DiscoverPage: NextPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-full">
       <div className="flex justify-center">
         <input
           type="text"
@@ -21,7 +21,7 @@ const DiscoverPage: NextPage = () => {
         />
       </div>
 
-      <div className="flex-1 mt-16">
+      <div className="flex-1 mt-16 max-h-[80vh] overflow-y-auto">
         <JobList searchTerm={searchTerm} />
       </div>
     </div>
