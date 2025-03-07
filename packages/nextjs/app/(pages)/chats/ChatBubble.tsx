@@ -63,7 +63,7 @@ const ChatBubble = () => {
             </div>
 
             {/* Main Message */}
-            <div className="chat-bubble bg-blue-500 dark:bg-gray-700 dark:text-neutral-300">
+            <div className="chat-bubble bg-blue-500 dark:bg-gray-700 dark:text-neutral-50">
               {chat.message}
             </div>
           </div>
