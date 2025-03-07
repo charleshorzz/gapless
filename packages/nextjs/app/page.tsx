@@ -1,38 +1,31 @@
 "use client";
 
+import { useState } from "react";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
+import JobList from "~~/components/Posts";
 
 const DiscoverPage: NextPage = () => {
   const { address: connectedAddress } = useAccount();
+  const [searchTerm, setSearchTerm] = useState("");
 
-  return <div>Discover Page</div>;
-};
-
-export default DiscoverPage;
-
-// Dummy dashboard component with content
-const Dashboard = () => {
   return (
-    <div className="flex flex-1">
-      <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
-        <div className="flex gap-2">
-          {[...new Array(4)].map(i => (
-            <div
-              key={"first-array" + i}
-              className="h-20 w-full rounded-lg  bg-gray-100 dark:bg-neutral-800 animate-pulse"
-            ></div>
-          ))}
-        </div>
-        <div className="flex gap-2 flex-1">
-          {[...new Array(2)].map(i => (
-            <div
-              key={"second-array" + i}
-              className="h-full w-full rounded-lg  bg-gray-100 dark:bg-neutral-800 animate-pulse"
-            ></div>
-          ))}
-        </div>
+    <div className="flex flex-col">
+      <div className="flex justify-center">
+        <input
+          type="text"
+          placeholder="Search"
+          className="border p-2 rounded-lg w-1/3"
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      <div className="flex-1 mt-16">
+        <JobList searchTerm={searchTerm} />
       </div>
     </div>
   );
 };
+
+export default DiscoverPage;
