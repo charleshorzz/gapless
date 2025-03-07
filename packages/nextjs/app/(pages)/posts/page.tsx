@@ -140,7 +140,6 @@ const PostsPage = () => {
       // "commission",
       // "stock",
       "story",
-      "payslip",
     ];
 
     // Conditionally add financial fields if `hasOtherCompensation` and `selectedExperience` is true
@@ -549,6 +548,21 @@ const PostsPage = () => {
 
         {activeSection === "story" && (
           <>
+            <div className="mb-5">
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Chat Price (ETH)</label>
+              <label className="block mb-2 text-xs font-medium text-gray-400 dark:text-white">
+                Whenever someone wants to chat with you regarding your career, they need to pay this amount
+              </label>
+              <input
+                type="number"
+                id="chatPrice"
+                step={0.00000001}
+                {...register("chatPrice")}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="0.00001"
+                required
+              />
+            </div>
             <div className="mb-10">
               <div>
                 <label className="block  text-sm font-medium text-gray-900 dark:text-white">Tell us about you</label>
