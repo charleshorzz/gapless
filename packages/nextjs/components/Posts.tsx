@@ -21,7 +21,6 @@ interface JobListProps {
 const JobCard = ({ post }: { post: Post }) => {
   const router = useRouter();
   const parsedData = post.postData ? JSON.parse(post.postData) : {};
-<<<<<<< HEAD
 
   // Only show these fields
   const visibleFields = {
@@ -36,23 +35,23 @@ const JobCard = ({ post }: { post: Post }) => {
 
   return (
     <div
-      className="relative w-80 h-96 border border-gray-200 rounded-xl bg-white p-6 flex flex-col cursor-pointer hover:shadow-lg transition-all"
+      className="relative w-80 h-full sm:max-w-none sm:w-auto mx-auto border border-gray-200 rounded-xl p-3 flex flex-col cursor-pointer hover:shadow-lg transition-all"
       onClick={() => router.push(`/posts/${post.id}`)}
     >
       {/* Job Title */}
-      <h3 className="text-xl font-bold text-gray-900 mb-4 line-clamp-2">{visibleFields.jobTitle}</h3>
+      <h3 className="text-xl font-bold mb-4 line-clamp-2">{visibleFields.jobTitle}</h3>
 
       {/* Key Details Grid */}
-      <div className="grid grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         <div className="space-y-1">
           <DetailItem label="Experience" value={visibleFields.experience} />
           <DetailItem label="Education" value={visibleFields.education} />
           <DetailItem label="Seniority" value={visibleFields.seniority} />
         </div>
         <div className="space-y-1">
-          <div className="bg-blue-50 p-3 rounded-lg">
-            <span className="text-sm font-semibold text-blue-700 block">Monthly Salary</span>
-            <span className="text-lg font-bold text-blue-900">{visibleFields.salary}</span>
+          <div className="bg-blue-50 p-1 rounded-lg text-center">
+            <span className="text-sm text-blue-700 block">Monthly Salary</span>
+            <span className="sm:text-lg font-bold text-blue-900">{visibleFields.salary}</span>
           </div>
         </div>
       </div>
@@ -61,10 +60,12 @@ const JobCard = ({ post }: { post: Post }) => {
       <div className="mt-auto space-y-3">
         <div className="flex flex-wrap gap-2">
           {visibleFields.industry && (
-            <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">{visibleFields.industry}</span>
+            <span className="px-3 py-1 bg-green-100 text-green-800 text-xs sm:text-sm rounded-full">
+              {visibleFields.industry}
+            </span>
           )}
           {visibleFields.companyType && (
-            <span className="px-3 py-1 bg-purple-100 text-purple-800 text-sm rounded-full">
+            <span className="px-3 py-1 bg-purple-100 text-purple-800 text-xs sm:text-sm rounded-full">
               {visibleFields.companyType}
             </span>
           )}
@@ -73,41 +74,10 @@ const JobCard = ({ post }: { post: Post }) => {
         {/* Author Footer */}
         <div className="w-full flex items-center gap-2 pt-4 border-t border-gray-100">
           <BlockieAvatar address={post.author} size={24} />
-          <span className="text-sm text-gray-600 font-medium">
+          <span className="text-sm font-medium">
             {post.author.slice(0, 6)}...{post.author.slice(-4)}
           </span>
         </div>
-=======
-  const storyChunks = splitTextIntoChunks(parsedData.story || "");
-  const firstChunk = storyChunks[0] || "";
-
-  return (
-    <div
-      className=" w-80 max-h-[310px] border rounded-lg shadow-lg p-4 flex flex-col cursor-pointer hover:shadow-xl transition-shadow"
-      onClick={() => router.push(`/posts/${post.id}`)}
-    >
-      <div className="flex-1 overflow-hidden">
-        {Object.entries(parsedData).map(([key, value]) => {
-          if (key === "story") return null;
-          return (
-            <div key={key} className="mb-2">
-              <span className="font-semibold">{key}:</span>{" "}
-              <span className="whitespace-pre-wrap">{value as string}</span>
-            </div>
-          );
-        })}{" "}
-        <div className="mb-2">
-          <span className="font-semibold">story:</span>{" "}
-          <div className="whitespace-pre-wrap line-clamp-4">
-            {firstChunk}
-            {storyChunks.length > 1 && <span className="text-blue-500 ml-2">[...]</span>}
-          </div>
-        </div>
-      </div>
-      <div className="w-full flex justify-between items-center mt-4 border-t pt-2">
-        <BlockieAvatar address={post.author} size={24} />
-        <span className="text-sm font-mono">{post.author.slice(0, 6) + "..." + post.author.slice(-4)}</span>
->>>>>>> 80de8e14e6020f74557fbb5d2b027c788dc580bb
       </div>
     </div>
   );
@@ -116,35 +86,34 @@ const JobCard = ({ post }: { post: Post }) => {
 // Reusable detail component
 const DetailItem = ({ label, value }: { label: string; value?: string }) => (
   <div>
-    <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">{label}</span>
-    <p className="text-gray-900 font-medium line-clamp-1">{value || "-"}</p>
+    <span className="text-xs font-medium uppercase tracking-wide">{label}</span>
+    <p className="font-medium line-clamp-1">{value || "-"}</p>
   </div>
 );
 
+// In JobList component
 const JobList: React.FC<JobListProps> = ({ searchTerm }) => {
-  const { data, loading, error, fetchMore } = usePostCreatedsQuery({
-<<<<<<< HEAD
-    variables: {},
-=======
-    variables: {
-      orderBy: "blockTimestamp",
-      page: 1,
-      perPage: 6,
-      search: searchTerm,
-    },
->>>>>>> 80de8e14e6020f74557fbb5d2b027c788dc580bb
+  const { data, loading, error } = usePostCreatedsQuery({
     fetchPolicy: "network-only",
   });
 
-  if (loading && !data?.postCreateds) return <div className="text-center p-4">Loading initial posts...</div>;
+  // Filter posts client-side as fallback
+  const filteredPosts = data?.postCreateds?.filter((post: Post) => {
+    try {
+      const parsed = JSON.parse(post.postData);
+      return parsed.jobTitle?.toLowerCase().startsWith(searchTerm.toLowerCase());
+    } catch {
+      return true;
+    }
+  });
+
+  if (loading && !data?.postCreateds) return null;
   if (error) return <div className="text-red-500 p-4">Error: {error.message}</div>;
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-10 px-20">
-      {data?.postCreateds?.map(
-        (
-          post, // Add optional chaining here
-        ) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-8 xl:px-20">
+      {filteredPosts?.length ? (
+        filteredPosts.map((post: Post) => (
           <JobCard
             key={post.id}
             post={{
@@ -153,7 +122,11 @@ const JobList: React.FC<JobListProps> = ({ searchTerm }) => {
               id: post.id || "",
             }}
           />
-        ),
+        ))
+      ) : (
+        <div className="col-span-full text-center py-12">
+          <p className="text-base sm:text-lg md:text-xl">No relevant posts found</p>
+        </div>
       )}
     </div>
   );

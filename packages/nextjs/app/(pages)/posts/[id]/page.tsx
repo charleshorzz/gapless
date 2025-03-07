@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { IconCheck, IconCircle, IconSend } from "@tabler/icons-react";
+import OpenAI from "openai";
 import { TextSlider } from "~~/components/TextSlider";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { usePostCreatedsQuery } from "~~/libs/generated/graphql";
@@ -18,8 +19,8 @@ interface Comment {
 
 const JobDetail = ({ params }: Props) => {
   const [comments, setComments] = useState<Comment[]>([
-    { user: "0wd...5345", text: "Some Comment here" },
-    { user: "0wd...5346", text: "Another Comment here" },
+    { user: "0b4jak...8736", text: "Some Comment here" },
+    { user: "0t8hxf...2456", text: "Another Comment here" },
   ]);
 
   const [newComment, setNewComment] = useState("");
@@ -28,13 +29,13 @@ const JobDetail = ({ params }: Props) => {
   const parsedData = post?.postData ? JSON.parse(post.postData) : {};
 
   const PersonalDetailsPage = ({ data }: { data: Record<string, any> }) => (
-    <div className="space-y-4 p-4 bg-white rounded-lg shadow-sm">
-      <h2 className="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Personal Details</h2>
-      <div className="grid grid-cols-2 gap-4">
-        {["age", "gender", "ethnicity", "jobTitle", "seniority", "experience", "industry"].map(key => (
-          <div key={key} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-            <span className="text-gray-600 capitalize font-bold">{key}:</span>
-            <span className="text-gray-800 text-sm">{data[key] || "-"}</span>
+    <div className="space-y-4 p-4 rounded-lg shadow-sm">
+      <h2 className="text-xl font-bold mb-4 border-b pb-2 max-md:text-lg">Personal Details</h2>
+      <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
+        {["age", "gender", "ethnicity", "education", "jobTitle", "seniority", "experience", "industry"].map(key => (
+          <div key={key} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg max-md:p-2">
+            <span className="text-gray-600 capitalize font-bold max-md:text-sm">{key}:</span>
+            <span className="text-gray-800 text-sm max-md:text-xs">{data[key] || "-"}</span>
           </div>
         ))}
       </div>
@@ -42,16 +43,15 @@ const JobDetail = ({ params }: Props) => {
   );
 
   const SalaryConditionsPage = ({ data }: { data: Record<string, any> }) => (
-    <div className="space-y-4 p-4 bg-white rounded-lg shadow-sm">
-      {/* ... payslip banner ... */}
+    <div className="space-y-4 p-4 rounded-lg shadow-sm">
       {parsedData.payslip && (
-        <div className="bg-green-100 p-3 rounded-lg flex items-center text-sm text-green-700 mb-4">
+        <div className="bg-green-100 p-3 rounded-lg flex items-center text-sm text-green-700 mb-4 max-md:p-2">
           <IconCheck className="h-4 w-4 mr-2" />
           Payslip verified
         </div>
       )}
-      <h2 className="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Salary Conditions</h2>
-      <div className="grid grid-cols-2 gap-4">
+      <h2 className="text-xl font-bold mb-4 border-b pb-2 max-md:text-lg">Salary Conditions</h2>
+      <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
         {[
           "companyName",
           "companyType",
@@ -68,15 +68,15 @@ const JobDetail = ({ params }: Props) => {
             key={key}
             className={`flex items-center justify-between p-3 bg-gray-50 rounded-lg ${
               ["companyName", "companyType"].includes(key) ? "col-span-2" : ""
-            }`}
+            } max-md:p-2 max-md:col-span-1`}
           >
-            <span className="font-bold text-gray-600 capitalize">{key.replace(/([A-Z])/g, " $1")}</span>
+            <span className="font-bold text-gray-600 capitalize max-md:text-sm">{key.replace(/([A-Z])/g, " $1")}</span>
             <span
               className={`text-gray-800 ${
                 ["companyName", "companyType"].includes(key)
                   ? "text-sm break-words max-w-[400px] text-right"
                   : "text-sm"
-              }`}
+              } max-md:text-xs`}
             >
               {typeof data[key] === "number" ? `RM ${data[key]}` : data[key] || "-"}
             </span>
@@ -88,7 +88,7 @@ const JobDetail = ({ params }: Props) => {
 
   const personalDetails = Object.fromEntries(
     Object.entries(parsedData).filter(([key]) =>
-      ["age", "gender", "ethnicity", "jobTitle", "seniority", "experience", "industry"].includes(key),
+      ["age", "gender", "ethnicity", "education", "jobTitle", "seniority", "experience", "industry"].includes(key),
     ),
   );
 
@@ -109,27 +109,31 @@ const JobDetail = ({ params }: Props) => {
     ),
   );
 
-  // Create story chunks
   const storyChunks = parsedData.story
     ? splitTextIntoChunks(parsedData.story).map((chunk, index) => (
         <div
           key={`story-${index}`}
-          className="prose-lg max-w-3xl px-4 py-6 bg-gray-50 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+          className="prose-lg max-w-3xl px-4 py-6 bg-gray-50 rounded-xl shadow-sm hover:shadow-md transition-shadow max-md:px-2 max-md:py-4"
         >
-          <div className="space-y-4">
+          <div className="space-y-4 max-md:space-y-2">
             {index === 0 && (
-              <span className="float-left text-6xl font-bold mr-2 -mt-2 text-gray-700">{chunk.charAt(0)}</span>
+              <span className="float-left text-6xl font-bold mr-2 -mt-2 text-gray-700 max-md:text-4xl max-md:-mt-1">
+                {chunk.charAt(0)}
+              </span>
             )}
-            <p className="text-gray-700 leading-relaxed tracking-wide text-justify">
+            <p className="text-gray-700 leading-relaxed tracking-wide text-justify max-md:text-sm">
               {index === 0 ? chunk.slice(1) : chunk}
             </p>
-            {index !== 0 && <div className="border-l-4 border-blue-200 pl-4 italic text-gray-600">{chunk}</div>}
+            {index !== 0 && (
+              <div className="border-l-4 border-blue-200 pl-4 italic text-gray-600 max-md:pl-2 max-md:border-l-2">
+                {chunk}
+              </div>
+            )}
           </div>
         </div>
       ))
     : [];
 
-  // Combine all chunks (metadata first, then story)
   const allChunks = [
     <PersonalDetailsPage key="personal" data={personalDetails} />,
     <SalaryConditionsPage key="salary" data={salaryConditions} />,
@@ -149,60 +153,68 @@ const JobDetail = ({ params }: Props) => {
     }
   };
 
-  // console.log(data?.postCreateds);
-
-  // Add state for title
   const [aiTitle, setAiTitle] = useState<string>("");
+  const [isGeneratingTitle, setIsGeneratingTitle] = useState(false);
 
-  // Add useEffect to generate title
-  useEffect(() => {
-    const generateTitle = async () => {
-      try {
-        const content = JSON.stringify(parsedData);
-        const response = await fetch(`${window.location.origin}/api/generate-title`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ content }),
-        });
+  // useEffect(() => {
+  //   const generateTitle = async () => {
+  //     setIsGeneratingTitle(true);
+  //     try {
+  //       const content = JSON.stringify({
+  //         jobTitle: parsedData.jobTitle,
+  //         seniority: parsedData.seniority,
+  //         industry: parsedData.industry,
+  //         companyName: parsedData.companyName,
+  //         companyType: parsedData.companyType,
+  //         location: parsedData.location,
+  //       });
 
-        const data = await response.json();
-        if (data.title) {
-          setAiTitle(data.title.replace(/"/g, "")); // Remove quotes if any
-        }
-      } catch (error) {
-        console.error("Title generation failed:", error);
-      }
-    };
+  //       const response = await fetch("/api/generate-title", {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ content }),
+  //       });
 
-    if (parsedData && Object.keys(parsedData).length > 0) {
-      generateTitle();
-    }
-  }, [parsedData]);
+  //       if (!response.ok) throw new Error("Failed to generate title");
+  //       const data = await response.json();
+  //       setAiTitle(data.title.replace(/["]/g, "").trim());
+  //     } catch (error) {
+  //       console.error("Title generation failed:", error);
+  //       setAiTitle("Professional Position Title");
+  //     } finally {
+  //       setIsGeneratingTitle(false);
+  //     }
+  //   };
 
-  if (!post) {
-    return null;
-  }
+  //   if (parsedData?.jobTitle) generateTitle();
+  // }, [parsedData]);
+
+  if (!post) return null;
 
   return (
-    <div className="mx-auto min-h-[80%] max-w-[75%] mt-10 rounded-lg grid grid-cols-1 md:grid-cols-3">
+    <div className="mx-auto min-h-[80%] max-w-[75%] mt-10 rounded-lg grid grid-cols-1 md:grid-cols-3 max-md:max-w-full max-md:mt-4 max-md:px-4">
       {/* Left Side - Paginated Content */}
-      <div className="md:col-span-2 rounded-lg shadow-md p-6">
+      <div className="md:col-span-2 rounded-lg border shadow-md p-6 max-md:p-4">
         <TextSlider chunks={allChunks} />
       </div>
 
       {/* Right Side - Comments Section */}
-      <div className="p-6 rounded-lg shadow-md border">
-        <div className="flex items-center overflow-y-auto">
+      <div className="p-6 rounded-lg shadow-md border max-md:mt-4 max-md:p-4">
+        <div className="flex items-center overflow-y-auto max-md:flex-wrap max-md:gap-2">
           <BlockieAvatar address={post.author} size={24} />
-          <p className="text-sm ml-2">{post.author.slice(0, 6) + "..." + post.author.slice(-4)}</p>
-          <button className="flex text-sm bg-blue-100 px-3 py-1 rounded-lg hover:bg-blue-200 ml-20">
-            <IconSend className="h-5 w-5" />
+          <p className="text-sm ml-2 max-md:text-xs">{post.author.slice(0, 6) + "..." + post.author.slice(-4)}</p>
+          <button className="flex text-sm bg-blue-500 px-3 py-1 rounded-lg hover:bg-blue-600 ml-20 max-md:ml-auto max-md:px-2">
+            <IconSend className="h-5 w-5 max-md:h-4 max-md:w-4" />
           </button>
         </div>
-        <div className="text-lg font-semibold text-gray-800 mb-2">{aiTitle}</div>
-        <div>
+        <div className="text-lg font-semibold mb-2 mt-2 max-md:text-base">
+          {isGeneratingTitle ? (
+            <span className="animate-pulse">Generating title...</span>
+          ) : (
+            aiTitle || "Professional Position Title"
+          )}
+        </div>
+        <div className="text-sm max-md:text-xs">
           {(() => {
             const date = new Date(Number(post.blockTimestamp) * 1000);
             const day = String(date.getUTCDate()).padStart(2, "0");
@@ -212,15 +224,15 @@ const JobDetail = ({ params }: Props) => {
           })()}
         </div>
 
-        <div className="mt-4 border-t pt-2 flex flex-col h-96">
-          <div className="flex-1 overflow-y-auto">
+        <div className="mt-4 border-t pt-2 flex flex-col h-[420px] max-md:h-[300px]">
+          <div className="flex-1 overflow-y-auto max-md:pr-2">
             {comments.map((comment, index) => (
-              <div key={index} className="mb-4">
+              <div key={index} className="mb-4 max-md:mb-2">
                 <div className="flex items-center">
-                  <IconCircle className="h-4 w-4 mr-2" />
-                  <p className="text-sm font-medium">{comment.user}</p>
+                  <BlockieAvatar address="0x06f351e43c584E46ae4137c6d90d7B70C1F37EE8" size={24} />
+                  <p className="text-sm max-md:text-xs ml-2">{comment.user}</p>
                 </div>
-                <p className="ml-6 text-gray-600">{comment.text}</p>
+                <p className="ml-6 text-gray-600 max-md:text-xs max-md:ml-4">{comment.text}</p>
               </div>
             ))}
           </div>
@@ -229,15 +241,12 @@ const JobDetail = ({ params }: Props) => {
             <div className="flex items-center border-t pt-2">
               <input
                 type="text"
-                className="flex-1 p-2 border rounded-xl"
+                className="flex-1 p-2 border rounded-xl max-md:p-1.5 max-md:text-sm"
                 placeholder="Enter comment here..."
                 value={newComment}
                 onChange={e => setNewComment(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && handleCommentSubmit()}
               />
-              {/* <button className="px-4 py-2 rounded-r-lg hover:bg-gray-100" onClick={handleCommentSubmit}>
-                <IconShare3 className="h-6 w-6" />
-              </button> */}
             </div>
           </div>
         </div>
