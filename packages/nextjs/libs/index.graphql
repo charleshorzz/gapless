@@ -9,3 +9,39 @@ query postCreateds($first: Int, $skip: Int, $orderBy: Int) {
     blockTimestamp
   }
 }
+
+query chatRequesteds($first: Int, $skip: Int) {
+  chatRequesteds(first: $first, skip: $skip) {
+    id
+    amount
+    postId
+    requester
+  }
+}
+
+query chatHistoryStoreds($first: Int, $skip: Int) {
+  chatHistoryStoreds(first: $first, skip: $skip) {
+    id
+    blockNumber
+    blockTimestamp
+    ipfsHash
+    receiver
+    sender
+  }
+}
+
+query getChatHistorys($walletAddress: Bytes!, $first: Int, $skip: Int) {
+  chatHistoryStoreds(
+    first: $first
+    skip: $skip
+    where: { or: [{ sender: $walletAddress }, { receiver: $walletAddress }] }
+  ) {
+    id
+    sender
+    receiver
+    ipfsHash
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}

@@ -12,7 +12,8 @@ contract DeployPostContract is Script {
     function run() public {
         vm.startBroadcast();
 
-        postContract = new PostContract(address(0)); // Replace with token address if using ERC20
+        // Replace with actual ERC-20 token address on Scroll Sepolia
+        postContract = new PostContract(vm.parseAddress("0x1234567890AbCdEf1234567890aBcdef12345678"));
 
         vm.stopBroadcast();
     }

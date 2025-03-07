@@ -1,16 +1,8 @@
-type ChatAccepted @entity(immutable: true) {
+type ChatHistoryStored @entity(immutable: true) {
   id: Bytes!
-  postId: BigInt! # uint256
-  requester: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type ChatRejected @entity(immutable: true) {
-  id: Bytes!
-  postId: BigInt! # uint256
-  requester: Bytes! # address
+  sender: Bytes! # address
+  receiver: Bytes! # address
+  ipfsHash: String! # string
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -20,6 +12,7 @@ type ChatRequested @entity(immutable: true) {
   id: Bytes!
   postId: BigInt! # uint256
   requester: Bytes! # address
+  receiver: Bytes! # address
   amount: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
@@ -40,18 +33,10 @@ type PostCreated @entity(immutable: true) {
   internal_id: BigInt! # uint256
   owner: Bytes! # address
   postData: String! # string
+  chatPrice: BigInt! # uint256
+  postComment: String! # string
   author: Bytes! # address
   timestamp: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type Tipped @entity(immutable: true) {
-  id: Bytes!
-  postId: BigInt! # uint256
-  sender: Bytes! # address
-  amount: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

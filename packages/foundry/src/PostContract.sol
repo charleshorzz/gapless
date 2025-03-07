@@ -5,136 +5,90 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract PostContract is Ownable {
-        struct Post {
+    struct Post {
         uint256 id;
         address owner;
-        string postData; // Store all data in JSON format
+        address author;
+        string postData;
         uint256 tipsReceived;
+        uint256 chatPrice;
+        string postComment; // IPFS hash for comments
         bool active;
     }
 
-        struct PostInput {
-        address owner;
-        string postData; //  JSON string containing all post details
+    struct ChatSession {
+        bool paid;
+        string ipfsHash;
     }
 
-    struct ChatRequest {
-        address requester;
-        uint256 amount; // Amount sent with request
-        bool accepted;
-    }
-
-    IERC20 public token; // ERC20 token for tipping (optional)
+    IERC20 public token;
     uint256 public postCount;
-    
     mapping(uint256 => Post) public posts;
-    mapping(uint256 => ChatRequest[]) public chatRequests; // Post ID -> Chat requests
-    mapping(address => uint256) public reputation; // Track reputation scores
+    mapping(address => mapping(address => ChatSession)) public chatSessions; // chatOwner -> chatReceiver -> ChatSession
 
-   event PostCreated(
-    uint256 id,
-    address owner,
-    string postData, // Store all details in JSON format
-    address indexed author,
-    uint256 timestamp
+    event PostCreated(
+        uint256 id, 
+        address owner, 
+        string postData, 
+        uint256 chatPrice, 
+        string postComment, 
+        address indexed author, 
+        uint256 timestamp
     );
-    event Tipped(uint256 postId, address sender, uint256 amount);
-    event ChatRequested(uint256 postId, address requester, uint256 amount);
-    event ChatAccepted(uint256 postId, address requester);
-    event ChatRejected(uint256 postId, address requester);
+    event ChatRequested(uint256 postId, address requester, address receiver, uint256 amount);
+    event ChatHistoryStored(address sender, address receiver, string ipfsHash);
 
     constructor(address _token) Ownable(msg.sender) {
-        token = IERC20(_token); // Set ERC20 token for tipping (set `address(0)` for native ETH)
+        token = IERC20(_token);
     }
 
-    /**
-     * @dev Create a new post
-     */
-    function createPost(PostInput memory postData) public {
+   function createPost(string memory _postData, uint256 _chatPrice, string memory _postComment) public {
     postCount++;
     posts[postCount] = Post(
         postCount,
-        postData.owner,
-        postData.postData, // 🔥 Store all details in JSON
-        0,  // tipsReceived starts at 0
-        true // active post
+        msg.sender,
+        msg.sender, // Assign author here
+        _postData,
+        0,
+        _chatPrice,
+        _postComment,
+        true
     );
-
-    emit PostCreated(postCount, postData.owner, postData.postData, msg.sender, block.timestamp);
+    emit PostCreated(postCount, msg.sender, _postData, _chatPrice, _postComment, msg.sender, block.timestamp);
     }
 
+  function requestChat(uint256 _postId) external payable {
+    Post storage post = posts[_postId];
+    require(post.author != msg.sender, "Cannot request chat with yourself");
+    require(!chatSessions[post.author][msg.sender].paid, "Already paid");
+    require(msg.value >= post.chatPrice, "Incorrect ETH sent");
 
-    /**
-     * @dev Send a tip to the post owner
-     */
-    function tipPost(uint256 _postId, uint256 _amount) external {
-        Post storage post = posts[_postId];
-        require(post.active, "Post not active");
-        require(post.owner != msg.sender, "Cannot tip yourself");
+    // Transfer Ether
+    payable(post.author).transfer(msg.value);
 
-        token.transferFrom(msg.sender, post.owner, _amount);
-        post.tipsReceived += _amount;
-        reputation[post.owner] += _amount; // Increase reputation
+    chatSessions[post.author][msg.sender].paid = true;
+    chatSessions[msg.sender][post.author].paid = true;
+
+    emit ChatRequested(_postId, msg.sender, post.author, post.chatPrice);
+    }
+
+    function storeChatHistory(address _receiver, string memory _ipfsHash) external {
+        require(chatSessions[msg.sender][_receiver].paid, "Chat not paid for");
+
+        chatSessions[msg.sender][_receiver].ipfsHash = _ipfsHash;
+        chatSessions[_receiver][msg.sender].ipfsHash = _ipfsHash;
+
+        emit ChatHistoryStored(msg.sender, _receiver, _ipfsHash);
+    }
+
+    function getChatHistory(address _participant) external view returns (string memory) {
+        require(
+            chatSessions[msg.sender][_participant].paid || chatSessions[_participant][msg.sender].paid,
+            "No chat history found"
+        );
         
-        emit Tipped(_postId, msg.sender, _amount);
-    }
-
-    /**
-     * @dev Request a chat with the post owner by sending tokens
-     */
-    function requestChat(uint256 _postId, uint256 _amount) external {
-        Post storage post = posts[_postId];
-        require(post.active, "Post not active");
-        require(post.owner != msg.sender, "Cannot request chat with yourself");
-
-        token.transferFrom(msg.sender, address(this), _amount);
-        chatRequests[_postId].push(ChatRequest(msg.sender, _amount, false));
-
-        emit ChatRequested(_postId, msg.sender, _amount);
-    }
-
-    /**
-     * @dev Accept a chat request
-     */
-    function acceptChat(uint256 _postId, address _requester) external {
-        Post storage post = posts[_postId];
-        require(post.owner == msg.sender, "Only owner can accept chat");
-
-        ChatRequest[] storage requests = chatRequests[_postId];
-        for (uint i = 0; i < requests.length; i++) {
-            if (requests[i].requester == _requester && !requests[i].accepted) {
-                requests[i].accepted = true;
-                token.transfer(post.owner, requests[i].amount); // Transfer tokens to owner
-                emit ChatAccepted(_postId, _requester);
-                return;
-            }
-        }
-        revert("Chat request not found");
-    }
-
-    /**
-     * @dev Reject a chat request
-     */
-    function rejectChat(uint256 _postId, address _requester) external {
-        Post storage post = posts[_postId];
-        require(post.owner == msg.sender, "Only owner can reject chat");
-
-        ChatRequest[] storage requests = chatRequests[_postId];
-        for (uint i = 0; i < requests.length; i++) {
-            if (requests[i].requester == _requester && !requests[i].accepted) {
-                token.transfer(requests[i].requester, requests[i].amount); // Refund
-                delete requests[i];
-                emit ChatRejected(_postId, _requester);
-                return;
-            }
-        }
-        revert("Chat request not found");
-    }
-
-    /**
-     * @dev Get all chat requests for a post
-     */
-    function getChatRequests(uint256 _postId) external view returns (ChatRequest[] memory) {
-        return chatRequests[_postId];
+        return bytes(chatSessions[msg.sender][_participant].ipfsHash).length > 0 
+            ? chatSessions[msg.sender][_participant].ipfsHash 
+            : chatSessions[_participant][msg.sender].ipfsHash;
     }
 }
