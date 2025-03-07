@@ -1,5 +1,6 @@
 "use client";
 
+import { useOpenStore } from "~~/app/store";
 import { WrongNetworkDropdown } from "../../../components/scaffold-eth/RainbowKitCustomConnectButton/WrongNetworkDropdown";
 import AuthBackground from "../_components/AuthBackground";
 import ChatLists from "./ChatLists";
@@ -14,10 +15,9 @@ import { getBlockExplorerAddressLink } from "~~/utils/scaffold-eth";
 const ChatsPage = () => {
   const networkColor = useNetworkColor();
   const { targetNetwork } = useTargetNetwork();
+  const { openChat } = useOpenStore();
 
   //  Nedd to modify here later (for mobile)
-  const openChat = false;
-
   // ETH Pay logic start here
   const paymentETH = false;
   return (
@@ -80,7 +80,7 @@ const ChatsPage = () => {
                   <div className="hidden lg:block lg:col-span-4">{paymentETH ? <PaymentEHT /> : <ChatWindow />}</div>
 
                   {openChat && (
-                    <div className="col-span-6">
+                    <div className="block lg:hidden col-span-6">
                       <AnimatePresence>
                         <ChatWindow />
                       </AnimatePresence>
