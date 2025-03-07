@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { parseEther } from "viem";
 import { useAccount } from "wagmi";
 import { Breadcumb } from "~~/components/ui/breadcumb";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
@@ -42,6 +43,7 @@ type FormData = {
   commission: number;
   stock: number;
   payslip: File;
+  chatPrice: number;
   story: string;
 };
 
@@ -95,11 +97,6 @@ const PostsPage = () => {
     } else {
       try {
         setLoading(true);
-        //Upload payslip to IPFS
-        if (data.payslip) {
-          const payslipData = await uploadFileToIPFS(data.payslip);
-        }
-
         let payslipHash = null;
 
         // Upload payslip to IPFS if provided
@@ -113,6 +110,9 @@ const PostsPage = () => {
           payslip: payslipHash,
         };
 
+        //Send in WEI
+        const chatPrice = data?.chatPrice ? parseEther(data.chatPrice.toString()) : BigInt(0);
+
         // Convert postData to a JSON string
         const postData = JSON.stringify(rawpostData);
 
@@ -120,7 +120,7 @@ const PostsPage = () => {
         if (!userAddress) throw new Error("Please connect your wallet to create a post");
         await writePostContractAsync({
           functionName: "createPost",
-          args: [{ owner: userAddress, postData }], //  Send JSON directly
+          args: [{ owner: userAddress, postData, chatPrice }, chatPrice], //  Send JSON directly
         });
 
         toast.success("Post created successfully!");
@@ -455,6 +455,21 @@ const PostsPage = () => {
 
         {activeSection === "story" && (
           <>
+            <div className="mb-5">
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Chat Price (ETH)</label>
+              <label className="block mb-2 text-xs font-medium text-gray-400 dark:text-white">
+                This will be the price to start a chat with you if others want to know more about your story
+              </label>
+              <input
+                type="number"
+                id="chatPrice"
+                step="0.0000000001"
+                {...register("chatPrice", { valueAsNumber: true })}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Eg. 0.00001"
+                required
+              />
+            </div>
             <div className="mb-5">
               <div>
                 <label className="block  text-sm font-medium text-gray-900 dark:text-white">Tell us about you</label>

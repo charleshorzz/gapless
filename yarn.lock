@@ -12359,14 +12359,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gapless@workspace:packages/gapless":
+"gaplessv2@workspace:packages/gaplessv2":
   version: 0.0.0-use.local
-  resolution: "gapless@workspace:packages/gapless"
+  resolution: "gaplessv2@workspace:packages/gaplessv2"
   dependencies:
-    "@apollo/client": ^3.13.1
     "@graphprotocol/graph-cli": 0.96.0
     "@graphprotocol/graph-ts": 0.37.0
-    graphql: ^16.10.0
     matchstick-as: 0.6.0
   languageName: unknown
   linkType: soft

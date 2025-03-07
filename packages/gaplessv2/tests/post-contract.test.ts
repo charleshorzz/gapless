@@ -7,8 +7,8 @@ import {
   afterAll
 } from "matchstick-as/assembly/index"
 import { BigInt, Address } from "@graphprotocol/graph-ts"
-import { ExampleEntity } from "../generated/schema"
-import { ChatHistoryStored } from "../generated/PostContract/PostContract"
+import { ChatHistoryStored } from "../generated/schema"
+import { ChatHistoryStored as ChatHistoryStoredEvent } from "../generated/PostContract/PostContract"
 import { handleChatHistoryStored } from "../src/post-contract"
 import { createChatHistoryStoredEvent } from "./post-contract-utils"
 
@@ -37,25 +37,25 @@ describe("Describe entity assertions", () => {
   // For more test scenarios, see:
   // https://thegraph.com/docs/en/developer/matchstick/#write-a-unit-test
 
-  test("ExampleEntity created and stored", () => {
-    assert.entityCount("ExampleEntity", 1)
+  test("ChatHistoryStored created and stored", () => {
+    assert.entityCount("ChatHistoryStored", 1)
 
     // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
     assert.fieldEquals(
-      "ExampleEntity",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a",
+      "ChatHistoryStored",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
       "postId",
       "234"
     )
     assert.fieldEquals(
-      "ExampleEntity",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a",
+      "ChatHistoryStored",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
       "requester",
       "0x0000000000000000000000000000000000000001"
     )
     assert.fieldEquals(
-      "ExampleEntity",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a",
+      "ChatHistoryStored",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
       "ipfsHash",
       "Example string value"
     )
