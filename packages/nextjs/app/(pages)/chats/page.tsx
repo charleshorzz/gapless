@@ -34,10 +34,10 @@ const ChatsPage = () => {
               if (!connected) {
                 return (
                   <AuthBackground>
-                    <button className="btn btn-primary btn-sm" onClick={openConnectModal} type="button">
+                    {/* <button className="btn btn-primary btn-sm" onClick={openConnectModal} type="button">
                       Connect Wallet
-                    </button>
-                    {/* <button className="btn btn-warning bg-white text-black border-[#e5e5e5] rounded-md">
+                    </button> */}
+                    <button className="btn btn-warning bg-white text-black border-[#e5e5e5] rounded-md " onClick={openConnectModal} type="button">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -54,7 +54,7 @@ const ChatsPage = () => {
                         <path d="M21 14l-9 7l-9 -7l3 -11l3 7h6l3 -7z" />
                       </svg>
                       Connect Wallet
-                    </button> */}
+                    </button>
                   </AuthBackground>
                 );
               }

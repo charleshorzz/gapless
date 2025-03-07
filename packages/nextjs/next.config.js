@@ -1,4 +1,5 @@
 // @ts-check
+import nextPwa from "next-pwa";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -31,4 +32,9 @@ if (isIpfs) {
   };
 }
 
-module.exports = nextConfig;
+const withPWA = nextPwa({
+  dest: "public",
+  register: true,
+});
+
+export default nextConfig;
