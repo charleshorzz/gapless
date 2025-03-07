@@ -7,7 +7,7 @@ export const TextSlider = ({ chunks }: { chunks: string[] }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentPage(prev => (prev + 1) % chunks.length);
-    }, 10000000000);
+    }, 100000000);
 
     return () => clearInterval(interval);
   }, [chunks.length]);

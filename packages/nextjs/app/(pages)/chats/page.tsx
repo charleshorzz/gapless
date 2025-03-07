@@ -1,16 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { WrongNetworkDropdown } from "../../../components/scaffold-eth/RainbowKitCustomConnectButton/WrongNetworkDropdown";
 import AuthBackground from "../_components/AuthBackground";
 import ChatLists from "./ChatLists";
 import ChatWindow from "./ChatWindow";
 import PaymentEHT from "./PaymentEHT";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { AnimatePresence, motion } from "framer-motion";
+import { set } from "react-hook-form";
+import { useAccount } from "wagmi";
 import { useOpenStore } from "~~/app/store";
 import { useNetworkColor } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { useGetChatHistorysQuery } from "~~/libs/generated/graphql";
+import {
+  useChatHistoryStoredsLazyQuery,
+  useChatHistoryStoredsQuery,
+  useGetChatHistorysQuery,
+} from "~~/libs/generated/graphql";
 import { getBlockExplorerAddressLink } from "~~/utils/scaffold-eth";
 
 const ChatsPage = () => {
@@ -19,6 +28,8 @@ const ChatsPage = () => {
   const [isChatFound, setChatFound] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
   const { openChat } = useOpenStore();
+  const searchParams = useSearchParams();
+  const { address: userWalletAddress } = useAccount();
 
   // State to track screen size
   const [desktopScreen, setDesktopScreen] = useState(false);
@@ -37,14 +48,33 @@ const ChatsPage = () => {
   // Mobile chat logic: true if `openChat` is true and `desktopScreen` is false
   const mobileChatLogic = openChat && !desktopScreen;
 
+  // ETH Pay logic start here
+  const paymentETH = false;
+  //Function
+  const postId = searchParams.get("postId");
+  const postOwnerAddress = searchParams.get("postOwnerAddress");
+  const chatPrice = searchParams.get("chatPrice");
+
+  const [chatHistoryStoreds, { loading }] = useChatHistoryStoredsLazyQuery({
+    variables: {
+      where: {
+        receiver: postOwnerAddress,
+        sender: userWalletAddress,
+      },
+    },
+    onCompleted: data => {
+      if (data.chatHistoryStoreds.length > 0) {
+        setChatFound(true);
+      }
+    },
+  });
   //query from router params, check getchatRequests, pass in owner address and user address, if found, setchatfound to true
   // setchatfound to true, show paymentETH component
-
-  //Function
-  const postId = "6";
-  const postOwnerAddress = "0x6b7090Baf7674bd83C8b89629FdDB7fF3523Ad09";
-  const chatPrice = 10000000000000;
-  const userWalletAddress = "0xb785058f9807b0cb7a67f7bb58d6a5234b7d6656";
+  useEffect(() => {
+    if (postOwnerAddress && userWalletAddress) {
+      chatHistoryStoreds();
+    }
+  }, [postOwnerAddress, userWalletAddress]);
 
   //Fetch chat history of user
   const { data } = useGetChatHistorysQuery({
@@ -105,7 +135,7 @@ const ChatsPage = () => {
               }
 
               return (
-                <div className="grid grid-cols-6 gap-5 h-full">
+               <div className="grid grid-cols-6 gap-5 h-full">
                   {/* ChatLists: Always visible, takes 2/5 columns on lg+ */}
                   {!mobileChatLogic &&
                     (chatHistory.length > 0 ? (

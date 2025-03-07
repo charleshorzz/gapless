@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useInView } from "react-intersection-observer";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { usePostCreatedsQuery } from "~~/libs/generated/graphql";
 import { splitTextIntoChunks } from "~~/utils/scaffold-eth/textSplitter";
@@ -55,14 +54,17 @@ const JobCard = ({ post }: { post: Post }) => {
   );
 };
 
+// Reusable detail component
+const DetailItem = ({ label, value }: { label: string; value?: string }) => (
+  <div>
+    <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">{label}</span>
+    <p className="text-gray-900 font-medium line-clamp-1">{value || "-"}</p>
+  </div>
+);
+
 const JobList: React.FC<JobListProps> = ({ searchTerm }) => {
   const { data, loading, error, fetchMore } = usePostCreatedsQuery({
-    variables: {
-      orderBy: "blockTimestamp",
-      page: 1,
-      perPage: 6,
-      search: searchTerm,
-    },
+    variables: {},
     fetchPolicy: "network-only",
   });
 
