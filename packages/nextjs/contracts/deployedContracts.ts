@@ -184,7 +184,7 @@ const deployedContracts = {
             },
           ],
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "payable",
         },
         {
           type: "function",
@@ -384,7 +384,7 @@ const deployedContracts = {
   },
   534351: {
     PostContract: {
-      address: "0x8706fe250108b5338d09beb5c0a18d6783a21364",
+      address: "0x2ab57862646984c577aa8c89b3572b7a3acfbc7a",
       abi: [
         {
           type: "constructor",
@@ -561,7 +561,7 @@ const deployedContracts = {
             },
           ],
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "payable",
         },
         {
           type: "function",
@@ -755,7 +755,7 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deploymentFile: "run-1741362489.json",
+      deploymentFile: "run-1741365580.json",
       deploymentScript: "DeployPostContract.sol",
     },
   },

@@ -23,7 +23,7 @@ const ChatsPage = () => {
   const paymentETH = false;
 
   //Function
-  const postId = "0x6387f472ee0db893d8912c3c0701499261da6ae352c522e38047e6400f35487500000000";
+  const postId = "2";
   const postOwnerAddress = "0xb785058f9807b0cb7a67f7bb58d6a5234b7d6656";
   const chatPrice = 10000000000000;
   const userWalletAddress = "0xb785058f9807b0cb7a67f7bb58d6a5234b7d6656";

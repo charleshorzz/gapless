@@ -12359,9 +12359,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gaplessv5@workspace:packages/gaplessv5":
+"gaplessv6@workspace:packages/gaplessv6":
   version: 0.0.0-use.local
-  resolution: "gaplessv5@workspace:packages/gaplessv5"
+  resolution: "gaplessv6@workspace:packages/gaplessv6"
   dependencies:
     "@graphprotocol/graph-cli": 0.96.0
     "@graphprotocol/graph-ts": 0.37.0

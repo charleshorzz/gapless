@@ -55,8 +55,9 @@ contract PostContract is Ownable {
         emit PostCreated(postCount, msg.sender, _postData, _chatPrice, _postComment, msg.sender, block.timestamp);
     }
 
-    function requestChat(uint256 _postId) external {
+    function requestChat(uint256 _postId) external payable {
         Post storage post = posts[_postId];
+        require(msg.value >= post.chatPrice, "Insufficient ETH sent");
         require(post.owner != msg.sender, "Cannot request chat with yourself");
         require(!chatSessions[post.owner][msg.sender].paid, "Already paid");
 

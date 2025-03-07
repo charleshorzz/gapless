@@ -26,12 +26,14 @@ const PaymentEHT = ({
     // Call Smart Contract
     console.log("Sample Smart Contract Call");
     console.log("postId:", postId, "Type:", typeof postId);
-    const hashedPostId = BigInt(keccak256(toHex(postId.toString())));
 
     try {
+      // Approve the PostContract to spend `chatPrice` tokens
+
       await writePostContractAsync({
         functionName: "requestChat",
-        args: [hashedPostId],
+        args: [postId],
+        value: chatPrice,
       });
     } catch (e) {
       console.error(e);
