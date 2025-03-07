@@ -1,5 +1,6 @@
 "use client";
 
+import { useOpenStore } from "~~/app/store";
 import { WrongNetworkDropdown } from "../../../components/scaffold-eth/RainbowKitCustomConnectButton/WrongNetworkDropdown";
 import AuthBackground from "../_components/AuthBackground";
 import ChatLists from "./ChatLists";
@@ -14,12 +15,11 @@ import { getBlockExplorerAddressLink } from "~~/utils/scaffold-eth";
 const ChatsPage = () => {
   const networkColor = useNetworkColor();
   const { targetNetwork } = useTargetNetwork();
+  const { openChat } = useOpenStore();
 
   //  Nedd to modify here later (for mobile)
-  const openChat = false;
-
   // ETH Pay logic start here
-  const paymentETH = true;
+  const paymentETH = false;
   return (
     <ConnectButton.Custom>
       {({ account, chain, openConnectModal, mounted }) => {
@@ -37,7 +37,11 @@ const ChatsPage = () => {
                     {/* <button className="btn btn-primary btn-sm" onClick={openConnectModal} type="button">
                       Connect Wallet
                     </button> */}
-                    <button className="btn btn-warning bg-white text-black border-[#e5e5e5] rounded-md " onClick={openConnectModal} type="button">
+                    <button
+                      className="btn btn-warning bg-white text-black border-[#e5e5e5] rounded-md "
+                      onClick={openConnectModal}
+                      type="button"
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -76,7 +80,7 @@ const ChatsPage = () => {
                   <div className="hidden lg:block lg:col-span-4">{paymentETH ? <PaymentEHT /> : <ChatWindow />}</div>
 
                   {openChat && (
-                    <div className="col-span-6">
+                    <div className="block lg:hidden col-span-6">
                       <AnimatePresence>
                         <ChatWindow />
                       </AnimatePresence>
