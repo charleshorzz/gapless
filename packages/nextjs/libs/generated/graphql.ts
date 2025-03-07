@@ -711,7 +711,7 @@ export type PostCreatedsQueryVariables = Exact<{
 }>;
 
 
-export type PostCreatedsQuery = { __typename?: 'Query', postCreateds: Array<{ __typename?: 'PostCreated', id: any, author: any, postData: string, owner: any, blockNumber: any, blockTimestamp: any, internal_id: any }> };
+export type PostCreatedsQuery = { __typename?: 'Query', postCreateds: Array<{ __typename?: 'PostCreated', id: any, author: any, postData: string, owner: any, blockNumber: any, chatPrice: any, blockTimestamp: any, internal_id: any }> };
 
 export type ChatRequestedsQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -747,6 +747,7 @@ export const PostCreatedsDocument = gql`
     postData
     owner
     blockNumber
+    chatPrice
     blockTimestamp
     internal_id
   }

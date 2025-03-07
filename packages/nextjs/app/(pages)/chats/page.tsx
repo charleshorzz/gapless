@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { WrongNetworkDropdown } from "../../../components/scaffold-eth/RainbowKitCustomConnectButton/WrongNetworkDropdown";
 import AuthBackground from "../_components/AuthBackground";
 import ChatLists from "./ChatLists";
@@ -9,6 +10,7 @@ import PaymentEHT from "./PaymentEHT";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { AnimatePresence, motion } from "framer-motion";
 import { set } from "react-hook-form";
+import { useAccount } from "wagmi";
 import { useOpenStore } from "~~/app/store";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useNetworkColor } from "~~/hooks/scaffold-eth";
@@ -22,6 +24,8 @@ const ChatsPage = () => {
   const [isChatFound, setChatFound] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
   const { openChat } = useOpenStore();
+  const searchParams = useSearchParams();
+  const { address: userWalletAddress } = useAccount();
 
   // State to track screen size
   const [desktopScreen, setDesktopScreen] = useState(false);
@@ -47,10 +51,9 @@ const ChatsPage = () => {
   // setchatfound to true, show paymentETH component
 
   //Function
-  const postId = "6";
-  const postOwnerAddress = "0x6b7090Baf7674bd83C8b89629FdDB7fF3523Ad09";
-  const chatPrice = 10000000000000;
-  const userWalletAddress = "0xb785058f9807b0cb7a67f7bb58d6a5234b7d6656";
+  const postId = searchParams.get("postId");
+  const postOwnerAddress = searchParams.get("postOwnerAddress");
+  const chatPrice = searchParams.get("chatPrice");
 
   //Fetch chat history of user
   const { data } = useGetChatHistorysQuery({
@@ -127,9 +130,9 @@ const ChatsPage = () => {
                       <ChatWindow />
                     ) : (
                       <PaymentEHT
-                        postId={BigInt(postId)}
-                        chatPrice={chatPrice}
-                        postOwnerAddress={postOwnerAddress}
+                        postId={BigInt(postId ?? 0)}
+                        chatPrice={BigInt(chatPrice ?? "0")}
+                        postOwnerAddress={postOwnerAddress ?? ""}
                         setChatFound={setChatFound}
                       />
                     )}
@@ -144,9 +147,9 @@ const ChatsPage = () => {
                   <div className="hidden lg:block lg:col-span-4">
                     {paymentETH ? (
                       <PaymentEHT
-                        postId={BigInt(postId)}
-                        chatPrice={chatPrice}
-                        postOwnerAddress={postOwnerAddress}
+                        postId={BigInt(postId ?? 0)}
+                        chatPrice={BigInt(chatPrice ?? "0")}
+                        postOwnerAddress={postOwnerAddress ?? ""}
                         setChatFound={setChatFound}
                       />
                     ) : (
