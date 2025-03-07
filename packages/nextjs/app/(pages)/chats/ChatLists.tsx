@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useOpenStore } from "~~/app/store";
+import { useAccount } from "wagmi";
+import { useChatStore, useOpenStore } from "~~/app/store";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { fetchDataFromIPFS } from "~~/utils/pinata";
 
@@ -23,14 +24,15 @@ type ChatListsProps = {
 const ChatLists = ({ chatHistory }: ChatListsProps) => {
   const [query, setQuery] = useState("");
   const { toggleOpen } = useOpenStore();
+  const { setSelectedChat, setChatWith, selectedChat, chatWith } = useChatStore();
+  const { address: userWalletAddress } = useAccount();
 
   //  Sort the Message by latest
   const getLatestMessages = (messages: ChatHistory[]): ChatHistory[] => {
     const latestMessagesMap = new Map<string, ChatHistory>(); // Use string keys for addresses
 
     messages.forEach(message => {
-      const otherUser =
-        message.receiver === "0x6b7090baf7674bd83c8b89629fddb7ff3523ad09" ? message.sender : message.receiver;
+      const otherUser = message.receiver === userWalletAddress ? message.sender : message.receiver;
 
       const existingMessage = latestMessagesMap.get(otherUser);
 
@@ -49,10 +51,7 @@ const ChatLists = ({ chatHistory }: ChatListsProps) => {
 
   const filteredItems = useMemo(() => {
     return latestMessages.filter(latestMessage => {
-      const otherUser =
-        latestMessage.receiver === "0x16bbc84ffacf9b172febf2d5b4e32e56a2c48b4ee578df53ad1a58bc1f02718d"
-          ? latestMessage.receiver
-          : latestMessage.sender;
+      const otherUser = latestMessage.receiver === userWalletAddress ? latestMessage.receiver : latestMessage.sender;
 
       return otherUser?.toLowerCase().includes(query.toLowerCase());
     });
@@ -84,15 +83,20 @@ const ChatLists = ({ chatHistory }: ChatListsProps) => {
         <div className="max-h-[50vh] lg:max-h-none ">
           <div>
             {filteredItems.map(list => {
-              const otherUser =
-                list.receiver === "0x16bbc84ffacf9b172febf2d5b4e32e56a2c48b4ee578df53ad1a58bc1f02718d"
-                  ? list.receiver
-                  : list.sender;
+              const otherUser = list.receiver === userWalletAddress ? list.receiver : list.sender;
               return (
                 <div
-                  className="rounded-lg dark:border-neutral-700 bg-white dark:bg-neutral-800 mb-1 hover:bg-gray-100 dark:hover:bg-neutral-700 cursor-pointer"
+                  className={`rounded-lg dark:border-neutral-700 bg-white ${
+                    chatWith === otherUser ? "bg-gray-200 dark:bg-neutral-700" : "bg-white dark:bg-neutral-800"
+                  } mb-1 hover:bg-gray-100 dark:hover:bg-neutral-700 cursor-pointer`}
                   key={list.id}
-                  onClick={toggleOpen}
+                  onClick={() => {
+                    toggleOpen();
+                    setSelectedChat(list);
+                    setChatWith(otherUser);
+                    console.log("Selected Chat:", list);
+                    console.log("Chatting with:", otherUser);
+                  }}
                 >
                   <div className="card card-sm">
                     <div className="card-body flex flex-row p-3">
