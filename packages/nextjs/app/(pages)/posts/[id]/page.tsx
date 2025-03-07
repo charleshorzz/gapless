@@ -203,14 +203,6 @@ const JobDetail = ({ params }: Props) => {
       </div>
 
       {/* Right Side - Comments Section */}
-<<<<<<< HEAD
-      <div className="p-6 rounded-lg shadow-md border max-md:mt-4 max-md:p-4">
-        <div className="flex items-center overflow-y-auto max-md:flex-wrap max-md:gap-2">
-          <BlockieAvatar address={post.author} size={24} />
-          <p className="text-sm ml-2 max-md:text-xs">{post.author.slice(0, 6) + "..." + post.author.slice(-4)}</p>
-          <button className="flex text-sm bg-blue-500 px-3 py-1 rounded-lg hover:bg-blue-600 ml-20 max-md:ml-auto max-md:px-2">
-            <IconSend className="h-5 w-5 max-md:h-4 max-md:w-4" />
-=======
       <div className="p-6 rounded-lg shadow-md border">
         <div className="flex flex-row space-x-6 items-center ">
           <BlockieAvatar address={post.author} size={24} />
@@ -224,7 +216,6 @@ const JobDetail = ({ params }: Props) => {
             className="text-sm bg-blue-100 px-3 py-1 rounded-lg hover:bg-blue-200 ml-20"
           >
             <IconSend className="h-5 w-5" />
->>>>>>> df209e52028ec1b07c2ac465ca542dcfc8efeb3c
           </button>
         </div>
         <div className="text-lg font-semibold mb-2 mt-2 max-md:text-base">
