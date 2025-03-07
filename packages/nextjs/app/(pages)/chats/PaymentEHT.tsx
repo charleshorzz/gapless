@@ -4,15 +4,18 @@ import { erc20Abi } from "viem";
 import { useContractWrite } from "wagmi";
 import CustomCard from "~~/app/CustomCard";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { uploadFileToIPFS } from "~~/utils/pinata";
 
 const PaymentEHT = ({
   postId,
   chatPrice,
   postOwnerAddress,
+  setChatFound,
 }: {
   postId: bigint;
   chatPrice: bigint;
   postOwnerAddress: string;
+  setChatFound: Function;
 }) => {
   // Receive of Pay
   const pay = true;
@@ -28,13 +31,29 @@ const PaymentEHT = ({
     console.log("postId:", postId, "Type:", typeof postId);
 
     try {
-      // Approve the PostContract to spend `chatPrice` tokens
-
-      await writePostContractAsync({
+      // Request Chat
+      const data = await writePostContractAsync({
         functionName: "requestChat",
         args: [postId],
         value: chatPrice,
       });
+      console.log("data:", data);
+      if (data) {
+        const chatHistory = [{}];
+        const chatHistoryJSON = JSON.stringify(chatHistory);
+        const chatHistoryBlob = new Blob([chatHistoryJSON], { type: "application/json" });
+        const chatHistoryFile = new File([chatHistoryBlob], "chatHistory.json");
+        const chatHistoryIpfsHash = await uploadFileToIPFS(chatHistoryFile);
+        console.log("chatHistoryIpfsHash:", chatHistoryIpfsHash);
+
+        if (chatHistoryIpfsHash) {
+          await writePostContractAsync({
+            functionName: "storeChatHistory",
+            args: [postOwnerAddress, chatHistoryIpfsHash],
+          });
+        }
+        setChatFound(true);
+      }
     } catch (e) {
       console.error(e);
     }
