@@ -1,5 +1,9 @@
 "use client";
 
+import React, { useState } from "react";
+import Link from "next/link";
+import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/navbar";
+import { cn } from "../utils/scaffold-eth/utils";
 import {
   IconBrandGoogleHome,
   IconCurrencyEthereum,
@@ -7,12 +11,8 @@ import {
   IconSquareRoundedPlus,
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
-import Link from "next/link";
-import React, { useState } from "react";
 import { SwitchTheme } from "~~/components/SwitchTheme";
 import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
-import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/navbar";
-import { cn } from "../utils/scaffold-eth/utils";
 
 export function SideBar({ children }: { children: React.ReactNode }) {
   const links = [
@@ -44,13 +44,13 @@ export function SideBar({ children }: { children: React.ReactNode }) {
         <SidebarBody className="justify-between gap-1">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
             <>
-              <Logo/>
+              <Logo />
             </>
             <div className="mt-8 flex flex-col justify-center gap-8">
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
               ))}
-               <SwitchTheme />
+              <SwitchTheme />
             </div>
           </div>
           <RainbowKitCustomConnectButton />
