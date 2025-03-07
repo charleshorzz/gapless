@@ -3,7 +3,7 @@ import CustomCard from "~~/app/CustomCard";
 
 const PaymentEHT = () => {
   // Receive of Pay
-  const pay = false;
+  const pay = true;
 
   if (pay)
     return (
