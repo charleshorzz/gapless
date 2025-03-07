@@ -1,7 +1,8 @@
-'use client'
+"use client";
+
 import React, { useEffect, useRef, useState } from "react";
 
-const ChatBubble = () => {
+const ChatBubble = ({ chatMessage }: { chatMessage: any }) => {
   const [message, setMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [chatHistory, setChatHistory] = useState([
@@ -16,26 +17,25 @@ const ChatBubble = () => {
   ]);
 
   // useEffect for autos crolling
-    useEffect(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [chatHistory]);
-
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatHistory]);
 
   const handleSend = () => {
     if (message.trim() !== "") {
       // UI Optimistic
       const newMessage = {
-        id: Date.now(), 
+        id: Date.now(),
         type: "sender",
         username: "You",
         avatar: "",
         message: message.trim(),
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       };
 
       setChatHistory(prev => [...prev, newMessage]);
       setMessage("");
-      
+
       // Fetch API here
       // fetch('/api/send-message', { method: 'POST', body: ... })
     }
@@ -43,10 +43,14 @@ const ChatBubble = () => {
 
   return (
     <>
-    {/* The max height and overflow logic need to be solve further */}
-      <div className="flex-grow overflow-y-auto max-h-[75vh]"> 
+      {/* The max height and overflow logic need to be solve further */}
+      <div className="flex-grow overflow-y-auto max-h-[75vh]">
         {chatHistory.map(chat => (
-          <div key={chat.id} className={`chat ${chat.type === "receiver" ? "chat-start" : "chat-end"}`} ref={messagesEndRef} >
+          <div
+            key={chat.id}
+            className={`chat ${chat.type === "receiver" ? "chat-start" : "chat-end"}`}
+            ref={messagesEndRef}
+          >
             {/* Avater - Receiver */}
             {chat.type === "receiver" && (
               <div className="chat-image avatar">
@@ -63,9 +67,7 @@ const ChatBubble = () => {
             </div>
 
             {/* Main Message */}
-            <div className="chat-bubble bg-blue-500 dark:bg-gray-700 dark:text-neutral-50">
-              {chat.message}
-            </div>
+            <div className="chat-bubble bg-blue-500 dark:bg-gray-700 dark:text-neutral-50">{chat.message}</div>
           </div>
         ))}
       </div>
@@ -80,7 +82,7 @@ const ChatBubble = () => {
           onChange={e => setMessage(e.target.value)}
           onKeyDown={e => e.key === "Enter" && handleSend()}
         />
-        <button 
+        <button
           onClick={handleSend}
           className="px-4 py-2 bg-blue-500 dark:bg-[#385183] text-white rounded-xl hover:bg-blue-600 dark:hover:bg-[#2b3e65]"
         >

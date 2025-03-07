@@ -1,15 +1,16 @@
 import Image from "next/image";
-import CustomSeparaor from "~~/app/CustomSeparaor";
 import BackButton from "./BackButton";
 import ChatBubble from "./ChatBubble";
 import ChatInput from "./ChatInput";
+import CustomSeparaor from "~~/app/CustomSeparaor";
 
-const ChatWindow = () => {
+const ChatWindow = ({ chatMessage }: { chatMessage: any }) => {
+  console.log("chatMessage dwdwd", chatMessage);
   return (
     <>
       {/* Avatar at the top */}
       <div className="flex gap-x-2 items-center">
-        <BackButton/>
+        <BackButton />
         <div className="avatar">
           <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full">
             <Image
@@ -28,11 +29,11 @@ const ChatWindow = () => {
       <CustomSeparaor />
 
       {/* Middle content that takes up remaining space */}
-        <ChatBubble />
+      <ChatBubble chatMessage={chatMessage} />
 
       {/* ChatInput at the bottom */}
       {/* <ChatInput /> */}
-      </>
+    </>
   );
 };
 
