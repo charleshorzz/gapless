@@ -5,12 +5,17 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract PostContract is Ownable {
-    struct Post {
+        struct Post {
         uint256 id;
         address owner;
-        string ipfsHash; // Stores post metadata (job, salary, etc.)
+        string postData; // Store all data in JSON format
         uint256 tipsReceived;
         bool active;
+    }
+
+        struct PostInput {
+        address owner;
+        string postData; //  JSON string containing all post details
     }
 
     struct ChatRequest {
@@ -26,7 +31,13 @@ contract PostContract is Ownable {
     mapping(uint256 => ChatRequest[]) public chatRequests; // Post ID -> Chat requests
     mapping(address => uint256) public reputation; // Track reputation scores
 
-    event PostCreated(uint256 postId, address owner, string ipfsHash);
+   event PostCreated(
+    uint256 id,
+    address owner,
+    string postData, // Store all details in JSON format
+    address indexed author,
+    uint256 timestamp
+    );
     event Tipped(uint256 postId, address sender, uint256 amount);
     event ChatRequested(uint256 postId, address requester, uint256 amount);
     event ChatAccepted(uint256 postId, address requester);
@@ -39,11 +50,19 @@ contract PostContract is Ownable {
     /**
      * @dev Create a new post
      */
-    function createPost(string memory _ipfsHash) external {
-        postCount++;
-        posts[postCount] = Post(postCount, msg.sender, _ipfsHash, 0, true);
-        emit PostCreated(postCount, msg.sender, _ipfsHash);
+    function createPost(PostInput memory postData) public {
+    postCount++;
+    posts[postCount] = Post(
+        postCount,
+        postData.owner,
+        postData.postData, // 🔥 Store all details in JSON
+        0,  // tipsReceived starts at 0
+        true // active post
+    );
+
+    emit PostCreated(postCount, postData.owner, postData.postData, msg.sender, block.timestamp);
     }
+
 
     /**
      * @dev Send a tip to the post owner

@@ -1,0 +1,11 @@
+# Query
+query postCreateds($first: Int, $skip: Int) {
+  postCreateds(first: $first, skip: $skip) {
+    id
+    author
+    postData
+    owner
+    blockNumber
+    blockTimestamp
+  }
+}
