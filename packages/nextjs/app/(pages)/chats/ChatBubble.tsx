@@ -1,10 +1,13 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { useChatStore } from "~~/app/store";
+import { BlockieAvatar } from "~~/components/scaffold-eth";
 
 const ChatBubble = ({ chatMessage }: { chatMessage: any }) => {
   const [message, setMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { selectedChat, chatWith } = useChatStore();
   const [chatHistory, setChatHistory] = useState([
     {
       id: 1,
@@ -45,6 +48,7 @@ const ChatBubble = ({ chatMessage }: { chatMessage: any }) => {
     <>
       {/* The max height and overflow logic need to be solve further */}
       <div className="flex-grow overflow-y-auto max-h-[75vh]">
+        {/* list.ipfsHash.map... */}
         {chatHistory.map(chat => (
           <div
             key={chat.id}
@@ -55,7 +59,7 @@ const ChatBubble = ({ chatMessage }: { chatMessage: any }) => {
             {chat.type === "receiver" && (
               <div className="chat-image avatar">
                 <div className="w-10 rounded-full">
-                  <img alt="User Avatar" src={chat.avatar} />
+                  <BlockieAvatar address={chatWith} size={24} />
                 </div>
               </div>
             )}
