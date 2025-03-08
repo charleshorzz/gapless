@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useChatStore } from "~~/app/store";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 
-const ChatBubble = () => {
+const ChatBubble = ({ chatMessage }: { chatMessage: any }) => {
   const [message, setMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { selectedChat, chatWith } = useChatStore();

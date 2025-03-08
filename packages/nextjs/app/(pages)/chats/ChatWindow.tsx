@@ -6,9 +6,8 @@ import CustomSeparaor from "~~/app/CustomSeparaor";
 import { useChatStore } from "~~/app/store";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 
-const ChatWindow = () => {
-  const { chatWith } = useChatStore();
-
+const ChatWindow = ({ chatMessage }: { chatMessage: any }) => {
+   const { chatWith } = useChatStore();
   return (
     <>
       {/* Avatar at the top */}
@@ -27,7 +26,7 @@ const ChatWindow = () => {
       <CustomSeparaor />
 
       {/* Middle content that takes up remaining space */}
-      <ChatBubble />
+      <ChatBubble chatMessage={chatMessage} />
 
       {/* ChatInput at the bottom */}
       {/* <ChatInput /> */}
