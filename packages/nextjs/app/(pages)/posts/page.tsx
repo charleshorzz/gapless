@@ -146,9 +146,9 @@ const PostsPage = () => {
     if (hasOtherCompensation) {
       requiredFields.push("allowance", "bonus", "commission", "stock");
     }
-    if (selectedExperience) {
-      requiredFields.push("exactExperience");
-    }
+    // if (selectedExperience) {
+    //   requiredFields.push("exactExperience");
+    // }
 
     const missingFields = requiredFields.filter(field => {
       const value = data[field];
