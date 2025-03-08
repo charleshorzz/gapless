@@ -1,8 +1,8 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import { useAccount } from "wagmi";
 import { useChatStore, useOpenStore } from "~~/app/store";
-import { useEffect, useMemo, useState } from "react";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { fetchDataFromIPFS } from "~~/utils/pinata";
 

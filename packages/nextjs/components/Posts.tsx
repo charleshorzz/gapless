@@ -34,7 +34,7 @@ const JobCard = ({ post }: { post: Post }) => {
 
   return (
     <div
-      className="relative w-80 h-full sm:max-w-none sm:w-auto mx-auto border border-gray-200 rounded-xl p-3 flex flex-col cursor-pointer hover:shadow-lg transition-all"
+      className="relative w-80 h-full sm:max-w-none sm:w-auto mx-auto border rounded-xl p-3 flex flex-col cursor-pointer hover:shadow-lg transition-all border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 dark:hover:bg-neutral-700"
       onClick={() => router.push(`/posts/${post.id}`)}
     >
       {/* Job Title */}
@@ -111,7 +111,7 @@ const JobList: React.FC<JobListProps> = ({ searchTerm }) => {
   if (error) return <div className="text-red-500 p-4">Error: {error.message}</div>;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-8 xl:px-20">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-8 xl:px-20 ">
       {filteredPosts?.length ? (
         filteredPosts.map((post: Post) => (
           <JobCard
