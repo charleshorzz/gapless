@@ -6,6 +6,7 @@ import { WrongNetworkDropdown } from "../../../components/scaffold-eth/RainbowKi
 import AuthBackground from "../_components/AuthBackground";
 import ChatLists from "./ChatLists";
 import ChatWindow from "./ChatWindow";
+import NoChat from "./NoChat";
 import PaymentEHT from "./PaymentEHT";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { AnimatePresence, motion } from "framer-motion";
@@ -47,7 +48,35 @@ const ChatsPage = () => {
 
   // Mobile chat logic: true if `openChat` is true and `desktopScreen` is false
   const mobileChatLogic = openChat && !desktopScreen;
-
+  const dummmyData = [
+    {
+      blockNumber: "8426649",
+      id: "0x16bbc84ffacf9b172febf2d5b4e32e56a2c48b4ee578df53ad1a58bc1f02718d00000000",
+      ipfsHash: "bafkreihbbaeniolv3raaomifgodijh4gj4ux43cpoum4haht3oxxaz5iia",
+      sender: "0xb785058f9807b0cb7a67f7bb58d6a5234b7d6656",
+      receiver: "0x6b7090baf7674bd83c8b89629fddb7ff3523ad09",
+      transactionHash: "0x16bbc84ffacf9b172febf2d5b4e32e56a2c48b4ee578df53ad1a58bc1f02718d",
+      blockTimestamp: "1741374040",
+    },
+    {
+      blockNumber: "8427235",
+      id: "0x31fecbd7bf58c5954a2fce4ce14d9237043a294ab6092af95ab90fa1690c7a0500000000",
+      ipfsHash: "bafkreihbbaeniolv3raaomifgodijh4gj4ux43cpoum4haht3oxxaz5iia",
+      sender: "0x8c4dbda7926c2df8b381ff1ab666e8ddbf66dc9f",
+      receiver: "0x6b7090baf7674bd83c8b89629fddb7ff3523ad09",
+      transactionHash: "0x31fecbd7bf58c5954a2fce4ce14d9237043a294ab6092af95ab90fa1690c7a05",
+      blockTimestamp: "1741378277",
+    },
+    {
+      blockNumber: "8427223",
+      id: "0x98b54d95ed1b9b2753e28cf615b3fdcb102bc8b2914224a07b7146daa0169f2000000000",
+      ipfsHash: "bafkreihbbaeniolv3raaomifgodijh4gj4ux43cpoum4haht3oxxaz5iia",
+      sender: "0x7fca54fb24fef161e152ad6711d7fbeff2c83034",
+      receiver: "0x6b7090baf7674bd83c8b89629fddb7ff3523ad09",
+      transactionHash: "0x98b54d95ed1b9b2753e28cf615b3fdcb102bc8b2914224a07b7146daa0169f20",
+      blockTimestamp: "1741378200",
+    },
+  ];
   // ETH Pay logic start here
   const paymentETH = false;
   //Function
@@ -138,14 +167,19 @@ const ChatsPage = () => {
               return (
                 <div className="grid grid-cols-6 gap-5 h-full">
                   {/* ChatLists: Always visible, takes 2/5 columns on lg+ */}
-                  {!mobileChatLogic &&
+                  <div className="col-span-6 lg:col-span-2 overflow-y-scroll">
+                    <ChatLists chatHistory={dummmyData} />
+                  </div>
+                  {/* {!mobileChatLogic &&
                     (chatHistory.length > 0 ? (
                       <div className="col-span-6 lg:col-span-2 overflow-y-scroll">
                         <ChatLists chatHistory={chatHistory} />
                       </div>
                     ) : (
-                      <div className="col-span-6 lg:col-span-2 overflow-y-scroll">No Chat History Found</div>
-                    ))}
+                      <div className="col-span-6 lg:col-span-2 overflow-y-scroll">
+                        <NoChat />
+                      </div>
+                    ))} */}
 
                   {/* ChatWindow: Hidden below lg, takes 3/5 columns on lg+ */}
                   <div className="hidden lg:block lg:col-span-4">
