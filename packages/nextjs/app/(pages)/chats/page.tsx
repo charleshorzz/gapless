@@ -168,7 +168,7 @@ const ChatsPage = () => {
                 <div className="grid grid-cols-6 gap-5 h-full">
                   {/* ChatLists: Always visible, takes 2/5 columns on lg+ */}
                   <div className="col-span-6 lg:col-span-2 overflow-y-scroll">
-                    <ChatLists chatHistory={dummmyData} />
+                    <ChatLists chatHistory={chatHistory} />
                   </div>
                   {/* {!mobileChatLogic &&
                     (chatHistory.length > 0 ? (

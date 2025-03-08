@@ -60,7 +60,7 @@ const ChatLists = ({ chatHistory }: ChatListsProps) => {
             const fetchedMessage = await fetchDataFromIPFS(message.ipfsHash);
             const extractedMessage =
               typeof fetchedMessage === "object" && fetchedMessage !== null
-                ? (fetchedMessage.text ?? "No message yet")
+                ? (fetchedMessage.text ?? "Ni Bu Pei Dang Zhu Bo!")
                 : "Invalid data";
 
             newMessages[message.ipfsHash] = extractedMessage;
@@ -111,7 +111,7 @@ const ChatLists = ({ chatHistory }: ChatListsProps) => {
         <div className="max-h-[50vh] lg:max-h-none ">
           <div>
             {filteredItems.map(list => {
-              const otherUser = list.receiver === userWalletAddress ? list.receiver : list.sender;
+              const otherUser = list.receiver === userWalletAddress ? list.receiver : list.receiver;
               return (
                 <div
                   className={`rounded-lg dark:border-neutral-700 bg-white ${
@@ -148,7 +148,7 @@ const ChatLists = ({ chatHistory }: ChatListsProps) => {
                           </p>
                         </div>
                         <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 m-0">
-                          {messages[list.ipfsHash] || "Hi"}
+                          {messages[list.ipfsHash] || "Ni Bu Pei Dang Zhu Bo!"}
                         </p>
                       </div>
                     </div>

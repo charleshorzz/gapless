@@ -34,8 +34,6 @@ const JobDetail = ({ params }: Props) => {
   });
   const post = data?.postCreateds.find(p => p.id === params.id);
   const parsedData = post?.postData ? JSON.parse(post.postData) : {};
-  console.log("post:", post);
-  console.log("parsedData:", parsedData);
 
   const PersonalDetailsPage = ({ data }: { data: Record<string, any> }) => (
     <div className="space-y-4 p-4 rounded-lg shadow-sm">
@@ -227,7 +225,7 @@ const JobDetail = ({ params }: Props) => {
           {isGeneratingTitle ? (
             <span className="animate-pulse">Generating title...</span>
           ) : (
-            aiTitle || "Professional Position Title"
+            aiTitle || parsedData.jobTitle
           )}
         </div>
         <div className="text-sm max-md:text-xs">
