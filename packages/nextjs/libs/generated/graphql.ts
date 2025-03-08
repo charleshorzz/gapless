@@ -708,6 +708,9 @@ export enum _SubgraphErrorPolicy_ {
 export type PostCreatedsQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<PostCreated_Filter>;
+  orderBy?: InputMaybe<PostCreated_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
 }>;
 
 
@@ -741,8 +744,14 @@ export type GetChatHistorysQuery = { __typename?: 'Query', chatHistoryStoreds: A
 
 
 export const PostCreatedsDocument = gql`
-    query postCreateds($first: Int, $skip: Int) {
-  postCreateds(first: $first, skip: $skip) {
+    query postCreateds($first: Int, $skip: Int, $where: PostCreated_filter, $orderBy: PostCreated_orderBy, $orderDirection: OrderDirection) {
+  postCreateds(
+    first: $first
+    skip: $skip
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
     id
     author
     postData
@@ -769,6 +778,9 @@ export const PostCreatedsDocument = gql`
  *   variables: {
  *      first: // value for 'first'
  *      skip: // value for 'skip'
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
+ *      orderDirection: // value for 'orderDirection'
  *   },
  * });
  */

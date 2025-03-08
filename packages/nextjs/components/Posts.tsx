@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
-import { usePostCreatedsQuery } from "~~/libs/generated/graphql";
+import { OrderDirection, PostCreated_OrderBy, usePostCreatedsQuery } from "~~/libs/generated/graphql";
 import { splitTextIntoChunks } from "~~/utils/scaffold-eth/textSplitter";
 
 // ... (keep JobCard component the same)
@@ -93,7 +93,10 @@ const DetailItem = ({ label, value }: { label: string; value?: string }) => (
 // In JobList component
 const JobList: React.FC<JobListProps> = ({ searchTerm }) => {
   const { data, loading, error, fetchMore } = usePostCreatedsQuery({
-    variables: {},
+    variables: {
+      orderBy: PostCreated_OrderBy.BlockTimestamp,
+      orderDirection: OrderDirection.Desc,
+    },
     fetchPolicy: "network-only",
   });
 

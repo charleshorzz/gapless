@@ -26,6 +26,7 @@ const ChatLists = ({ chatHistory }: ChatListsProps) => {
   const { toggleOpen } = useOpenStore();
   const { setSelectedChat, setChatWith, selectedChat, chatWith } = useChatStore();
   const { address: userWalletAddress } = useAccount();
+  const [messages, setMessages] = useState<Record<string, string>>({});
 
   //  Sort the Message by latest
   const getLatestMessages = (messages: ChatHistory[]): ChatHistory[] => {

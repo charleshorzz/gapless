@@ -202,7 +202,7 @@ const ChatsPage = () => {
                     <div className="block lg:hidden col-span-6">
                       {isChatFound ? (
                         <div className="h-fit min-h-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-3 shadow-sm flex flex-col">
-                          <ChatWindow />
+                          <ChatWindow chatMessage={foundChatMessage} />
                         </div>
                       ) : (
                         <PaymentEHT

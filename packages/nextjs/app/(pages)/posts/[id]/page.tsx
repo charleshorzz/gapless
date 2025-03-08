@@ -6,7 +6,7 @@ import { IconCheck, IconCircle, IconSend } from "@tabler/icons-react";
 import OpenAI from "openai";
 import { TextSlider } from "~~/components/TextSlider";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
-import { usePostCreatedsQuery } from "~~/libs/generated/graphql";
+import { OrderDirection, PostCreated_OrderBy, usePostCreatedsQuery } from "~~/libs/generated/graphql";
 import { splitTextIntoChunks } from "~~/utils/scaffold-eth/textSplitter";
 
 interface Props {
@@ -20,13 +20,18 @@ interface Comment {
 
 const JobDetail = ({ params }: Props) => {
   const [comments, setComments] = useState<Comment[]>([
-    { user: "0b4jak...8736", text: "Some Comment here" },
-    { user: "0t8hxf...2456", text: "Another Comment here" },
+    { user: "0b4jak...8736", text: "Inspiring 🔥" },
+    { user: "0t8hxf...2456", text: "When will average people salary catch up 🥲" },
   ]);
 
   const router = useRouter();
   const [newComment, setNewComment] = useState("");
-  const { data } = usePostCreatedsQuery();
+  const { data } = usePostCreatedsQuery({
+    variables: {
+      orderBy: PostCreated_OrderBy.BlockTimestamp,
+      orderDirection: OrderDirection.Desc,
+    },
+  });
   const post = data?.postCreateds.find(p => p.id === params.id);
   const parsedData = post?.postData ? JSON.parse(post.postData) : {};
   console.log("post:", post);
