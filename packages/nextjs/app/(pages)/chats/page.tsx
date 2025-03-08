@@ -6,6 +6,7 @@ import { WrongNetworkDropdown } from "../../../components/scaffold-eth/RainbowKi
 import AuthBackground from "../_components/AuthBackground";
 import ChatLists from "./ChatLists";
 import ChatWindow from "./ChatWindow";
+import NoChat from "./NoChat";
 import PaymentEHT from "./PaymentEHT";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { AnimatePresence, motion } from "framer-motion";
@@ -144,7 +145,9 @@ const ChatsPage = () => {
                         <ChatLists chatHistory={chatHistory} />
                       </div>
                     ) : (
-                      <div className="col-span-6 lg:col-span-2 overflow-y-scroll">No Chat History Found</div>
+                      <div className="col-span-6 lg:col-span-2 overflow-y-scroll">
+                        <NoChat />
+                      </div>
                     ))}
 
                   {/* ChatWindow: Hidden below lg, takes 3/5 columns on lg+ */}
